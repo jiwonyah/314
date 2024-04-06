@@ -1,0 +1,40 @@
+<TO push>
+
+When you encounter the error message like "! [rejected] master -> master (fetch first)",
+refer to this.
+https://gist.github.com/sharbel93/ebcf0b18782573f4d95f80caa3c84acb
+
+-----------------------------------------------------------------------------------------------
+
+<To pull>
+You need to make a pull request for your code (not push).
+By creating a pull request, you are notifying collaborators about your changes or work
+
+here are the steps to send a pull request on GitHub:
+
+1. Fork: Fork the original repository of the project to your GitHub account.
+
+2. Clone: Clone the forked repository to your local machine to work on it locally.
+
+3. git clone https://github.com/your-username/project.git
+Create Branch: Create a new branch for the new feature or changes you want to make.
+
+4. git checkout -b feature-branch
+Work Locally: Make changes and additions to the code on your local branch.
+
+5. Commit: Save your changes to the local repository.
+
+6. git add .
+git commit -m "Your commit message"
+Push to Fork: Push your changes to your forked repository.
+
+7. git push origin feature-branch
+Create Pull Request: Go back to the GitHub website, navigate to your forked repository, and create a pull request by clicking the "Compare & pull request" button. Review the changes and provide a description.
+
+8. Review: The project owner or collaborators will review your pull request and decide whether to merge it.
+
+9. Merge: Once the review is complete, the owner can merge the pull request, and your changes will be reflected in the original repository.
+
+
+
+
