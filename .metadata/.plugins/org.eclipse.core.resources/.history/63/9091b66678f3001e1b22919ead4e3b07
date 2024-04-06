@@ -1,0 +1,24 @@
+package com.example.demo;
+
+import java.time.LocalDateTime;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class ApplicationTests {
+    @Autowired
+    private UserRepository userRepository;
+
+    @Test
+    void testJpa() {        
+        SiteUser user1 = new SiteUser();
+        user1.setId(1);
+        user1.setUsername("abcd");
+        user1.setPassword(1234);
+        this.userRepository.save(user1);  // 첫번째 질문 저장
+
+    }
+
+}

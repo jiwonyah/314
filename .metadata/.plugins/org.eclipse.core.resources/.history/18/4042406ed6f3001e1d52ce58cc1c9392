@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>홈페이지</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/navbar.css}">
+</head>
+<body>
+
+<!-- 네비게이션 바를 include 합니다. -->
+<div th:include="navbar :: navbar"></div>
+
+<h1>여기는 홈페이지입니다.</h1>
+<!-- 홈페이지 내용 추가 -->
+
+</body>
+</html>
