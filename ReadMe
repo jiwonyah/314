@@ -1,0 +1,16 @@
+<Notice>
+Please ignore the folder named 314Project.
+All valid files are in the folder 314.
+
+-----------------------------------------
+<Database>
+I did not use MySql but used ORM with H2 console.
+If you want to deal with db, follow the steps.
+
+1. Go to C Drive ---> Users --> [Username]
+2. Create a file named test.mv.db (mv.db is extension. it is a db file)
+3. check if the created file is 0 byte.
+4. Turn on the server (the method depends on your IDE. I'm using STS)
+5. Go to 'http://localhost:8080/h2-console' via browser
+6. Press Connect button
+7. Now can manage db
