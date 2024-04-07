@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Navigation bar</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/navbar.css}">
+</head>
+<body>
+
+<div class = "container-fluid navbar">
+	<nav id="navbar">
+	    <ul>
+	        <li><a th:href="@{/}">BUDONGSAN</a></li>
+	        <li><a th:href="@{/user/login}">Login</a></li>
+	        <li><a th:href="@{/user/signup}">Signup</a></li>
+	    </ul>
+	</nav>
+</div>
+
+
+</body>
+</html>

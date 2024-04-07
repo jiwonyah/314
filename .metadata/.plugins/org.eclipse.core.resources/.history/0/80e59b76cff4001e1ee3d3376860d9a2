@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Navigation bar</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/navbar.css}">
+</head>
+<body>
+
+<div class = "container-fluid navbar">
+	<nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
+		<a th:href="@{/}" class="navbar-brand d-flex align-items-center text-center">
+			<h1 class="m-0 text-primary">BUDONGSAN</h1>
+		</a>
+		<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+		    <span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarCollapse">
+			<div class="navbar-nav ms-auto">
+				<a th:href="@{/}" class="nav-item nav-link active">Home</a>
+				<a href="about.html" class="nav-item nav-link">About</a>	
+				<div class="nav-item dropdown">
+					<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Property</a>
+					<div class="dropdown-menu rounded-0 m-0">
+					    <a href="property-list.html" class="dropdown-item">Property List</a>
+					    <a href="property-type.html" class="dropdown-item">Property Type</a>
+					    <a href="property-agent.html" class="dropdown-item">Property Agent</a>
+					</div>
+				</div>
+				<a href="contact.html" class="nav-item nav-link">Contact</a>
+				<div class="nav-item dropdown">
+				    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Login</a>
+				    <div class="dropdown-menu rounded-0 m-0">
+				        <a href="login.html" class="dropdown-item">Login</a>
+				        <a href="signup.html" class="dropdown-item">Sign Up</a>
+				    </div>
+				</div>
+			</div>
+		</div>
+	</nav>
+</div>
+			<ul>
+	        <li><a th:href="@{/}">BUDONGSAN</a></li>
+	        <li><a th:href="@{/user/login}">Login</a></li>
+	        <li><a th:href="@{/user/signup}">Signup</a></li>
+	    	</ul>
+	</nav>
+</div>
+
+
+</body>
+</html>
