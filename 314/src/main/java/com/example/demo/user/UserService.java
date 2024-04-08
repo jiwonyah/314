@@ -12,9 +12,10 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     
-    public SiteUser create(String username, Role role, String password) {
+    public SiteUser create(String username, String email, Role role, String password) {
         SiteUser user = new SiteUser();
         user.setUsername(username);
+        user.setEmail(email);
         user.setRole(role);
         user.setPassword(passwordEncoder.encode(password));
         this.userRepository.save(user);

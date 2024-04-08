@@ -1,0 +1,19 @@
+
+<!DOCTYPE html>
+html lang="eng">
+
+head>
+   <title>BUDONGSAN Sign Up</title>
+   <link rel="stylesheet"
+         href="css1/login.css">
+/head>
+
+body>
+   <div class="main">
+       <h1>BUDONGSAN</h1>
+       <h3>Are you an agent or a ordinal user?</h3>
+       
+   </div>
+/body>
+
+/html>

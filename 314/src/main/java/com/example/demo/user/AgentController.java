@@ -30,12 +30,12 @@ public class AgentController {
 
         if (!agentCreateForm.getPassword1().equals(agentCreateForm.getPassword2())) {
             bindingResult.rejectValue("password2", "passwordInCorrect", 
-                    "2개의 패스워드가 일치하지 않습니다.");
+                    "Check the password");
             return "agent_signup_form";
         }
 
         userService.create(agentCreateForm.getUsername(), 
-                Role.AGENT, agentCreateForm.getPassword1());
+                agentCreateForm.getEmail(), Role.AGENT, agentCreateForm.getPassword1());
 
         return "redirect:/";
     }

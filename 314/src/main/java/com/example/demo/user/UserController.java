@@ -36,7 +36,7 @@ public class UserController {
 
         try {
             userService.create(userCreateForm.getUsername(), 
-                    Role.USER, userCreateForm.getPassword1());
+                    userCreateForm.getEmail(),Role.USER, userCreateForm.getPassword1());
         }catch(DataIntegrityViolationException e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", "Already registered user");

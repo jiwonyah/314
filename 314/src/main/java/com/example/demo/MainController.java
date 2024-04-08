@@ -15,4 +15,10 @@ public class MainController {
     public String root() {
         return "redirect:/home";
     }
+    
+    @GetMapping("/signup")
+    public String signup() {
+        return "signup";
+    }
+    
 }
