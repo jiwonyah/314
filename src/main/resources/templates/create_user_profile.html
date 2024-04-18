@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>User Account Form</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f4f4f4;
+		}
+
+		.container {
+			width: 500px;
+			margin: 50px auto;
+			background-color: #fff;
+			padding: 20px;
+			border-radius: 8px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+
+		h2 {
+			text-align: center;
+			margin-bottom: 20px;
+		}
+
+		.form-group {
+			margin-bottom: 20px;
+			width: 100%;
+		}
+
+		.form-group label {
+			display: block;
+			font-weight: bold;
+			margin-bottom: 5px;
+		}
+
+		.form-group input {
+			width: calc(100% - 20px);
+			padding: 8px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+		}
+
+		.btn {
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			padding: 10px 20px;
+			cursor: pointer;
+			border-radius: 5px;
+			width: 100%;
+		}
+
+		.btn:hover {
+			background-color: #0056b3;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class="container">
+		<h2>User Account</h2>
+		<form action="/create/user_profile" method="post" th:object="${userProfileDTO}">
+
+			<div class="form-group">
+				<label for="fullName">Full Name:</label>
+				<input type="text" id="fullName" name="fullName" th:field="*{fullName}" required>
+			</div>
+			<div class="form-group">
+				<label for="dob">Date of Birth:</label>
+				<input type="date" id="dob" name="dob" th:field="*{dob}" required>
+			</div>
+			<div class="form-group">
+				<label for="email">Email Address:</label>
+				<input type="email" id="email" name="email" th:field="*{email}" required>
+			</div>
+			<div class="form-group">
+				<label for="username">Username:</label>
+				<input type="text" id="username" name="username" th:field="*{username}" required>
+			</div>
+			<div class="form-group">
+				<label for="password">Password:</label>
+				<input type="password" id="password" name="password" th:field="*{password}" required>
+			</div>
+			<div class="form-group">
+				<label for="address">Address:</label>
+				<input type="text" id="address" name="address" th:field="*{address}" required>
+			</div>
+			<div class="form-group">
+				<label for="phoneNumber">Phone Number:</label>
+				<input type="text" id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}" required>
+			</div>
+			<div class="form-group">
+				<label for="role">Role:</label>
+				<select id="role" name="role" th:field="*{role}" required>
+					<option value="">Select Role</option>
+					<option th:each="role : ${T(com.project.app.entity.Role).values()}" th:value="${role}"
+						th:text="${role.value}"></option>
+				</select>
+			</div>
+			<button type="submit" class="btn">Submit</button>
+		</form>
+	</div>
+
+</body>
+
+</html>
