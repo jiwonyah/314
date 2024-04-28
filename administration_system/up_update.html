@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Update User Profile Form</title>
+<style>
+   @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+  body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+
+  .container {
+    max-width: 400px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  input[type="text"],
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+  }
+
+  .btn-secondary {
+    background-color: #b1b1b1;
+  }
+
+  .btn-primary:hover,
+  .btn-secondary:hover {
+    background-color: #0056b3;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <form action="/update" method="post">
+        
+        <div class="form-group">
+            <label for="role">Role:</label>
+            <input type="text" id="role" name="role" value="Buyer" required>
+        </div>
+        <div class="form-group">
+            <label for="role_description">Role Description:</label>
+            <textarea id="role_description" name="role_description" rows="4" required>This is the role description for the Admin user.</textarea>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="button" class="btn btn-secondary">Cancel</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
