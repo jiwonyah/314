@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+
+	</head>
+	<body>
+		<!-- Navigation bar -->
+		<div th:insert="navbar.html"></div>
+		
+
+		<table>
+			    <thead>
+			        <tr>
+			            <th>Subject</th>
+						<th>Posted by</th>
+			            <th>Date</th>
+			        </tr>
+			    </thead>
+			    <tbody>				<!--<tr th:each="rent : ${rentList}">-->
+					<tr th:each="rent, loop : ${paging}">
+						<td>
+							<!-- When using thymeleaf, wrap the path inside | -->
+						    <a th:href="@{|/rent/detail/${rent.id}|}" th:text="${rent.subject}"></a>
+						</td>
+						<td><span th:if="${rent.author != null}" th:text="${rent.author.username}"></span></td>
+						
+						
+						<td>
+							<div th:if="${rent.modifyDate == null}" th:text="${#temporals.format(rent.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+							<div th:if="${rent.modifyDate != null}" th:text="${#temporals.format(rent.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
+						</td>
+
+			        </tr>
+			    </tbody>
+			</table>
+
+			<!-- 페이징처리 시작 -->
+			<!-- 페이징처리 시작 -->
+			<div th:if="${!paging.isEmpty()}">
+			    <ul class="pagination justify-content-center">
+			        <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+			            <a class="page-link"
+			                th:href="@{|?page=${paging.number-1}|}">
+			                <span>previous</span>
+			            </a>
+			        </li>
+			        <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+			            th:classappend="${page == paging.number} ? 'active'" 
+			            class="page-item">
+			            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+			        </li>
+			        <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+			            <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+			                <span>next</span>
+			            </a>
+			        </li>
+			    </ul>
+			</div>
+			<!-- 페이징처리 끝 -->
+		
+		<!-- Display the rent registration button according to user permissions -->
+		
+		<div th:if="${isAdmin or isAgent or isSeller}">
+		   <div class="form-container">
+		       <a th:href="@{/rent/create}" class="btn">Register Post</a>
+		   </div>
+		</div>
+	</body>
+</html>
+

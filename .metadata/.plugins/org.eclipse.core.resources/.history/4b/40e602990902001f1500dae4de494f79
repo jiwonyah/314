@@ -1,0 +1,43 @@
+package com.uow.project.list;
+
+import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class RentForm {
+	@NotEmpty(message = "Subject is a mandatory component.")
+	@Size(max = 50)
+	private String subject;
+
+	//content는 선택
+	@Size(max = 500)
+	private String content;
+	
+	@NotEmpty(message = "Address is a mandatory component.")
+	private String address;
+	
+	
+	@NotEmpty(message = "Property type is a mandatory component.")
+	private PropertyType propertyType;
+	
+	@NotEmpty(message = "Floor size is a mandatory component.")
+	private int floorsize;
+	
+	@NotEmpty(message = "Furnishing is a mandatory component.")
+	private Furnishing furnishing;
+	
+	@NotEmpty(message = "Floor level is a mandatory component.")
+	private FloorLevel floorlevel;
+	
+	@NotEmpty(message = "Built year is a mandatory component.")
+	private int top;
+	
+	@NotEmpty(message = "Monthly price is a mandatory component.")
+	private int monthlyPrice;
+	
+}

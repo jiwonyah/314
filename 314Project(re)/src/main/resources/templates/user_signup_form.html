@@ -1,0 +1,66 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="UTF-8">
+	    <title>[MINYONG] User Signup page</title>
+		<style>
+			.invalid-feedback {
+			   
+			    width: 100%;
+			    margin-top: .25rem;
+			    font-size: 80%;
+			    color: #dc3545;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Navigation bar -->
+		<div th:insert="navbar.html"></div>
+	<div layout:fragment="content" class="container my-3">
+	    <div class="my-3 border-bottom">
+	        <div>
+	            <h4>Sign Up</h4>
+	        </div>
+	    </div>
+	    <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post">
+	       
+	        <div class="mb-3">
+	            <label for="username" class="form-label">ID</label>
+	            <input type="text" th:field="*{username}" class="form-control">
+				<div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="invalid-feedback"></div>
+	        </div>
+	        <div class="mb-3">
+	            <label for="password1" class="form-label">Password</label>
+	            <input type="password" th:field="*{password1}" class="form-control">
+				<div th:if="${#fields.hasErrors('password1')}" th:errors="*{password1}" class="invalid-feedback"></div>
+	        </div>
+	        <div class="mb-3">
+	            <label for="password2" class="form-label">Confirm Password</label>
+	            <input type="password" th:field="*{password2}" class="form-control">
+				<div th:if="${#fields.hasErrors('password2')}" th:errors="*{password2}" class="invalid-feedback"></div>
+	        </div>
+	        <div class="mb-3">
+	            <label for="email" class="form-label">Email</label>
+	            <input type="email" th:field="*{email}" class="form-control">
+				<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback"></div>
+	        </div>
+			
+			<div class="mb-3">
+			    <label for="role" class="form-label">Role</label>
+			    <select th:field="*{role}" class="form-select">
+			        <option value="" disabled selected>Select your role</option>
+					<!-- one role can be selected except admin -->
+			        <option th:each="role : ${T(com.uow.project.user.Role).values()}"
+			                th:unless="${role == T(com.uow.project.user.Role).ADMIN}"
+			                th:value="${role}" th:text="${role}"></option>	
+			    </select>
+				<div th:if="${#fields.hasErrors('role')}" th:errors="*{role}" class="invalid-feedback"></div>
+			</div>
+			<button type="submit">Register</button>
+	    </form>
+		
+	</div>
+	</body>
+
+	
+	
+</html>

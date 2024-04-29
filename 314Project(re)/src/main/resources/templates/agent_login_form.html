@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In to Agent Net</title>
+    <style>
+        
+
+        body {
+        background-image: url('/images/building.png'); 
+        background-size: cover; 
+        background-position: center; 
+        background-attachment: fixed; 
+        margin: 0; 
+        padding: 0; 
+        }
+
+        #main {
+            padding: 50px 0; 
+        }
+
+        .login-container .login-box {
+            background-color: rgba(255, 255, 255, 0.8); 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin-top:80px; 
+        }
+
+        .login-container .login-box .input-group input {
+            border-radius: 14px !important;
+        }
+
+        .login-container .login-box .lgn-btn .btn {
+            border-radius: 14px;
+            padding: 10px;
+            margin: auto;
+            margin-bottom: 10px;
+            color:rgb(255, 255, 255);
+            font-size: 20px;   
+            width: 100%;
+        }
+        .login-container .login-box .rem-fp {
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            margin-bottom: 10px; 
+        }
+
+        .login-container .login-box .rem-fp label {
+            margin-right: 10px; 
+        }
+
+        .login-container .login-box .rem-fp .fp {
+            color: #0076d1;
+            font-weight: 570;
+            margin-left: 250px; 
+            position: absolute;
+            white-space: nowrap; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="login-container">
+
+					<div class="col-sm-4 login-box">
+						<h5>Log in Agent Net</h5> 
+							<form th:action="@{/agent/login}" method="post">
+								<div th:if="${param.error}" class="alert alert-danger">
+								    Check your ID or password.
+								</div>
+						    	<div class="form-floating input-group">
+									<label for="username" class="form-label">ID</label>            
+						        	<input type="text" name="username" id="username" class="form-control">
+						    	</div>
+							
+						    	<div class="form-floating input-group">     
+									<label for="password" class="form-label">Password</label>            
+									<input type="password" name="password" id="password" class="form-control">
+						   		</div> 
+						    	<div class="lgn-btn">
+						        	<button type="submit"class="btn shadow" style="background:#95D2EC">Login</button>
+						    	</div>
+								<p th:if="${errorMessage}" th:text="${errorMessage}" style="color: red;"></p>
+							</form>
+					</div>
+					
+					<div class="row rem-fp">
+					    <div class="col-sm-6">
+					        <input type="checkbox" checked> <label>Remember me</label>
+					    </div>
+					    <div class="col-sm-6 fp">
+					        <a>Forget Password ?</a>
+					    </div>
+					</div> 	
+			   </div>
+			</div>
+		</div>
+	</div>   
+</body>
+</html>

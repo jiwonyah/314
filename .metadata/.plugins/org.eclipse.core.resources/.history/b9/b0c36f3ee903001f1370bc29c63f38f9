@@ -1,0 +1,18 @@
+package com.uow.project.list;
+
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+
+
+public interface RentRepository extends JpaRepository<Rent, Integer> {
+	Rent findBySubject(String subject);
+
+	Rent findBySubjectAndContent(String subject, String content);
+
+	List<Rent> findBySubjectLike(String subject);
+
+	Page<Rent> findAll(Pageable pageable);
+}

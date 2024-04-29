@@ -1,0 +1,26 @@
+package com.uow.project;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import com.example.demo.user.SiteUser;
+import org.springframework.ui.Model;
+@Controller
+public class MainController {
+    @GetMapping("/")
+    public String home() {
+        return "homepage";
+    }
+
+    
+    @GetMapping("/signup")
+    public String signup() {
+        return "signup";
+    }
+    
+    @GetMapping("/adminPage")
+    public String admin() {
+        return "admin_page";
+    }
+    
+}

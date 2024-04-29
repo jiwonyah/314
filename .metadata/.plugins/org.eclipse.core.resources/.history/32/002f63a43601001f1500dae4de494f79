@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>[MINYONG] Guest Alert</title>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<meta content="" name="keywords">
+	<meta content="" name="description">
+	<link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+
+</head>
+
+<body>
+	<!-- Navigation bar -->
+	<div th:insert="navbar.html"></div>
+		<h2>You are a guest. To use the service, please login</h2>
+		<a th:href="@{/user/login}">Login</a>
+		
+	
+	</div>
+</body>
+</html>

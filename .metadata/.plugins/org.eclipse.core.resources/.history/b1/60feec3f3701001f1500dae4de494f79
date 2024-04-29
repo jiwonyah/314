@@ -1,0 +1,59 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="UTF-8">
+	    <title>[MINYONG] User Signup page</title>
+	</head>
+	<body>
+		<!-- Navigation bar -->
+		<div th:insert="navbar.html"></div>
+	<div layout:fragment="content" class="container my-3">
+	    <div class="my-3 border-bottom">
+	        <div>
+	            <h4>회원가입</h4>
+	        </div>
+	    </div>
+	    <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post">
+	        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+	        <div class="mb-3">
+	            <label for="username" class="form-label">사용자ID</label>
+	            <input type="text" th:field="*{username}" class="form-control">
+	        </div>
+	        <div class="mb-3">
+	            <label for="password1" class="form-label">비밀번호</label>
+	            <input type="password" th:field="*{password1}" class="form-control">
+	        </div>
+	        <div class="mb-3">
+	            <label for="password2" class="form-label">비밀번호 확인</label>
+	            <input type="password" th:field="*{password2}" class="form-control">
+	        </div>
+	        <div class="mb-3">
+	            <label for="email" class="form-label">이메일</label>
+	            <input type="email" th:field="*{email}" class="form-control">
+	        </div>
+			
+			<div class="mb-3">
+			    <label for="role" class="form-label">역할</label>
+			    <select th:field="*{role}" class="form-select">
+			        <option value="" disabled selected>역할을 선택하세요</option>
+			        <option th:each="role : ${T(com.uow.project.user.Role).values()}"
+			                th:unless="${role == T(com.uow.project.user.Role).ADMIN}"
+			                th:value="${role}" th:text="${role}"></option>
+			    </select>
+			</div>
+			<div class="mb-3" th:if="${userCreateForm.role == 'AGENT'}">
+			    <label for="firstName" class="form-label">이름</label>
+			    <input type="text" th:field="*{firstName}" class="form-control">
+			</div>
+			<div class="mb-3" th:if="${userCreateForm.role == 'AGENT'}">
+			    <label for="lastName" class="form-label">성</label>
+			    <input type="text" th:field="*{lastName}" class="form-control">
+			</div>
+
+	        <button type="submit" class="btn btn-primary">회원가입</button>
+	    </form>
+	</div>
+	</body>
+
+	
+	
+</html>

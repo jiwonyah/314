@@ -1,0 +1,66 @@
+package com.uow.project.list;
+
+import java.util.List;
+import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
+import java.util.Optional;
+import java.time.LocalDateTime;
+import com.uow.project.DataNotFoundException;
+import com.uow.project.user.SiteUser;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+@RequiredArgsConstructor
+@Service
+public class RentService {
+    private final RentRepository rentRepository;
+
+    public List<Rent> getList() {
+        return this.rentRepository.findAll();
+    }
+    
+	public Page<Question> getList(int page) {
+		List<Sort.Order> sorts = new ArrayList<>();
+		sorts.add(Sort.Order.desc("createDate"));
+		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+		return this.questionRepository.findAll(pageable);
+	}
+    
+    public Rent getRent(Integer id) {  
+        Optional<Rent> rent = this.rentRepository.findById(id);
+        if (rent.isPresent()) {
+            return rent.get();
+        } else {
+            throw new DataNotFoundException("rent post not found");
+        }
+    }
+
+    public void create(String subject, String content,
+    		String address, PropertyType propertyType,
+    		int floorsize, Furnishing furnishing,
+    		FloorLevel floorlevel, 
+    		int top, int monthlyPrice, SiteUser user) {
+        Rent r = new Rent();
+        r.setSubject(subject);
+        r.setContent(content);
+        r.setAddress(address);
+        r.setPropertyType(propertyType);
+        r.setFloorsize(floorsize);
+        r.setFurnishing(furnishing);
+        r.setFloorlevel(floorlevel);
+        r.setTop(top);
+        r.setMonthlyPrice(monthlyPrice);
+        r.setAuthor(user);
+        r.setCreateDate(LocalDateTime.now());
+        this.rentRepository.save(r);
+    }
+
+}

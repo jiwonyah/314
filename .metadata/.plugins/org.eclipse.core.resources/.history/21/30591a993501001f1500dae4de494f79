@@ -1,0 +1,50 @@
+package com.uow.project.profile;
+
+import java.util.Optional;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+//import com.uow.project.user.CurrentUser;
+import com.uow.project.user.SiteUser;
+import com.uow.project.user.UserRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequiredArgsConstructor
+public class ProfileController {
+
+    private final UserRepository userRepository;
+
+    @GetMapping("/profile/{username}")
+    public String viewProfile(@PathVariable("username") String username, Model model) {
+        Optional<SiteUser> optionalUser = userRepository.findByusername(username);
+        if (optionalUser.isEmpty()) {
+            // 사용자가 없는 경우 예외 처리
+            return "guestAler";
+        }
+        SiteUser user = optionalUser.get();
+        model.addAttribute("user", user);
+        return "profile";
+    }
+    
+//    @GetMapping("/profile/{username}")
+//    public String viewProfile(@PathVariable("username") String username, Model model, @AuthenticationPrincipal SiteUser user) {
+//    	Optional<SiteUser> optionalUser  = userRepository.findByusername(username);
+//        if (optionalUser.isEmpty()) { // (1)
+//        	return "guestAlert";
+//        }
+//        SiteUser byUsername = optionalUser.get();
+//        model.addAttribute(byUsername); // (2)
+//        model.addAttribute("isOwner", byUsername.equals(user)); // (3)
+//        return "profile";
+//    }
+    
+}

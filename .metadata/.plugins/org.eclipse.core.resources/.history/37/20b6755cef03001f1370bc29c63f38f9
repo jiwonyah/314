@@ -1,0 +1,105 @@
+package com.uow.project.list;
+
+import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+import com.uow.project.DataNotFoundException;
+import com.uow.project.user.SiteUser;
+import com.uow.project.user.UserRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import org.springframework.data.jpa.domain.Specification;
+
+@RequiredArgsConstructor
+@Service
+public class RentService {
+    private final RentRepository rentRepository;
+    private final UserRepository userRepository;
+    
+	public Page<Rent> getList(int page, String kw) {
+		List<Sort.Order> sorts = new ArrayList<>();
+		sorts.add(Sort.Order.desc("createDate"));
+		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+		Specification<Rent> spec = search(kw);
+		return this.rentRepository.findAll(spec, pageable);
+	}
+    
+    public Rent getRent(Integer id) {  
+        Optional<Rent> rent = this.rentRepository.findById(id);
+        if (rent.isPresent()) {
+            return rent.get();
+        } else {
+            throw new DataNotFoundException("The rent post not found");
+        }
+    }
+      
+    
+
+    public void create(String subject, String content,
+    		String address, PropertyType propertyType,
+    		int floorsize, Furnishing furnishing,
+    		FloorLevel floorlevel, 
+    		int top, int monthlyPrice, SiteUser user) {
+        Rent r = new Rent();
+        r.setSubject(subject);
+        r.setContent(content);
+        r.setAddress(address);
+        r.setPropertyType(propertyType);
+        r.setFloorsize(floorsize);
+        r.setFurnishing(furnishing);
+        r.setFloorlevel(floorlevel);
+        r.setTop(top);
+        r.setMonthlyPrice(monthlyPrice);
+        r.setAuthor(user);
+        r.setCreateDate(LocalDateTime.now());
+        this.rentRepository.save(r);
+    }
+    
+    public void modify(Rent rent, String subject, String content,
+    		String address, PropertyType propertyType,
+    		int floorsize, Furnishing furnishing,
+    		FloorLevel floorlevel, 
+    		int top, int monthlyPrice) {
+    	rent.setSubject(subject);
+    	rent.setContent(content);
+    	rent.setAddress(address);
+    	rent.setPropertyType(propertyType);
+    	rent.setFloorsize(floorsize);
+    	rent.setFurnishing(furnishing);
+    	rent.setFloorlevel(floorlevel);
+    	rent.setTop(top);
+    	rent.setMonthlyPrice(monthlyPrice);
+    	rent.setModifyDate(LocalDateTime.now());
+        this.rentRepository.save(rent);
+    }
+    
+    
+    public void delete(Rent rent) {
+        this.rentRepository.delete(rent);
+    }
+    
+    private Specification<Rent> search(String kw) {
+        return new Specification<>() {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public Predicate toPredicate(Root<Rent> r, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                query.distinct(true);  // 중복을 제거 
+                Join<Rent, SiteUser> u1 = r.join("author", JoinType.LEFT);
+                return cb.or(cb.like(r.get("subject"), "%" + kw + "%"),         
+                        cb.like(u1.get("username"), "%" + kw + "%"));    // post author 
+            }
+        };
+    }
+}

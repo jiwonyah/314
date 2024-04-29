@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+
+	</head>
+	<body>
+		<!-- Navigation bar -->
+		<div th:insert="navbar.html"></div>
+		
+
+		<table>
+			    <thead>
+			        <tr>
+			            <th>Subject</th>
+			            <th>Date</th>
+			        </tr>
+			    </thead>
+			    <tbody>
+			        <tr th:each="rent : ${rentList}">
+						<td>
+							<!-- When using thymeleaf, wrap the path inside | -->
+						    <a th:href="@{|/rent/detail/${rent.id}|}" th:text="${rent.subject}"></a>
+						</td>
+			            <td th:text="${rent.createDate}"></td>
+			        </tr>
+			    </tbody>
+			</table>
+			
+			
+			
+			
+			
+			<!-- 페이징처리 시작 -->
+
+		
+		<!-- Display the rent registration button according to user permissions -->
+		
+		<div th:if="${isAdmin or isAgent or isSeller}">
+		   <div class="form-container">
+		       <a th:href="@{/rent/create}" class="btn">Register Post</a>
+		   </div>
+		</div>
+	</body>
+</html>
+

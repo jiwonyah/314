@@ -1,0 +1,59 @@
+package com.uow.project.profile;
+
+import java.util.Optional;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import com.uow.project.user.UserService;
+//import com.uow.project.user.CurrentUser;
+import com.uow.project.user.SiteUser;
+import com.uow.project.user.UserRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequiredArgsConstructor
+public class ProfileController {
+
+    private final UserRepository userRepository;
+    private final UserService userService;
+
+    @GetMapping("/profile/{username}")
+    public String profile(@PathVariable("username") String username, Model model) {
+        SiteUser user = userService.getUser(username);
+        model.addAttribute("user", user);
+        return "profile";
+    }
+
+    @GetMapping("/profile/{username}/edit")
+    public String editProfile(@PathVariable("username") String username, Model model) {
+        SiteUser user = userService.getUser(username);
+        model.addAttribute("user", user);
+        return "profile-edit";
+    }
+
+    @PostMapping("/profile/{username}/edit")
+    public String updateProfile(@PathVariable("username") String username, @ModelAttribute SiteUser user, Principal principal, RedirectAttributes redirectAttributes) {
+        SiteUser currentUser = userService.getUser(username);
+        currentUser.setFirstName(user.getFirstName());
+        currentUser.setLastName(user.getLastName());
+        currentUser.setEmail(user.getEmail());
+        userService.update(currentUser);
+
+        // 사용자 정보 업데이트 후 로그인 세션 갱신
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(currentUser.getUsername(), currentUser.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        redirectAttributes.addFlashAttribute("message", "프로필이 업데이트되었습니다.");
+        return "redirect:/profile/{username}";
+    }
+    
+}

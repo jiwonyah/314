@@ -1,0 +1,46 @@
+package com.uow.project.favorite;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import com.uow.project.list.Rent;
+import com.uow.project.user.SiteUser;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class RentFavoriteService {
+    private final RentFavoriteRepository rentFavoriteRepository;
+
+    public boolean existsByRentAndUser(Rent rent, SiteUser user) {
+        return rentFavoriteRepository.existsByRentAndUser(rent, user);
+    }
+
+    public void addToFavorite(Rent rent, SiteUser user) {
+        if (!rentFavoriteRepository.existsByRentAndUser(rent, user)) {
+            RentFavorite rentFavorite = new RentFavorite();
+            rentFavorite.setRent(rent);
+            rentFavorite.setUser(user);
+            rentFavoriteRepository.save(rentFavorite);
+        }
+    }
+
+    public void removeFromFavorite(Rent rent, SiteUser user) {
+        RentFavorite rentFavorite = rentFavoriteRepository.findByRentAndUser(rent, user);
+        if (rentFavorite != null) {
+            rentFavoriteRepository.delete(rentFavorite);
+        }
+    }
+
+    public List<Rent> getFavoriteRents(SiteUser user) {
+        List<RentFavorite> rentFavorites = rentFavoriteRepository.findByUser(user);
+        return rentFavorites.stream()
+                .map(RentFavorite::getRent)
+                .collect(Collectors.toList());
+    }
+}
+
+

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+
+	</head>
+	<body>
+		<!-- Navigation bar -->
+		<div th:insert="navbar.html"></div>
+		
+		<div layout:fragment="content" class="container my-3">
+			<table class="table">
+				<thead class="table-dark">
+					<tr class="text-center">
+						<th>#</th>
+						<th style="width:50%">Subject</th>
+						<th	style="width:20%">Author</th>
+						<th style="width:20%">Date</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="text-center" th:each="rent, loop : ${paging}">
+						<td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
+						<td class="text-start">
+							<a th:href="@{|/rent/detail/${rent.id}|}" th:text="${rent.subject}"></a>
+							<span class="text-danger small ms-2" th:if="${#lists.size(rent.rentList) > 0}"
+								th:text="${#lists.size(rent.answerList)}">
+							</span>
+						</td>
+						<td><span th:if="${rent.author != null}" th:text="${rent.author.username}"></span></td>
+						<td th:text="${#temporals.format(rent.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+					</tr>
+				</tbody>
+			</table>
+			<table>
+			    <thead>
+			        <tr>
+			            <th>제목</th>
+			            <th>작성일시</th>
+			        </tr>
+			    </thead>
+			    <tbody>
+			        <tr th:each="question : ${questionList}">
+			            <td th:text="${question.subject}"></td>
+			            <td th:text="${question.createDate}"></td>
+			        </tr>
+			    </tbody>
+			</table>
+			<!-- 페이징처리 시작 -->
+
+		
+		<!-- Display the rent registration button according to user permissions -->
+		
+		<div th:if="${isAdmin or isAgent or isSeller}">
+		   <div class="form-container">
+		       <a th:href="@{/rent/create}" class="btn">Register Post</a>
+		   </div>
+		</div>
+	</body>
+</html>
+

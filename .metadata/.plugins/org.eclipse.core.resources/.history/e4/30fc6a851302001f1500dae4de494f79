@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+
+	</head>
+	<body>
+		<!-- Navigation bar -->
+		<div th:insert="navbar.html"></div>
+		
+
+
+			    <thead>
+			        <tr>
+			            <th>제목</th>
+			            <th>작성일시</th>
+			        </tr>
+			    </thead>
+			    <tbody>
+			        <tr th:each="rent : ${rentList}">
+			            <td th:text="${rent.subject}"></td>
+			            <td th:text="${rent.createDate}"></td>
+			        </tr>
+			    </tbody>
+			</table>
+			
+			
+			
+			
+			
+			<!-- 페이징처리 시작 -->
+
+		
+		<!-- Display the rent registration button according to user permissions -->
+		
+		<div th:if="${isAdmin or isAgent or isSeller}">
+		   <div class="form-container">
+		       <a th:href="@{/rent/create}" class="btn">Register Post</a>
+		   </div>
+		</div>
+	</body>
+</html>
+

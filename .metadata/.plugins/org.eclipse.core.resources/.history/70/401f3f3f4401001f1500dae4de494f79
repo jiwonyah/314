@@ -1,0 +1,93 @@
+package com.uow.project.list;
+
+import java.util.List;
+import org.springframework.ui.Model;
+import lombok.RequiredArgsConstructor;
+import java.io.IOException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Autowired;
+import java.util.ArrayList;
+import com.example.demo.uploadmultiple.FileInfo;
+import com.example.demo.uploadmultiple.ResponseMessage;
+import com.example.demo.uploadmultiple.FileStorageService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+@RequiredArgsConstructor
+@Controller
+public class BuyController {
+    @Autowired
+    private BuyService buyService;
+
+    @Autowired
+    private FileStorageService storageService;
+    
+	// listing page in buy category
+    @GetMapping("/buy")
+    public String buy_buy(Model model) {
+    	List<Buy> buyList = this.buyService.getList();
+        model.addAttribute("buyList", buyList);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+        boolean isAgent = authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_AGENT"));
+        
+        model.addAttribute("isAdmin", isAdmin);
+        model.addAttribute("isAgent", isAgent);
+        return "buy_list";
+    }
+    
+    
+    
+    //detailed page in buy category
+    @GetMapping(value = "/buy/detail/{id}")
+    public String detail(Model model, @PathVariable("id") Integer id) {
+        Buy buy = this.buyService.getBuy(id);
+        model.addAttribute("buy", buy);
+    	
+    	return "buy_detail";
+    }
+    
+    //creating page for buy category
+    @GetMapping("/buy/create")
+    public String buyCreate() {
+        return "buy_form";
+    }
+
+    
+    @PostMapping("/buy/create")
+    public String createbuy(@RequestParam("subject") String subject,
+                             @RequestParam("content") String content,
+                             @RequestParam("address") String address,
+                             @RequestParam("propertyType") PropertyType propertyType,
+                             @RequestParam("floorsize") int floorsize,
+                             @RequestParam("furnishing") Furnishing furnishing,
+                             @RequestParam("floorlevel") FloorLevel floorlevel,
+                             @RequestParam("top") int top)
+                             {
+        Buy buy = new Buy();
+        buy.setSubject(subject);
+        buy.setContent(content);
+        buy.setAddress(address);
+        buy.setPropertyType(propertyType);
+        buy.setFloorsize(floorsize);
+        buy.setFurnishing(furnishing);
+        buy.setFloorlevel(floorlevel);
+        buy.setTop(top);
+        
+        
+        return "redirect:/buy";
+    }
+}

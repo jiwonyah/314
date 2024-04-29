@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorites</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2>Your Favorite Rents</h2>
+
+    <div th:if="${favoriteRents != null and favoriteRents.size() > 0}">
+        <ul class="list-group">
+            <li th:each="rent : ${favoriteRents}" class="list-group-item">
+                <span th:text="${rent.subject}"></span>
+                <span class="float-right">
+                    <a th:href="@{|/rent/detail/${rent.id}|}" class="btn btn-sm btn-primary">View Details</a>
+                </span>
+            </li>
+        </ul>
+    </div>
+    
+    <div th:if="${favoriteRents == null or favoriteRents.size() == 0}">
+        <p>You have no favorite rents yet.</p>
+    </div>
+</div>
+
+</body>
+</html>

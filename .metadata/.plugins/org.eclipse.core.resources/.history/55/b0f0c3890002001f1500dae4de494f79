@@ -1,0 +1,11 @@
+package com.uow.project.user;
+
+import com.uow.project.user.SiteUser;
+import com.uow.project.user.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+public class UserContext {
+
+}

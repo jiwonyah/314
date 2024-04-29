@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>[MINYONG] Post Authority Alert</title>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<meta content="" name="keywords">
+	<meta content="" name="description">
+	<link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+
+</head>
+
+<body>
+	<!-- Navigation bar -->
+	<div th:insert="navbar.html"></div>
+		<h1>!Alert!</h1>
+		<h2>You don't have authority to write a post.</h2>
+		<h2>If you want to create your own post, please login as AGENT or BUYER.</h2>
+		<div>
+			<a th:href="@{/}">Go back to Home</a>
+		</div>
+		
+	
+	</div>
+</body>
+</html>

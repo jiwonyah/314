@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Navigation bar</title>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<meta content="" name="keywords">
+	<meta content="" name="description">
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+</head>
+
+<body>
+	<nav class = "navbar">
+		<div class="navbar__logo">
+			<i class="fas fa-blog"></i>
+			<a th:href="@{/}">MINYONG</a>
+		</div>
+		<ul class="navbar__menu">
+		    <li><a th:href="@{/}">Home</a></li>
+		    <li><a th:href="@{/buy}">Buy</a></li>
+		    <li><a th:href="@{/rent}">Rent</a></li>
+		    <li><a href="#">Mortgage</a></li>  <!--page has not been created-->
+			
+			<li class="dropdown" sec:authorize="isAnonymous()">
+			    <a href="#" >Login</a>
+			    <div class="dropdown-content">
+			        <a th:href="@{/login}">Login</a>
+			        <a th:href="@{/signup}">Signup</a>
+			    </div>
+			</li>
+			
+			<li class="dropdown" sec:authorize="isAuthenticated()">
+			    <a href="#">My Page</a>
+			    <div class="dropdown-content">
+					<a th:if="${currentUser != null}" th:href="@{'/profile/' + ${currentUser.username}}">Profile</a>
+					<span th:if="${currentUser == null}">Guest</span>
+			        <a href="#">Shortlist</a>
+			        <a th:href="@{/logout}">Logout</a>
+			    </div>
+			</li>
+			
+		</ul>
+		</div>
+	</nav>
+</body>
+</html>
+
+
+

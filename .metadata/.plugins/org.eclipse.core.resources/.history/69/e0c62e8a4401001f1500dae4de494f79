@@ -1,0 +1,47 @@
+package com.uow.project.list;
+
+import java.util.List;
+import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
+import java.util.Optional;
+import com.example.demo.DataNotFoundException;
+import java.time.LocalDateTime;
+
+@RequiredArgsConstructor
+@Service
+public class RentService {
+    private final RentRepository rentRepository;
+
+    public List<Rent> getList() {
+        return this.rentRepository.findAll();
+    }
+    
+    public Rent getRent(Integer id) {  
+        Optional<Rent> rent = this.rentRepository.findById(id);
+        if (rent.isPresent()) {
+            return rent.get();
+        } else {
+            throw new DataNotFoundException("rent post not found");
+        }
+    }
+
+    public void create(String subject, String content,
+    		String address, PropertyType propertyType,
+    		int floorsize, Furnishing furnishing,
+    		FloorLevel floorlevel, 
+    		int top, int monthlyPrice) {
+        Rent r = new Rent();
+        r.setSubject(subject);
+        r.setContent(content);
+        r.setAddress(address);
+        r.setPropertyType(propertyType);
+        r.setFloorsize(floorsize);
+        r.setFurnishing(furnishing);
+        r.setFloorlevel(floorlevel);
+        r.setTop(top);
+        r.setMonthlyPrice(monthlyPrice);
+        r.setCreateDate(LocalDateTime.now());
+        this.rentRepository.save(r);
+    }
+
+}

@@ -1,0 +1,5 @@
+package com.uow.project.user;
+
+public class CustomUserDetails {
+
+}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Personal Details</h2>
+        <div class="form-group">
+            <label for="profile-image">User Profile Image:</label>
+            <input type="file" id="profile-image" accept="image/*">
+        </div>        
+        <div class="form-group">
+            <label for="last-name">Last Name:</label>
+            <input type="text" id="last-name" value="" placeholder="Enter last name">
+        </div>
+        <div class="form-group">
+            <label for="first-name">First Name:</label>
+            <input type="text" id="first-name" value="" placeholder="Enter first name">
+        </div>
+        
+        <h2>Contact Details</h2>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" value="" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+            <label for="mobile-number">Mobile Number:</label>
+            <input type="tel" id="mobile-number" value="" placeholder="Enter mobile number">
+        </div>
+        
+        <button onclick="saveProfile()">Confirm</button>
+    </div>
+
+    <script>
+        // Retrieve user profile data from local storage and fill in the form
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("profile-image").value = localStorage.getItem("profileImage") || "";
+            document.getElementById("last-name").value = localStorage.getItem("lastName") || "";
+            document.getElementById("first-name").value = localStorage.getItem("firstName") || "";
+            document.getElementById("email").value = localStorage.getItem("email") || "";
+            document.getElementById("mobile-number").value = localStorage.getItem("mobileNumber") || "";
+        });
+
+        // Save user profile data to local storage
+        function saveProfile() {
+            localStorage.setItem("profileImage", document.getElementById("profile-image").value);
+            localStorage.setItem("lastName", document.getElementById("last-name").value);
+            localStorage.setItem("firstName", document.getElementById("first-name").value);
+            localStorage.setItem("email", document.getElementById("email").value);
+            localStorage.setItem("mobileNumber", document.getElementById("mobile-number").value);
+            alert("Profile saved successfully!");
+        }
+    </script>
+</body>
+</html>

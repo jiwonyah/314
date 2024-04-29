@@ -1,0 +1,35 @@
+package com.uow.project.list;
+
+import java.util.List;
+import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
+import java.util.Optional;
+import com.example.demo.DataNotFoundException;
+//import java.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+
+@RequiredArgsConstructor
+@Service
+public class BuyService {
+	@Autowired
+    private final BuyRepository buyRepository;
+
+    public List<Buy> getList() {
+        return this.buyRepository.findAll();
+    }
+    
+    public Buy getBuy(Integer id) {  
+        Optional<Buy> buy = this.buyRepository.findById(id);
+        if (buy.isPresent()) {
+            return buy.get();
+        } else {
+            throw new DataNotFoundException("buy post not found");
+        }
+    }
+    
+    
+
+}
+

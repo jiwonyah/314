@@ -1,0 +1,139 @@
+package com.uow.project.list;
+
+import java.util.List;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+
+import java.security.Principal;
+
+import com.uow.project.reivew.ReviewForm;
+import com.uow.project.user.SiteUser;
+import com.uow.project.user.UserService;
+
+import jakarta.validation.Valid;
+
+@RequiredArgsConstructor
+@Controller
+public class RentController {
+	
+	private final RentService rentService;
+	private final UserService userService;
+	 private final RentRepository rentRepository;
+	
+    @GetMapping("/rent")
+    public String post_rent(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
+    	Page<Rent> rentList = this.rentService.getList(page);
+        model.addAttribute("rentList", rentList);
+        
+        //코드 너무 길어서 경로 바꾸는게 나을 수도
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        boolean isAdmin = authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ADMIN"));
+        boolean isAgent = authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("AGENT"));
+        boolean isSeller = authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("SELLER"));
+        boolean isBuyer = authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("BUYER"));
+        
+        model.addAttribute("isAdmin", isAdmin);
+        model.addAttribute("isAgent", isAgent);
+        model.addAttribute("isSeller", isSeller);
+        model.addAttribute("isBuyer", isBuyer);
+        return "rent_list";
+    }
+
+    //ReviewForm 현재 적용 안됨.
+    @GetMapping(value = "/rent/detail/{id}")
+    public String detail(Model model, @PathVariable("id") Integer id, ReviewForm reviewForm) {
+        Rent rent = this.rentService.getRent(id);
+        model.addAttribute("rent", rent);
+    	
+    	return "rent_detail";
+    }
+    
+    
+    
+    //creating page for rent category
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'AGENT','SELLER')")  이건 없어도 돼서 주석처리
+    @GetMapping("/rent/create")
+    public String rentCreate(RentForm rentForm) {
+        if (!SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ADMIN") ||
+                                  auth.getAuthority().equals("AGENT") ||
+                                  auth.getAuthority().equals("SELLER"))) {
+            // 특정 권한이 없는 경우 다른 페이지로 리다이렉트
+            return "cannotPost"; 
+        }
+        
+        return "rent_form";
+    }
+    
+    
+    
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'AGENT','SELLER')")
+	@PostMapping("/rent/create")
+	public String rentCreate(@Valid RentForm rentForm, BindingResult bindingResult, Principal principal) {
+		if (bindingResult.hasErrors()) {
+			return "rent_form";
+		}
+		SiteUser siteuser = this.userService.getUser(principal.getName());
+		this.rentService.create(rentForm.getSubject(), rentForm.getContent(), rentForm.getAddress(), rentForm.getPropertyType(),
+				rentForm.getFloorsize(), rentForm.getFurnishing(), rentForm.getFloorlevel(), rentForm.getTop(), rentForm.getMonthlyPrice(),
+				siteuser);
+		return "redirect:/rent";
+	}
+    
+    
+    //modification
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'AGENT','SELLER')")
+    @GetMapping("/rent/modify/{id}")
+    public String questionModify(RentForm rentForm, @PathVariable("id") Integer id, Principal principal) {
+        Rent rent = this.rentService.getRent(id);
+        if(!rent.getAuthor().getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You don't have authority to modify the post");
+        }
+        rentForm.setSubject(rent.getSubject());
+        rentForm.setContent(rent.getContent());
+        rentForm.setAddress(rent.getAddress());
+        rentForm.setPropertyType(rent.getPropertyType());
+        rentForm.setFloorsize(rent.getFloorsize());
+        rentForm.setFurnishing(rent.getFurnishing());
+        rentForm.setFloorlevel(rent.getFloorlevel());
+        rentForm.setTop(rent.getTop());
+        rentForm.setMonthlyPrice(rent.getMonthlyPrice());
+        return "rent_form";
+    }
+    
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/rent/modify/{id}")
+    public String questionModify(@Valid RentForm rentForm, BindingResult bindingResult, 
+            Principal principal, @PathVariable("id") Integer id) {
+        if (bindingResult.hasErrors()) {
+            return "question_form";
+        }
+        Rent rent = this.rentService.getRent(id);
+        if (!rent.getAuthor().getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You don't have authority to modify the post");
+        }
+        this.rentService.modify(rent, rentForm.getSubject(), rentForm.getContent(), rentForm.getAddress(), rentForm.getPropertyType(),
+        		rentForm.getFloorsize(), rentForm.getFurnishing(), rentForm.getFloorlevel(), rentForm.getTop(), rentForm.getMonthlyPrice());
+        return String.format("redirect:/question/detail/%s", id);
+    }
+    
+}

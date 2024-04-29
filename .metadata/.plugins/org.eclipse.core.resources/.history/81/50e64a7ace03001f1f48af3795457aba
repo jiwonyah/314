@@ -1,0 +1,51 @@
+package com.uow.project.favorite;
+
+import java.security.Principal;
+import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.uow.project.list.Buy;
+import com.uow.project.list.BuyService;
+import com.uow.project.list.Rent;
+import com.uow.project.user.SiteUser;
+import com.uow.project.user.UserService;
+
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequiredArgsConstructor
+public class BuyFavoriteController {
+    private final BuyFavoriteService buyFavoriteService;
+    private final BuyService buyService;
+    private final UserService userService;
+
+    @PostMapping("/buy/detail/{id}/favorite")
+    public String toggleFavorite(@PathVariable("id") Integer buyId, Principal principal, RedirectAttributes redirectAttributes) {
+        Buy buy = buyService.getBuy(buyId);
+        SiteUser user = userService.getUser(principal.getName());
+
+        if (buyFavoriteService.existsByBuyAndUser(buy, user)) {
+        	buyFavoriteService.removeFromFavorite(buy, user);
+            redirectAttributes.addFlashAttribute("message", "Removed from favorites");
+        } else {
+        	buyFavoriteService.addToFavorite(buy, user);
+            redirectAttributes.addFlashAttribute("message", "Added to favorites");
+        }
+
+        return "redirect:/rent/detail/" + buyId;
+    }
+
+    @GetMapping("/favorites")
+    public String showFavorites(Model model, Principal principal) {
+        SiteUser user = userService.getUser(principal.getName());
+        List<Buy> favoriteBuys = buyFavoriteService.getFavoriteBuys(user);
+        model.addAttribute("favoriteBuys", favoriteBuys);
+        return "favorites";
+    }
+}

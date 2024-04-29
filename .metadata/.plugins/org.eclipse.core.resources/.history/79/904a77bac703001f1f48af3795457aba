@@ -1,0 +1,38 @@
+package com.uow.project;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.uow.project.list.FloorLevel;
+import com.uow.project.list.Furnishing;
+import com.uow.project.list.PropertyType;
+import com.uow.project.list.RentService;
+import com.uow.project.user.SiteUser;
+
+@SpringBootTest
+class ApplicationTests {
+
+    @Autowired
+    private RentService rentService;
+	
+	@Test
+	void testJpa() {
+        for (int i = 1; i <= 30; i++) {
+            String subject = String.format("테스트 데이터입니다:[%03d]", i);
+            String content = "내용무";
+            String address = "내용무";
+            PropertyType propertyType = PropertyType.HDB;
+            int floorsize = 50;
+            Furnishing furnishing = Furnishing.PartiallyFurnished;
+            FloorLevel floorlevel = FloorLevel.High;
+            int top = 2000;
+            int monthlyPrice = 3000;
+                        
+            this.rentService.create(subject, content, address, propertyType, floorsize, furnishing,
+            		floorlevel, top, monthlyPrice, null);
+        }
+  
+	}
+
+}

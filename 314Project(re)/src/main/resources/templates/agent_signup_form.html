@@ -1,0 +1,50 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="UTF-8">
+	    <title>[MINYONG] Agent Signup page</title>
+	</head>	
+<body>
+	<div>
+	    <div>
+	        <div>
+	            <h4>Agent Signup Page</h4>
+	        </div>
+	    </div>
+	    <form th:action="@{/agent/signup}" th:object="${userCreateForm}" method="post">
+	        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+		
+	        <div>
+	            <label for="username" class="form-label">ID</label>
+	            <input type="text" th:field="*{username}" class="form-control" required>
+	        </div>
+	        <div>
+	            <label for="password1" class="form-label">Password</label>
+	            <input type="password" th:field="*{password1}" class="form-control" required>
+	        </div>
+	        <div>
+	            <label for="password2" class="form-label">Confirm Password</label>
+	            <input type="password" th:field="*{password2}" class="form-control" required>
+	        </div>
+			<div>
+			    <label for="email" class="form-label">Email</label>
+			    <input type="email" th:field="*{email}" class="form-control" required>
+			</div>
+			<div>
+			    <label for="firstName" class="form-label">First Name</label>
+			    <input type="text" th:field="*{firstName}" class="form-control" required>
+			</div>
+			<div>
+			    <label for="lastName" class="form-label">Last Name</label>
+			    <input type="text" th:field="*{lastName}" class="form-control" required>
+			</div>
+			<div>
+			    <label for="age" class="form-label">Age</label>
+			    <input type="number" th:field="*{age}" class="form-control" required>
+			</div>
+	        <button type="submit" class="btn btn-primary">Submit</button>
+	    </form>
+	</div>	
+	
+	
+</body>
+</html>

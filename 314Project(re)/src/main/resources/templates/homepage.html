@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>[MINYONG] Main Page (Guest)</title>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<meta content="" name="keywords">
+	<meta content="" name="description">
+	<link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+	<!-- Template Javascript (<script src="js/main.js"></script>)-->
+	<!--<script th:src="@{/js/userMainPage.js}"></script>-->
+</head>
+
+<body>
+	<!-- Navigation bar -->
+	<div th:insert="navbar.html"></div>
+	
+	<!-- Main contents below -->
+	<div class="container-xxl bg-white p-0">
+	    <!-- Header Start -->
+	    <div class="header">
+	        <div class="background-custom">
+	            <section aria-label="Photos">
+	                <h1 class="carousel-heading">Find A <span class="color-text">Perfect Home</span> To Live With Your Family</h1>
+	                <p class="quote">Home is where love resides, memories are created, <br>friends always belong, and laughter never ends</p>
+	                <div class = "carousel" data-carousel>
+	                    <button class = "carousel-button prev" data-carousel-button ="prev">&#8656;</button>
+	                    <button class ="carousel-button next"data-carousel-button ="next">&#8658;</button>
+	                    <ul data-slides>
+	                    <li class ="slide" data-active>
+	                        <img th:src="@{/images/property1.jpg}" alt= "">
+	                    </li>
+	                    <li class="slide">
+	                        <img th:src="@{/images/property2.jpg}" alt = "">
+	                    </li>
+	                    </ul>
+	                </div>
+	            </section>
+	        </div>
+	    </div>
+	    <!-- Header End -->
+	
+	    <!-- Search Start --> 
+	    <div class="search-container">
+	        <input type="text" id="keyword" placeholder="Search Keyword">
+	        <select id="property-type">
+	            <option selected>Property Type</option>
+	            <option value="All">All</option>
+	            <option value="HDB">HDB</option>
+	            <option value="Condo">Condo</option>
+	            <option value="Landed property">Landed property</option>
+	            <option value="Office">Office</option>
+	            <option value="Shop">Shop</option>
+	        </select>
+	        <select id="location">
+	            <option selected>Location</option>
+	            <option value="All">All</option>
+	            <option value="Central">Central</option>
+	            <option value="West">West</option>
+	            <option value="East">East</option>
+	            <option value="North">North</option>
+	        </select>
+	        <button id="search-btn">Search</button>
+	    </div>
+	    
+	    <!-- Search End -->
+	
+	</div>
+</body>
+</html>

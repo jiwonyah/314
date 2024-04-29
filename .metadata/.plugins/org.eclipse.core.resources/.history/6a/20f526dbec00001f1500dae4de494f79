@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+</head>
+<body>
+	<!-- Navigation bar -->
+	<div th:insert="navbar.html"></div>
+	<!--profile-->
+    <div class="container">
+        <h1>User Profile</h1>
+        <div>
+			<svg th:if="${user != null and #strings.isEmpty(user.profile.image)}" class="img-fluid float-left rounded img-thumbnail"
+			     th:data-jdenticon-value="${user.username}" width="125" height="125"></svg>
+			<svg th:if="${user != null and #strings.isEmpty(user.profile.image)}" class="img-fluid float-left rounded img-thumbnail"
+			     th:src="${user.profile.image}" width="125" height="125"></svg>
+			
+            <p th:text="'Username: ' + ${user.username}"></p>
+            <p th:text="'Your Role: ' + ${user.role}"></p>
+
+
+        </div>
+    </div>
+</body>
+</html>

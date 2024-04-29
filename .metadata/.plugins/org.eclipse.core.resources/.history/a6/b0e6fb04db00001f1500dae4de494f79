@@ -1,0 +1,146 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="UTF-8">
+	    <title>[MINYONG] User Signup page</title>
+	</head>	
+	<style>
+		.container {
+		    max-width: 100%;
+		}
+		.mb {
+		    margin-bottom: 16px;
+		}
+		.invalid {
+		  display: none;
+		  width: 100%;
+		  margin-top: .25rem;
+		  font-size: 80%;
+		  color: #dc3545;
+		}
+		.form-group {
+		    margin-bottom: 1rem;
+		}
+		
+		.form-text.text-danger {
+		    color: red;
+		}
+		
+		.form-control {
+		    display: block;
+		    width: 100%;
+		    padding: .375rem .75rem;
+		    font-size: 1rem;
+		    line-height: 1.5;
+		    color: #495057;
+		    background-color: #fff;
+		    background-clip: padding-box;
+		    border: 1px solid #ced4da;
+		    border-radius: .25rem;
+		    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+		}
+
+		.btn-primary {
+		    color: #fff;
+		    background-color: #007bff;
+		    border-color: #007bff;
+		}
+		.btn-primary:hover {
+		    color: #fff;
+		    background-color: #0069d9;
+		    border-color: #0062cc;
+		}
+		.btn-primary:active {
+		    color: #fff;
+		    background-color: #0062cc;
+		    border-color: #005cbf;
+		}
+		.btn {
+		    display: inline-block;
+		    font-weight: 400;
+		    color: #212529;
+		    text-align: center;
+		    vertical-align: middle;
+		    user-select: none;
+		    background-color: transparent;
+		    border: 1px solid transparent;
+		    padding: .375rem .75rem;
+		    font-size: 1rem;
+		    line-height: 1.5;
+		    border-radius: .25rem;
+		    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+		}
+		.btn-block {
+		    display: block;
+		    width: 100%;
+		}
+
+	</style>
+<body>
+	<!-- Navigation bar -->
+	<div th:insert="navbar.html"></div>
+	<div class="container">
+	    <div class="py-5 text-center">
+	        <h2>Register Account</h2>
+	    </div>
+	    <div class="row justify-content-center">
+	        <form class="needs-validation col-sm-6" action="#"
+	              th:action="@{/user/signup}" th:object="${UserSignupForm}" method="post" novalidate>
+	            <div class="form-group">
+	                <label for="username">User ID</label>
+	                <input id="username" type="text" th:field="*{username}" class="form-control"
+	                       placeholder="ex) jaime" aria-describedby="usernameHelp" required minlength="3" maxlength="20">
+	                <small id="usernameHelp" class="form-text text-muted">
+						<p>Enter with letters and numbers only, without spaces, between 3 and 20 characters.</p>
+						<p>Since IDs cannot be changed, please write them carefully.</p>
+	                </small>
+	                <small class="invalid">Please enter Username</small>
+	                <small class="form-text text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</small>
+	            </div>
+	
+	            <div class="form-group">
+	                <label for="email">Email</label>
+	                <input id="email" type="email" th:field="*{email}" class="form-control"
+	                       placeholder="ex) abc@example.com" aria-describedby="emailHelp" required>
+	                <small id="emailHelp" class="form-text text-muted">
+	                    Please provide a new email address.
+	                </small>
+	                <small class="invalid">Please enter an email address</small>
+	                <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</small>
+	            </div>
+	
+	            <div class="form-group">
+	                <label for="password">Password</label>
+	                <input id="password" type="password" th:field="*{password}" class="form-control"
+	                       aria-describedby="passwordHelp" required minlength="8" maxlength="50">
+	                <small id="passwordHelp" class="form-text text-muted">
+						Please enter between 8 and 50 characters. You can use letters, numbers, and special characters, but spaces are not allowed.
+	                </small>
+	                <small class="invalid">Please enter password.</small>
+	                <small class="form-text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password
+	                    Error</small>
+	            </div>
+				
+				<div class="form-group">
+				    <label for="role">Role</label>
+					<select type="text" id="role" class="form-control"th:field="*{role}" aria-describedby="roleHelp">
+					    <option selected> </option>
+					    <option value="BUYER">Buyer</option>
+					    <option value="SELLER">Seller</option>
+					</select>
+					<small id="roledHelp" class="form-text text-muted">
+						What role would you like to perform on this website?
+					</small>
+					<small class="invalid">Please select your role.</small>
+					<small class="form-text text-danger" th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Role Error</small>
+				</div>
+	
+	            <div class="form-group">
+	                <button class="btn btn-primary btn-block" type="submit">Register</button>
+	            </div>
+	        </form>
+	    </div>
+	</div>
+	
+	
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+</head>
+<body>
+	<!-- Navigation bar -->
+	<div th:insert="navbar.html"></div>
+	<!--profile-->
+    <div class="container">
+        <h1>User Profile</h1>
+        <div>
+            <p th:text="'Username: ' + ${user.username}"></p>
+            <p th:text="'Your Role: ' + ${user.role}"></p>
+            <p th:text="'Location: ' + ${user.profile.location}"></p>
+            <img th:src="@{${siteUser.profile.image}}" alt="Profile Picture" width="200">
+        </div>
+    </div>
+</body>
+</html>

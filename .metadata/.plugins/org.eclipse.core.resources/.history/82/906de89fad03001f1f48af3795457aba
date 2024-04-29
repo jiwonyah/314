@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>	[MINYONG] Rent Detail</title>
+</head>
+<body>
+
+<!-- 네비게이션 바를 include 합니다. -->
+<div th:replace="navbar.html"></div>
+
+<h1 th:text="${rent.subject}"></h1>
+<div th:text="${rent.content}"></div>
+<div th:text="${rent.address}"></div>
+<div th:text="${rent.propertyType}"></div>
+<div th:text="${rent.floorsize}"></div>
+<div th:text="${rent.furnishing}"></div>
+<div th:text="${rent.floorlevel}"></div>
+<div th:text="${rent.top}"></div>
+<div th:text="${rent.monthlyPrice}"></div>
+<div  th:text="${rent.author.username}"></div>
+<div th:text="${#temporals.format(rent.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+
+
+<div class="my-3">
+    <a th:href="@{|/rent/modify/${rent.id}|}" class="btn btn-sm btn-outline-secondary"
+        sec:authorize="isAuthenticated()"
+        th:if="${rent.author != null and #authentication.getPrincipal().getUsername() == rent.author.username}"
+        th:text="수정"></a>
+</div>
+
+</body>
+</html>

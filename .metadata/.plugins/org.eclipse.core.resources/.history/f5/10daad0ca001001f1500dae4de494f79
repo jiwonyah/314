@@ -1,0 +1,68 @@
+package com.uow.project.user;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import lombok.Getter;
+
+@Getter
+public class CustomUserDetails implements UserDetails {
+    private SiteUser user;
+    private Map<String, Object> attribute;
+
+    /* 일반 로그인 생성자 */
+    public CustomUserDetails(SiteUser user) {
+        this.user = user;
+    }
+
+    private GrantedAuthority getAuthority(Role role) {
+        return new SimpleGrantedAuthority("ROLE_" + role);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorityList = new ArrayList<>();
+
+        switch (user.getRoles()) {
+            case ADMIN : authorityList.add(getAuthority(Role.ADMIN));
+            case MANAGER : authorityList.add(getAuthority(Role.MANAGER));
+            case USER : authorityList.add(getAuthority(Role.USER));
+        }
+
+        return authorityList;
+    }
+    
+    
+    //----------------------------------------------------------------UserDetails
+
+    @Override
+    public String getPassword() {
+        return user.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return user.getUsername();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+}

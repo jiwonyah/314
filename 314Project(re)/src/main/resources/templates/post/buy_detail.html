@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>	[MINYONG] Rent Detail</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+	<style>
+		 .popup {
+		   display: none;
+		   position: fixed;
+		   z-index: 1;
+		   left: 0;
+		   top: 0;
+		   width: 100%;
+		   height: 100%;
+		   overflow: auto;
+		   background-color: rgba(0, 0, 0, 0.4);
+		 }
+		
+		 .popup-content {
+		   background-color: #fefefe;
+		   margin: 15% auto;
+		   padding: 20px;
+		   border: 1px solid #888;
+		   width: 30%;
+		 }
+		
+		 .close {
+		   color: #aaa;
+		   float: right;
+		   font-size: 28px;
+		   font-weight: bold;
+		 }
+		
+		 .close:hover,
+		 .close:focus {
+		   color: black;
+		   text-decoration: none;
+		   cursor: pointer;
+		 }
+	</style>
+	
+</head>
+<body>
+
+<!-- 네비게이션 바를 include 합니다. -->
+<div th:replace="navbar.html"></div>
+
+<h1 th:text="${buy.subject}"></h1>
+<div th:text="${buy.content}"></div>
+<div th:text="${buy.address}"></div>
+<div th:text="${buy.propertyType}"></div>
+<div th:text="${buy.floorsize}"></div>
+<div th:text="${buy.furnishing}"></div>
+<div th:text="${buy.floorlevel}"></div>
+<div th:text="${buy.top}"></div>
+<div th:text="${buy.price}"></div>
+<div  th:if="${buy.author != null}" th:text="${buy.author.username}"></div>
+<div th:if="${buy.modifyDate == null}">
+    <div>Date:</div>
+    <div th:text="${#temporals.format(buy.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+</div>
+<div th:if="${buy.modifyDate != null}">
+    <div>modified at</div>
+    <div th:text="${#temporals.format(buy.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
+</div>
+
+
+<!-- bookmark end -->
+<button id="bookmark-btn" th:if="${#authorization.expression('isAuthenticated()')}">Bookmark</button>
+<button th:unless="${#authorization.expression('isAuthenticated()')}" onclick="showLoginPopup()">Bookmark</button>
+
+<div id="bookmark-popup" class="popup">
+  <div class="popup-content">
+    <span class="close">&times;</span>
+    <h2 id="bookmark-message"></h2>
+    <button onclick="closePopup('bookmark-popup');">OK</button>
+  </div>
+</div>
+		
+<!-- bookmark end -->		
+		
+		
+		
+<!-- remove, edit start-->
+<div class="form-container">
+    <a th:href="@{|/buy/modify/${buy.id}|}" class="btn1"
+        sec:authorize="isAuthenticated()"
+        th:if="${buy.author != null and #authentication.getPrincipal().getUsername() == buy.author.username}"
+        th:text="Edit"></a>
+</div>
+<div class="form-container">		
+	<a href="javascript:void(0);" th:data-uri="@{|/buy/delete/${buy.id}|}"
+	class="btn delete" sec:authorize="isAuthenticated()"
+		th:if="${buy.author != null and #authentication.getPrincipal().getUsername() == buy.author.username}"
+		th:text="Remove"></a>
+</div>
+<!-- remove, edit end-->
+
+
+<!-- ///////////////////////script/////////////////////// -->
+
+<script>
+  const bookmarkBtn = document.getElementById('bookmark-btn');
+  const bookmarkPopup = document.getElementById('bookmark-popup');
+  const bookmarkMessage = document.getElementById('bookmark-message');
+
+  function toggleBookmark() {
+    // Call the toggleFavorite method from the FavoriteService
+    const isBookmarked = toggleFavorite(user, post);
+
+    if (isBookmarked) {
+      bookmarkMessage.textContent = '북마크에 추가되었습니다.';
+    } else {
+      bookmarkMessage.textContent = '북마크가 취소되었습니다.';
+    }
+
+    showPopup('bookmark-popup');
+  }
+
+  function showPopup(id) {
+    const popup = document.getElementById(id);
+    popup.style.display = 'block';
+
+    const closeBtn = popup.getElementsByClassName('close')[0];
+    closeBtn.addEventListener('click', () => closePopup(id));
+  }
+
+  function closePopup(id) {
+    const popup = document.getElementById(id);
+    popup.style.display = 'none';
+  }
+  
+  // 로그인 팝업을 표시하는 함수
+  function showLoginPopup() {
+      var confirmPopup = confirm('로그인 후 가능한 기능입니다. 로그인 하시겠습니까?');
+      if (confirmPopup) {
+          // 로그인 페이지로 이동
+          window.location.href = '/login';
+      } else {
+          // 팝업 닫기
+      }
+  }
+</script>
+
+
+<script type='text/javascript'>
+	const delete_elements = document.getElementsByClassName("delete");
+	Array.from(delete_elements).forEach(function(element) {
+	    element.addEventListener('click', function() {
+	        if(confirm("Are you sure to remove the post?")) {
+	            location.href = this.dataset.uri;
+	        };
+	    });
+	});
+</script>
+
+
+
+
+
+</body>
+</html>

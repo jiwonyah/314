@@ -1,0 +1,45 @@
+package com.uow.project.favorite;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import com.uow.project.list.Buy;
+import com.uow.project.list.Rent;
+import com.uow.project.user.SiteUser;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class BuyFavoriteService {
+    private final BuyFavoriteRepository buyFavoriteRepository;
+    
+    public boolean existsByBuyAndUser(Buy buy, SiteUser user) {
+        return buyFavoriteRepository.existsByBuyAndUser(buy, user);
+    }
+
+    public void addToFavorite(Buy buy, SiteUser user) {
+        if (!buyFavoriteRepository.existsByBuyAndUser(buy, user)) {
+            BuyFavorite buyFavorite = new BuyFavorite();
+            buyFavorite.setBuy(buy);
+            buyFavorite.setUser(user);
+            buyFavoriteRepository.save(buyFavorite);
+        }
+    }
+
+    public void removeFromFavorite(Buy buy, SiteUser user) {
+    	BuyFavorite buyFavorite = buyFavoriteRepository.findByBuyAndUser(buy, user);
+        if (buyFavorite != null) {
+        	buyFavoriteRepository.delete(buyFavorite);
+        }
+    }
+
+    public List<Buy> getFavoriteBuys(SiteUser user) {
+        List<BuyFavorite> buyFavorites = buyFavoriteRepository.findByUser(user);
+        return buyFavorites.stream()
+                .map(BuyFavorite::getBuy)
+                .collect(Collectors.toList());
+    }
+}
