@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile Search Form</title>
+  <style>
+         @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+        body {
+            
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    form {
+        text-align: center;
+    }
+
+    label {
+        display: block;
+        margin-right:430px;
+        margin-bottom: 10px;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+    }
+
+    input[type="submit"]
+    {
+        width: 48%;
+        background-color: #9dc5dc;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 4px;
+        display: inline-block;
+        margin-right: 4px;
+    }
+
+    input[type="button"] {
+        width: 48%;
+        background-color: #b7babb;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 4px;
+        display: inline-block;
+        margin-right: 4px;
+    }
+
+    input[type="submit"]:hover,
+    input[type="button"]:hover {
+        background-color: #6ca3dd;
+    }
+  </style>
+    
+</head>
+<body>
+    <div class="container">
+        <h2>User Profile Search</h2>
+        <form action="#" method="GET">
+            <label for="search">Search User Profile:</label>
+            <input type="text" id="search" name="search" placeholder="Enter role">
+            <div class="form-group">
+                <input type="submit" value="Search">
+                <input type="button" value="Cancel" >
+            </div>
+        </form>
+    </div>
+</body>
+</html>
