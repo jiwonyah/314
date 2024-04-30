@@ -1,0 +1,115 @@
+h1{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+    align-items: center;
+    margin: 0; 
+    padding: 0; 
+}
+
+.property-listing {
+    margin-bottom: 50px;
+}
+
+.logout-button.btn {
+    width: 200%;
+    height: 40px;
+    background: lightblue;
+    border: none;
+    outline: none;
+    border-radius: 45px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+#create-propList-btn {
+    background-color: #527dda; 
+    border: none; /* Remove border */
+    color: white; /* White text */
+    padding: 10px 20px; /* Padding */
+    text-align: center; /* Center text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Display as block element */
+    font-size: 16px; /* Font size */
+    margin-bottom: 20px; /* Add margin */
+    cursor: pointer; /* Cursor style */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+#create-propList-btn:hover {
+    background-color: #2059d4; /* Darker blue */
+}
+
+.createproplistbtn {
+    margin-right: auto;
+}
+
+.container {
+    
+    margin-left: 20px;
+}
+
+.property-listing {
+    background-color: #c0c2ef;
+    
+    
+}
+
+.navbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #263343;
+    padding: 8px 12px;
+    box-sizing: border-box;
+}
+
+.navbar__logo {
+    display: flex;
+    align-items: center;
+    color: white; /* Text color */
+    font-size: 24px; /* Font size */
+    font-weight: bold; /* Font weight */
+    padding-right: 20px; /* Add spacing to the right */
+}
+
+.navbar__logo a { 
+    color: var(--text-color);
+    padding-left: 0;
+    font-size: 24px; /* 글자 크기 설정 */
+    font-weight: bold; /* 글자 굵기 설정 */
+}
+
+.navbar__menu {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 70px;
+    margin-left: auto;
+    justify-content: flex-end;
+} 
+
+.navbar__menu li a {
+    text-decoration: none; /* Remove underline */
+    color: white; /* Text color */
+    padding: 8px 20px; /* Padding */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+  
+.navbar__menu li {
+    margin-left: 20px;
+    padding: 8px 60px;
+} 
+
+.navbar__menu li a:hover {
+    background-color: #2f3f53aa; /* Lighter color on hover */
+}
