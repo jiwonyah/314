@@ -1,0 +1,105 @@
+/* Main CSS */
+:root {
+    --accent-color: #orange;
+    --text-color: #f0f4f5;
+    --bodybackground-color: lightgray;
+}
+  
+.body {
+    margin: 0;
+    font-family: 'Montserrat';
+}
+
+a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #263343;
+    padding: 8px 12px;
+}
+
+.navbar__logo a { 
+    color: var(--text-color);
+    padding-left: 0;
+    font-size: 24px; /* 글자 크기 설정 */
+    font-weight: bold; /* 글자 굵기 설정 */
+}
+
+.navbar__menu {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 70px;
+    margin-left: auto;
+}
+  
+.navbar__menu li {
+    padding: 8px 60px;
+}
+
+/* 드롭다운 컨텐츠 숨기기 */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* 드롭다운 메뉴 항목 스타일링 */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* 드롭다운 메뉴 항목에 호버 스타일링 */
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+/* 드롭다운 메뉴가 보이도록 설정 */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/*Mortgage Calculation Form Stuff*/
+
+#mortgage_title{text-align: center;}
+#mortgage_calc
+{
+    display: flex;
+    justify-content: center;
+}
+
+#loan_amt,#int_rate,#loan_tenure{
+    width: 200px;
+    height: 20px;
+}
+
+#mortgage_btn
+{
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#mortgage_btn:hover
+{
+    background-color: #0056b3;
+}
+
+
+
