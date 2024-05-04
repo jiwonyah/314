@@ -1,0 +1,10 @@
+<!-- 질문 목록 -->
+{% if propertyListing_table %}
+    <ul>
+    {% for propertyListing in propertyListing_table %}
+        <li><a href="{{ url_for('propertyListing.detail', propertyListing_id=propertyListing.id) }}">{{ propertyListing.subject }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No Contents</p>
+{% endif %}
