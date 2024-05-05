@@ -1,5 +1,6 @@
 import enum
 from csit314.app import db
+from . import User
 
 #enum type data
 class FloorLevel(enum.Enum):
@@ -24,7 +25,7 @@ class PropertyListing(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     subject = db.Column(db.String(200), nullable=False)
-    content = db.Column(db.Text(), nullable=False)
+    content = db.Column(db.Text(), nullable=True)
     price = db.Column(db.Integer, nullable=False)
     address = db.Column(db.String(200), nullable=False)
     floorSize = db.Column(db.Integer, nullable=False)
@@ -33,3 +34,5 @@ class PropertyListing(db.Model):
     furnishing = db.Column(db.Enum(Furnishing, values_callable=lambda x: [str(member.value) for member in Furnishing]), nullable=False)
     builtYear = db.Column(db.Integer, nullable=False)
     create_date = db.Column(db.DateTime(), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
+    user = db.relationship('User', backref=db.backref('propertyListing_set'))

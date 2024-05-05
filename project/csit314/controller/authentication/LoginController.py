@@ -5,9 +5,40 @@ from wtforms.validators import DataRequired, Length, EqualTo, Email
 from flask import Blueprint, url_for, render_template, flash, request, redirect, session, g
 from werkzeug.security import check_password_hash
 from werkzeug.utils import redirect
+import functools
+from functools import wraps
+from csit314.entity.User import User
+
+
 class UserLoginForm(FlaskForm):
     userid = StringField('ID', validators=[DataRequired(), Length(min=3, max=25)])
     password = PasswordField('Password', validators=[DataRequired()])
+
+# decorator to protect view which requires login
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(*args, **kwargs):
+        if g.user is None:
+            _next = request.url if request.method == 'GET' else ''
+            return redirect(url_for('auth.login', next=_next))
+        return view(*args, **kwargs)
+    return wrapped_view
+
+# decorator to protect view which requires agent authority
+def agent_only(view):
+    @wraps(view)
+    def wrapped_view(*args, **kwargs):
+        # get current user
+        user = g.user
+
+        # accept access requirement only if when user is authenticated and role is agent
+        if user and user.role.value == 'agent':
+            return view(*args, **kwargs)
+        else:
+            # 인증되지 않은 경우 또는 역할이 'agent'가 아닌 경우 접근 거부
+            return render_template("NotAgentAlert.html")  # 로그인 페이지로 리디렉션
+    return wrapped_view
+
 
 bp = Blueprint('login', __name__, template_folder='boundary/templates')
 

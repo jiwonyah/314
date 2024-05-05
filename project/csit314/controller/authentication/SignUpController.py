@@ -8,6 +8,7 @@ from flask import Blueprint, url_for, render_template, flash, request
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import redirect
 
+
 class UserCreateForm(FlaskForm):
     userid = StringField('ID', validators=[DataRequired(), Length(min=3, max=25)])
     password1 = PasswordField('Password', validators=[
