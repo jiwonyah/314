@@ -34,10 +34,13 @@ def create_app():
 
     # Blueprint
     from csit314.controller.authentication import (SignUpController, LoginController, LogoutController)
-    from csit314.controller.propertyListing import ViewPropertyListingController, AgentCreatePropertyListing
+    from csit314.controller.propertyListing import (ViewPropertyListingController, AgentCreatePropertyListingController,
+                                                    AgentEditPropertyListingController, AgentRemovePropertyListingController)
     app.register_blueprint(SignUpController.bp)
     app.register_blueprint(ViewPropertyListingController.bp)
-    app.register_blueprint(AgentCreatePropertyListing.bp)
+    app.register_blueprint(AgentCreatePropertyListingController.bp)
+    app.register_blueprint(AgentEditPropertyListingController.bp)
+    app.register_blueprint(AgentRemovePropertyListingController.bp)
     app.register_blueprint(LoginController.bp)
     app.register_blueprint(LogoutController.bp)
 

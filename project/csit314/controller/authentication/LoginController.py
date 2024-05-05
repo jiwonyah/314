@@ -20,7 +20,7 @@ def login_required(view):
     def wrapped_view(*args, **kwargs):
         if g.user is None:
             _next = request.url if request.method == 'GET' else ''
-            return redirect(url_for('auth.login', next=_next))
+            return redirect(url_for('login.login', next=_next))
         return view(*args, **kwargs)
     return wrapped_view
 
@@ -55,7 +55,11 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user.id
-            return redirect(url_for('index'))
+            _next = request.args.get('next', '')
+            if _next:
+                return redirect(_next)
+            else:
+                return redirect(url_for('index'))
         flash(error)
     return render_template('login.html', form=form)
 

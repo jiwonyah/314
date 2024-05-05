@@ -10,7 +10,7 @@ def index():
     return render_template('propertyListingTable.html',
                            propertyListing_table=propertyListing_table)
 
-@bp.route('/detail/<int:propertyListing_id>/')
+@bp.route('/propertyListing/detail/<int:propertyListing_id>/')
 def detail(propertyListing_id):
     propertyListing = PropertyListing.query.get(propertyListing_id)
     return render_template('propertyListingDetailPage.html',

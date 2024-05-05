@@ -2,6 +2,12 @@
 {% block content %}
 
 <div class="container my-3">
+    <!-- flash 오류 -->
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-danger" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
     <!-- 질문 -->
     <h2>{{ propertyListing.subject }}</h2>
     <div class="card my-3">
@@ -22,12 +28,43 @@
             <div class="card-text" style="white-space: pre-line;">{{ propertyListing.furnishing }}</div>
             <h3>Built Year</h3>
             <div class="card-text" style="white-space: pre-line;">{{ propertyListing.builtYear }}</div>
+            <h3>Author</h3>
+            <div class="mb-2">{{ propertyListing.user.userid }}</div>
+            <h3>Date</h3>
             <div class="d-flex justify-content-end">
+                {% if propertyListing.modify_date %}
+                <div class="badge bg-light text-dark p-2 text-start mx-3">
+                    <div class="mb-2">modified at</div>
+                    <div>{{ propertyListing.modify_date }}</div>
+                </div>
+                {% else %}
                 <div class="badge bg-light text-dark p-2">
                     {{ propertyListing.create_date }}
                 </div>
+                {% endif %}
+            </div>
+            <div class="my-3">
+            {% if g.user == propertyListing.user %}
+            <a href="{{ url_for('editPropertyListing.editPropertyListing',
+            propertyListing_id=propertyListing.id) }}" class="ordinal_btn">Edit</a>
+            <a href="javascript:void(0)" class="delete ordinal_btn"
+               data-uri="{{ url_for('removePropertyListing.removePropertyListing',
+                propertyListing_id=propertyListing.id) }}">Remove</a>
+            {% endif %}
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+{% block script %}
+<script type='text/javascript'>
+const delete_elements = document.getElementsByClassName("delete");
+Array.from(delete_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 삭제하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
+</script>
 {% endblock %}
