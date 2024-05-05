@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if propertyListing_table %}
+        {% for propertyListing in propertyListing_table %}
+        <tr>
+            <td>
+                <a href="{{ url_for('viewPropertyListing.detail', propertyListing_id=propertyListing.id) }}">
+                    {{ propertyListing.subject }}</a>
+            </td>
+            <td>{{ propertyListing.create_date }}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="3">No contents</td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Button for posting new property listing -->
+<!-- 우측 하단에 스타일링된 버튼 추가 -->
+<div style="text-align: right; margin-top: 20px;">
+    <a href="{{ url_for('createPropertyListing.createPropertyListing') }}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px; border: 1px solid #007bff;">Create New Property Listing</a>
+</div>
+{% endblock %}

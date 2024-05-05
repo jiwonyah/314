@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Navigation bar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+</head>
+
+<body>
+	<nav class = "navbar">
+		<div class="navbar__logo">
+			<i class="fas fa-blog"></i>
+			<a href="{{ url_for('index') }}">MINYONG</a>
+		</div>
+		<ul class="navbar__menu">
+		    <li><a href="{{ url_for('index') }}">Home</a></li>
+		    <li><a href="{{ url_for('viewPropertyListing.index') }}">PropertyListing</a></li>
+			<!--{% if g.user is none or g.user.role != 'AGENT' %}-->
+			<li><a href="{{ url_for('write_review_controller.agent_list') }}">Find Agent</a></li>
+			<!--{% endif %}-->
+		    <li><a href="#">Mortgage</a></li>  <!--page has not been created-->
+
+			{% if not g.user %}
+			<li class="dropdown">
+			    <a href="#" >Login</a>
+			    <div class="dropdown-content">
+			        <a href="{{ url_for('login.login') }}">Login</a>
+			        <a href="{{ url_for('signup.signup') }}">Signup</a>
+			    </div>
+			</li>
+			{% else %}
+			<li class="dropdown">
+			    <a href="#">My Page</a>
+			    <div class="dropdown-content">
+					<a if="${currentUser != null}" href="@{'/profile/' + ${currentUser.username}}">Profile</a>
+			        <a href="#">Shortlist</a>
+					{% if show_review_button %}
+						<a href="/myreviews">View My Review</a>
+					{% endif %}
+			        <a href="{{ url_for('logout.logout') }}">Logout</a>
+			    </div>
+			</li>
+			{% endif %}
+		</ul>
+	</nav>
+</body>
+</html>

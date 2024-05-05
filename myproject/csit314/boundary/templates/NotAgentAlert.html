@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>This page is only allowed to agents</h1>
+<span>Please <a href="{{ url_for('login.login') }}">login</a> as an agent to access the page.</span>
+{% endblock %}

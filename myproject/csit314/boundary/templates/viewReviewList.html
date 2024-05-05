@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<body>
+    <h1>My Reviews</h1>
+    <ul>
+        {% for review in reviews %}
+        <li><a href="{{ url_for('view_review_controller.review_detail', review_id=review.id) }}">{{ review.id }}</a>- Written By: {{ review.author_userid }}</li>
+        {% endfor %}
+    </ul>
+</body>
+
+{% endblock %}
