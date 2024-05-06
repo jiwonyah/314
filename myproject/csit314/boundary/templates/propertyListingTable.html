@@ -1,36 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
 
-<script>
-function toggleFavourite(propertyListingId) {
-    fetch('/toggle_favourite/' + propertyListingId, { method: 'POST' })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status == 'success') {
-            // Update UI when processing is successful
-            const favBtn = document.getElementById('fav-btn-' + propertyListingId);
-            if (data.action == 'added') {
-                favBtn.innerHTML = 'Remove Favourite';
-            } else if (data.action == 'removed') {
-                favBtn.innerHTML = 'Add Favourite';
-            }
-        } else {
-            alert('Error: ' + data.message);
-        }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-}
-</script>
-
 <div>
     <table class="table">
         <thead>
         <tr>
             <th>Subject</th>
             <th>Date</th>
-            <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -43,10 +19,9 @@ function toggleFavourite(propertyListingId) {
             </td>
             <td>{{ propertyListing.create_date }}</td>
             <td>
-                <!-- Favourite 버튼, id를 이용하여 각각 고유한 id 할당 -->
-                <button id="fav-btn-{{ propertyListing.id }}" onclick="toggleFavourite({{ propertyListing.id }})" class="btn btn-primary">
-                    Add Favourite
-                </button>
+                <button onclick="toggleFavourite(this, {{ propertyListing.id }})"
+                        class="favourite-btn"
+                        id="favourite-btn-{{ propertyListing.id }}">Favourite</button>
             </td>
         </tr>
         {% endfor %}
@@ -62,4 +37,51 @@ function toggleFavourite(propertyListingId) {
 <div style="text-align: right; margin-top: 20px;">
     <a href="{{ url_for('createPropertyListing.createPropertyListing') }}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px; border: 1px solid #007bff;">Create New Property Listing</a>
 </div>
+
+<script>
+function toggleFavourite(btn, propertyListingId) {
+    fetch(`/toggle_favourite/${propertyListingId}`, {
+        method: 'POST',
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success) {
+            // "isFavourite" 상태에 따라 버튼의 클래스를 변경합니다.
+            if(data.isFavourite) {
+                btn.classList.add("favourite-active");
+                btn.textContent = "Favourited";
+            } else {
+                btn.classList.remove("favourite-active");
+                btn.textContent = "Favourite";
+            }
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+</script>
+
+<style>
+/* 기본 "Favourite" 버튼 스타일 */
+.favourite-btn {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: #ccc; /* 회색 배경 */
+    color: white;
+    cursor: pointer;
+}
+
+/* 활성화된 "Favourite" 버튼 스타일 */
+.favourite-active {
+    background-color: #ff0000; /* 빨간색 배경 */
+}
+
+/* 비활성화된 "Favourite" 버튼 스타일 - 선택적 사용 가능 */
+.favourite-inactive {
+    background-color: #ccc; /* 회색 배경 */
+}
+</style>
+
 {% endblock %}
