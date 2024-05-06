@@ -1,6 +1,7 @@
 import enum
 from csit314.app import db
 from . import User
+from . import Favourite
 
 #enum type data
 class FloorLevel(enum.Enum):
@@ -19,7 +20,6 @@ class Furnishing(enum.Enum):
     FullyFurnished = 'fully_furnished'
     NotFurnished = 'not_furnished'
 
-
 class PropertyListing(db.Model):
     __tablename__ = 'propertyListing'
 
@@ -36,3 +36,4 @@ class PropertyListing(db.Model):
     create_date = db.Column(db.DateTime(), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     user = db.relationship('User', backref=db.backref('propertyListing_set'))
+    favourites = db.relationship('Favourite', backref=db.backref('propertyListing_set'), lazy='dynamic')
