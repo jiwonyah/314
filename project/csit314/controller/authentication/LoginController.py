@@ -20,6 +20,7 @@ def login_required(view):
     def wrapped_view(*args, **kwargs):
         if g.user is None:
             _next = request.url if request.method == 'GET' else ''
+            flash("To access the page, login first.")
             return redirect(url_for('login.login', next=_next))
         return view(*args, **kwargs)
     return wrapped_view

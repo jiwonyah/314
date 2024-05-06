@@ -29,7 +29,13 @@
             <h3>Built Year</h3>
             <div class="card-text" style="white-space: pre-line;">{{ propertyListing.builtYear }}</div>
             <h3>Author</h3>
-            <div class="mb-2">{{ propertyListing.user.userid }}</div>
+            <div class="mb-2">{{ propertyListing.agent.userid }}</div>
+
+            {% if g.user == propertyListing.agent or g.user.userid == propertyListing.client_id %}
+            <h3>Client</h3>
+            <div>{{ propertyListing.client_id }}</div>
+            {% endif %}
+
             <h3>Date</h3>
             <div class="d-flex justify-content-end">
                 {% if propertyListing.modify_date %}
@@ -44,7 +50,7 @@
                 {% endif %}
             </div>
             <div class="my-3">
-            {% if g.user == propertyListing.user %}
+            {% if g.user == propertyListing.agent %}
             <a href="{{ url_for('editPropertyListing.editPropertyListing',
             propertyListing_id=propertyListing.id) }}" class="ordinal_btn">Edit</a>
             <a href="javascript:void(0)" class="delete ordinal_btn"

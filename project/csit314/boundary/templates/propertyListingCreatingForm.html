@@ -77,6 +77,12 @@
                       id="builtYear">{{ form.builtYear.data or '' }}</input>
         </div>
 
+        <div class="mb-3">
+            <label for="client_id">Client</label>
+            <input type="text" class="form-control" name="client_id"
+                      id="client_id">{{ form.client_id.data or '' }}</input>
+        </div>
+
 
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

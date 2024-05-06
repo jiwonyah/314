@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1> My Property Listings</h1>
+
+<div>
+    <table class="table">
+        <thead>
+        <tr class="text-center">
+            <th style="width:50%">Subject</th>
+            <th> Agent </th>
+            <th>Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for propertyListing in propertylistings %}
+        <tr class="text-center">
+            <td>
+              <a href="{{ url_for('viewPropertyListing.detail', propertyListing_id=propertyListing.id) }}">
+                {{ propertyListing.subject }}
+              </a>
+            </td>
+            <td>
+                {{ propertyListing.agent.userid }}
+            </td>
+            {% if propertyListing.modify_date %}
+            <td>{{ propertyListing.modify_date.strftime('%Y-%m-%d')  }}</td>
+            {% else %}
+            <td>{{ propertyListing.create_date.strftime('%Y-%m-%d')  }}</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+

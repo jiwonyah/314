@@ -10,7 +10,7 @@ bp = Blueprint('removePropertyListing', __name__, template_folder='boundary/temp
 @login_required
 def removePropertyListing(propertyListing_id):
     propertyListing = PropertyListing.query.get_or_404(propertyListing_id)
-    if g.user != propertyListing.user:
+    if g.user != propertyListing.agent:
         flash('삭제권한이 없습니다')
         return redirect(url_for('viewPropertyListing.detail', propertyListing_id=propertyListing.id))
     db.session.delete(propertyListing)

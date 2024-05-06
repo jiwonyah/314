@@ -13,7 +13,7 @@ bp = Blueprint('editPropertyListing', __name__, template_folder='boundary/templa
 def editPropertyListing(propertyListing_id):
     propertyListing = PropertyListing.query.get_or_404(propertyListing_id)
 
-    if g.user != propertyListing.user:
+    if g.user != propertyListing.agent:
         #flash('You don\'t have authority to edit the post.')
         # return redirect(url_for('viewPropertyListing.index',
         #                         propertyListing_id=propertyListing_id))
@@ -29,3 +29,6 @@ def editPropertyListing(propertyListing_id):
     else:
         form = PropertyListingForm(obj=propertyListing)
     return render_template('propertyListingCreatingForm.html', form=form)
+
+
+

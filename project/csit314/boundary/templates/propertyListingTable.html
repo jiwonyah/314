@@ -18,7 +18,7 @@
                 <a href="{{ url_for('viewPropertyListing.detail', propertyListing_id=propertyListing.id) }}">
                     {{ propertyListing.subject }}</a>
             </td>
-            <td>{{ propertyListing.user.userid }}</td>
+            <td>{{ propertyListing.agent.userid }}</td>
             {% if propertyListing.modify_date %}
             <td>{{ propertyListing.modify_date.strftime('%Y-%m-%d')  }}</td>
             {% else %}

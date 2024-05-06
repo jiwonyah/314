@@ -8,6 +8,7 @@ from wtforms.validators import DataRequired
 from flask_wtf import FlaskForm
 from csit314.controller.authentication.LoginController import agent_only
 
+
 class PropertyListingForm(FlaskForm):
     subject = StringField('Subject', validators=[DataRequired('Subject은 필수입력 항목입니다.')])
     content = TextAreaField('Content')
@@ -30,8 +31,8 @@ class PropertyListingForm(FlaskForm):
         (Furnishing.FullyFurnished.value, 'Fully furnished'),
         (Furnishing.NotFurnished.value, 'Not furnished')
     ], validators=[DataRequired()])
-    builtYear = IntegerField('Built Year', validators=[DataRequired('Built year는 필수입력 항목입니다.')])
-
+    builtYear = IntegerField('Built Year', validators=[DataRequired('Built year는 필수 입력 항목입니다.')])
+    client_id = StringField('Client',  validators=[DataRequired('Client는 필수 입력 항목입니다.')])
 
 
 bp = Blueprint('createPropertyListing', __name__, template_folder='boundary/templates')
@@ -47,8 +48,10 @@ def createPropertyListing():
                                           floorSize=form.floorSize.data, floorLevel=form.floorLevel.data,
                                           propertyType=form.propertyType.data,
                                           furnishing=form.furnishing.data, builtYear=form.builtYear.data,
-                            create_date=datetime.now(), user=g.user)
+                                          client_id=form.client_id.data, create_date=datetime.now(),
+                                          agent=g.user)
         db.session.add(propertyListing)
         db.session.commit()
         return redirect(url_for('index'))
     return render_template('propertyListingCreatingForm.html', form=form)
+

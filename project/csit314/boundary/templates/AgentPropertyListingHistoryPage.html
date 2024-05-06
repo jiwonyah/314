@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1> Property Listings History</h1>
+
+<div>
+    <table class="table">
+        <thead>
+        <tr class="text-center">
+            <th style="width:50%">Subject</th>
+            <th>Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for propertyListing in agent_listings %}
+        <tr class="text-center">
+            <td>
+              <a href="{{ url_for('viewPropertyListing.detail', propertyListing_id=propertyListing.id) }}">
+                {{ propertyListing.subject }}
+              </a>
+            </td>
+            {% if propertyListing.modify_date %}
+            <td>{{ propertyListing.modify_date.strftime('%Y-%m-%d')  }}</td>
+            {% else %}
+            <td>{{ propertyListing.create_date.strftime('%Y-%m-%d')  }}</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
