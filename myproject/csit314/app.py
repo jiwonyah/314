@@ -14,9 +14,12 @@ naming_convention = {
 db = SQLAlchemy(metadata=MetaData(naming_convention=naming_convention))
 migrate = Migrate()
 
-from csit314.controller.review.WriteReviewController import bp as write_review_controller_bp
-from csit314.controller.review.ViewReviewController import bp as view_review_controller_bp, is_agent
+from csit314.controller.review.WriteReviewController import bp as write_review_controller
+from csit314.controller.review.ViewReviewController import bp as view_review_controller, is_agent
 
+from csit314.controller.favourite.SaveFavouriteController import bp as save_favourite_controller
+#from csit314.controller.favourite.ViewNumFavouriteController import bp as view_num_favourite_controller
+from csit314.controller.favourite.ViewSavedFavouriteController import bp as view_saved_favourite_controller
 
 def create_app():
     app = Flask(__name__,
@@ -45,8 +48,12 @@ def create_app():
     app.register_blueprint(LoginController.bp)
     app.register_blueprint(LogoutController.bp)
 
-    app.register_blueprint(write_review_controller_bp)
-    app.register_blueprint(view_review_controller_bp)
+    app.register_blueprint(write_review_controller)
+    app.register_blueprint(view_review_controller)
+
+    app.register_blueprint(save_favourite_controller)
+    #app.register_blueprint(view_num_favourite_controller.bp)
+    app.register_blueprint(view_saved_favourite_controller)
 
     @app.route('/')
     def index(): # Added show_review_button to show "View My Reviews" button to agent only
@@ -54,6 +61,3 @@ def create_app():
         return render_template('index.html', show_review_button=show_review_button)
 
     return app
-
-# from csit314.entity import PropertyListing, User  # User 모델 임포트
-# app.register_blueprint(write_review_controller)
