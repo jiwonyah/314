@@ -37,6 +37,7 @@ def create_app():
     from csit314.controller.propertyListing import (ViewPropertyListingController, AgentCreatePropertyListingController,
                                                     AgentEditPropertyListingController, AgentRemovePropertyListingController)
     from csit314.controller.profile import ViewProfileController
+    from csit314.controller.review import (AgentViewReviewController, BuyerSellerWriteReviewController)
     app.register_blueprint(SignUpController.bp)
     app.register_blueprint(ViewPropertyListingController.bp)
     app.register_blueprint(AgentCreatePropertyListingController.bp)
@@ -45,6 +46,8 @@ def create_app():
     app.register_blueprint(LoginController.bp)
     app.register_blueprint(LogoutController.bp)
     app.register_blueprint(ViewProfileController.bp)
+    app.register_blueprint(AgentViewReviewController.bp)
+    app.register_blueprint(BuyerSellerWriteReviewController.bp)
 
     @app.route('/')
     def index():

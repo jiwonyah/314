@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .agent-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .agent-item {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .agent-name {
+            font-size: 18px;
+            margin-right: 10px;
+        }
+        .btn-write-review {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        .btn-write-review:hover {
+            background-color: #0056b3;
+        }
+
+        .agent-name a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .agent-name a:hover {
+            color: blue;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Find Agents</h1>
+    <ul class="agent-list">
+        {% for agent in agents %}
+        <li class="agent-item">
+            <div class="agent-name">
+                <a href="{{ url_for('profile.profile', userid=agent.userid) }}">{{ agent.firstName }} {{ agent.lastName }}</a>
+            </div>
+            {% if g.user.role.value == "buyer" or g.user.role.value == "seller" %}
+            <a href="/write-review/{{ agent.id }}" class="btn-write-review">Write Review</a>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+{% endblock %}

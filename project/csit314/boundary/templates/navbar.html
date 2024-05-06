@@ -14,6 +14,9 @@
 		<ul class="navbar__menu">
 		    <li><a href="{{ url_for('index') }}">Home</a></li>
 		    <li><a href="{{ url_for('viewPropertyListing.index') }}">Property Listing</a></li>
+
+			<li><a href="{{ url_for('write_review_controller.agent_list') }}">Agent Review</a></li>
+
 		    <li><a href="#">Mortgage</a></li>  <!--page has not been created-->
 
 			{% if not g.user %}
@@ -28,14 +31,19 @@
 			<li class="dropdown">
 			    <a href="#">My Page</a>		
 			    <div class="dropdown-content">
+					<!-- 1 -->
 					<a href="{{ url_for('profile.profile', userid=g.user.userid) }}">Profile</a>
+					<!-- 2 -->
 					{% if g.user.role.value == "agent"  %}
 					<a href="{{ url_for('viewPropertyListing.viewPropertyListingHistory')}}">게시물 히스토리</a>
+					<a href="{{ url_for('view_review_controller.agentViewReviews')}}">Reviews</a>
 					{% elif g.user.role.value == "seller" %}
 					<a href="{{ url_for('viewPropertyListing.sellerViewOwnPropertyListing')}}">게시된 매물</a>
 					{% else %}
 			        <a href="#">Shortlist</a>
 					{% endif %}
+
+
 			        <a href="{{ url_for('logout.logout') }}">Logout</a>
 			    </div>
 			</li>

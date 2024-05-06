@@ -35,8 +35,8 @@ def signup():
                         email=form.email.data, role=form.role.data)
             db.session.add(user)
             db.session.commit()
-            return redirect(url_for('index'))
+            return render_template('authentication/signupSuccess.html')
 
         else:
-            flash('Existing Account')
-    return render_template('user_signup_form.html', form=form)
+            flash('The account already exists.')
+    return render_template('authentication/user_signup_form.html', form=form)

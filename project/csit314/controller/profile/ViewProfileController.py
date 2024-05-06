@@ -11,7 +11,7 @@ bp = Blueprint('profile', __name__)
 def profile(userid):
     user = User.query.filter_by(userid=userid).first()
     if not user:
-        # 사용자가 없으면 에러 처리 또는 리디렉션
-        return render_template('error.html', message='User not found'), 404
+        # error if user doesn't exist
+        return render_template('error/error.html', message='User not found'), 404
 
-    return render_template('profile.html', user=user)
+    return render_template('profile/profile.html', user=user)

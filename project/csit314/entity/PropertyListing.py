@@ -41,7 +41,7 @@ class PropertyListing(db.Model):
     agent = db.relationship('User', foreign_keys=[agent_id], backref=db.backref('property_listing_set'))
     client_id = db.Column(db.String, db.ForeignKey('user.userid', ondelete='CASCADE'), nullable=False)
     client = db.relationship('User', foreign_keys=[client_id], backref=db.backref('client_property_listings'))
-
+    view_counts = db.Column(db.Integer, default=0, nullable=False)
     @validates('client_id')
     def validate_client_id(self, key, client_id):
         # Check if the userid exists in the User table

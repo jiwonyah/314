@@ -9,10 +9,10 @@ bp = Blueprint('removePropertyListing', __name__, template_folder='boundary/temp
 @bp.route('/propertyListing/remove/<int:propertyListing_id>/')
 @login_required
 def removePropertyListing(propertyListing_id):
-    propertyListing = PropertyListing.query.get_or_404(propertyListing_id)
+    propertyListing = PropertyListing.query.get(propertyListing_id)
     if g.user != propertyListing.agent:
-        flash('삭제권한이 없습니다')
-        return redirect(url_for('viewPropertyListing.detail', propertyListing_id=propertyListing.id))
+        return render_template('error/error.html',
+                               message='You don\'t have authority to remove the post.'), 404
     db.session.delete(propertyListing)
     db.session.commit()
     return redirect(url_for('viewPropertyListing.index'))

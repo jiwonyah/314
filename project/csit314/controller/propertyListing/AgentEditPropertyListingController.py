@@ -11,13 +11,11 @@ bp = Blueprint('editPropertyListing', __name__, template_folder='boundary/templa
 @bp.route('/propertyListing/edit/<int:propertyListing_id>/', methods=('GET', 'POST'))
 @login_required
 def editPropertyListing(propertyListing_id):
-    propertyListing = PropertyListing.query.get_or_404(propertyListing_id)
+    propertyListing = PropertyListing.query.get(propertyListing_id)
 
     if g.user != propertyListing.agent:
-        #flash('You don\'t have authority to edit the post.')
-        # return redirect(url_for('viewPropertyListing.index',
-        #                         propertyListing_id=propertyListing_id))
-        return render_template("NoAuthorityEditPropertyListing.html")
+        return render_template('error/error.html',
+                               message='You don\'t have authority to edit the post.'), 404
 
     if request.method == 'POST':
         form = PropertyListingForm()
@@ -28,7 +26,7 @@ def editPropertyListing(propertyListing_id):
             return redirect(url_for('viewPropertyListing.detail', propertyListing_id=propertyListing_id))
     else:
         form = PropertyListingForm(obj=propertyListing)
-    return render_template('propertyListingCreatingForm.html', form=form)
+    return render_template('property_listing/propertyListingCreatingForm.html', form=form)
 
 
 

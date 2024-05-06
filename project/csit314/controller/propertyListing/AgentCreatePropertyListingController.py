@@ -10,11 +10,11 @@ from csit314.controller.authentication.LoginController import agent_only
 
 
 class PropertyListingForm(FlaskForm):
-    subject = StringField('Subject', validators=[DataRequired('Subject은 필수입력 항목입니다.')])
+    subject = StringField('Subject', validators=[DataRequired('Subject is a required field.')])
     content = TextAreaField('Content')
-    price = IntegerField('Price', validators=[DataRequired('Price은 필수입력 항목입니다.')])
-    address = StringField('Address', validators=[DataRequired('Address은 필수입력 항목입니다.')])
-    floorSize = IntegerField('Floor Size', validators=[DataRequired('Floor Size는 필수입력 항목입니다.')])
+    price = IntegerField('Price', validators=[DataRequired('Price is a required field.')])
+    address = StringField('Address', validators=[DataRequired('Address is a required field.')])
+    floorSize = IntegerField('Floor Size', validators=[DataRequired('Floor Size is a required field.')])
     floorLevel = SelectField('Floor Level', choices=[
         (FloorLevel.LOW.value, 'Low'),
         (FloorLevel.MEDIUM.value, 'Medium'),
@@ -31,8 +31,8 @@ class PropertyListingForm(FlaskForm):
         (Furnishing.FullyFurnished.value, 'Fully furnished'),
         (Furnishing.NotFurnished.value, 'Not furnished')
     ], validators=[DataRequired()])
-    builtYear = IntegerField('Built Year', validators=[DataRequired('Built year는 필수 입력 항목입니다.')])
-    client_id = StringField('Client',  validators=[DataRequired('Client는 필수 입력 항목입니다.')])
+    builtYear = IntegerField('Built Year', validators=[DataRequired('Built year is a required field.')])
+    client_id = StringField('Client',  validators=[DataRequired('Client is a required field.')])
 
 
 bp = Blueprint('createPropertyListing', __name__, template_folder='boundary/templates')
@@ -53,5 +53,6 @@ def createPropertyListing():
         db.session.add(propertyListing)
         db.session.commit()
         return redirect(url_for('index'))
-    return render_template('propertyListingCreatingForm.html', form=form)
+    return render_template('property_listing/propertyListingCreatingForm.html',
+                           form=form)
 
