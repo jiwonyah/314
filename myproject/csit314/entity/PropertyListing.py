@@ -37,3 +37,4 @@ class PropertyListing(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     user = db.relationship('User', backref=db.backref('propertyListing_set'))
     favourites = db.relationship('Favourite', back_populates='propertyListing', lazy='dynamic')
+    shortlist_count = db.Column(db.Integer, default=0)
