@@ -13,7 +13,7 @@ bp = Blueprint('save_favourite_controller', __name__, template_folder='boundary/
 def toggle_favourite(propertyListing_id):
     # g.user가 설정되지 않았다면, 로그인하지 않은 것으로 간주
     if not g.user:
-        return jsonify({'error': 'Authentication required'}), 401
+        return jsonify({'success': False, 'error': 'Authentication required'}), 401
 
     user_id = g.user.userid  # g.user에서 user_id를 가져옴
 
@@ -25,18 +25,18 @@ def toggle_favourite(propertyListing_id):
             # 즐겨찾기에서 삭제
             db.session.delete(favourite)
             db.session.commit()
-            return jsonify({'message': 'Removed from favourites'}), 200
+            return jsonify({'success': True})
         else:
             # 즐겨찾기에 추가
             new_favourite = Favourite(user_userid=user_id, propertyListing_id=propertyListing_id,
                                       create_date=datetime.now())
             db.session.add(new_favourite)
             db.session.commit()
-            return jsonify({'message': 'Added to favourites'}), 201
+            return jsonify({'success': True})
 
     except SQLAlchemyError as e:
         db.session.rollback()
-        return jsonify({'error': 'Database error', 'message': str(e)}), 500
+        return jsonify({'success': False, 'error': 'Database error: ' + str(e)}), 500
 
 
 '''
