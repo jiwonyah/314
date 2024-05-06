@@ -14,13 +14,6 @@ naming_convention = {
 db = SQLAlchemy(metadata=MetaData(naming_convention=naming_convention))
 migrate = Migrate()
 
-from csit314.controller.review.WriteReviewController import bp as write_review_controller
-from csit314.controller.review.ViewReviewController import bp as view_review_controller, is_agent
-
-from csit314.controller.favourite.SaveFavouriteController import bp as save_favourite_controller
-#from csit314.controller.favourite.ViewNumFavouriteController import bp as view_num_favourite_controller
-from csit314.controller.favourite.ViewSavedFavouriteController import bp as view_saved_favourite_controller
-
 def create_app():
     app = Flask(__name__,
                 static_folder='boundary/static',
@@ -41,23 +34,29 @@ def create_app():
 
     # Blueprint
     from csit314.controller.authentication import (SignUpController, LoginController, LogoutController)
-    from csit314.controller.propertyListing import ViewPropertyListingController, AgentCreatePropertyListing
+    from csit314.controller.propertyListing import (ViewPropertyListingController, AgentCreatePropertyListingController,
+                                                    AgentEditPropertyListingController, AgentRemovePropertyListingController)
+    from csit314.controller.profile import ViewProfileController
+    from csit314.controller.review import (AgentViewReviewController, BuyerSellerWriteReviewController)
+    from csit314.controller.favourite import (SaveFavouriteController, SellerViewSaveCountController, ViewSavedFavouriteController )
     app.register_blueprint(SignUpController.bp)
     app.register_blueprint(ViewPropertyListingController.bp)
-    app.register_blueprint(AgentCreatePropertyListing.bp)
+    app.register_blueprint(AgentCreatePropertyListingController.bp)
+    app.register_blueprint(AgentEditPropertyListingController.bp)
+    app.register_blueprint(AgentRemovePropertyListingController.bp)
     app.register_blueprint(LoginController.bp)
     app.register_blueprint(LogoutController.bp)
+    app.register_blueprint(ViewProfileController.bp)
+    app.register_blueprint(AgentViewReviewController.bp)
+    app.register_blueprint(BuyerSellerWriteReviewController.bp)
 
-    app.register_blueprint(write_review_controller)
-    app.register_blueprint(view_review_controller)
+    app.register_blueprint(SaveFavouriteController.bp)
+    app.register_blueprint(SellerViewSaveCountController.bp)
+    app.register_blueprint(ViewSavedFavouriteController.bp)
 
-    app.register_blueprint(save_favourite_controller)
-    #app.register_blueprint(view_num_favourite_controller.bp)
-    app.register_blueprint(view_saved_favourite_controller)
 
     @app.route('/')
-    def index(): # Added show_review_button to show "View My Reviews" button to agent only
-        show_review_button = is_agent()
-        return render_template('index.html', show_review_button=show_review_button)
+    def index():
+        return render_template('index.html')
 
     return app
