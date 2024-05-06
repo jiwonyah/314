@@ -36,4 +36,4 @@ class PropertyListing(db.Model):
     create_date = db.Column(db.DateTime(), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     user = db.relationship('User', backref=db.backref('propertyListing_set'))
-    favourites = db.relationship('Favourite', backref=db.backref('propertyListing_set'), lazy='dynamic')
+    favourites = db.relationship('Favourite', back_populates='propertyListing', lazy='dynamic')
