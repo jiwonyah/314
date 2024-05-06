@@ -1,12 +1,36 @@
 {% extends "base.html" %}
 {% block content %}
 
+<script>
+function toggleFavourite(propertyListingId) {
+    fetch('/toggle_favourite/' + propertyListingId, { method: 'POST' })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status == 'success') {
+            // Update UI when processing is successful
+            const favBtn = document.getElementById('fav-btn-' + propertyListingId);
+            if (data.action == 'added') {
+                favBtn.innerHTML = 'Remove Favourite';
+            } else if (data.action == 'removed') {
+                favBtn.innerHTML = 'Add Favourite';
+            }
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+</script>
+
 <div>
     <table class="table">
         <thead>
         <tr>
             <th>Subject</th>
             <th>Date</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -18,6 +42,12 @@
                     {{ propertyListing.subject }}</a>
             </td>
             <td>{{ propertyListing.create_date }}</td>
+            <td>
+                <!-- Favourite 버튼, id를 이용하여 각각 고유한 id 할당 -->
+                <button id="fav-btn-{{ propertyListing.id }}" onclick="toggleFavourite({{ propertyListing.id }})" class="btn btn-primary">
+                    Add Favourite
+                </button>
+            </td>
         </tr>
         {% endfor %}
         {% else %}
@@ -29,8 +59,6 @@
     </table>
 </div>
 
-<!-- Button for posting new property listing -->
-<!-- 우측 하단에 스타일링된 버튼 추가 -->
 <div style="text-align: right; margin-top: 20px;">
     <a href="{{ url_for('createPropertyListing.createPropertyListing') }}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px; border: 1px solid #007bff;">Create New Property Listing</a>
 </div>
