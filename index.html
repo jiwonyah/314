@@ -1,0 +1,99 @@
+<!DOCTYPE html> 
+ 
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"> 
+<head> 
+    <meta charset="utf-8" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Homepage</title> 
+    <link rel="stylesheet" href="style_index.css"> 
+</head> 
+ 
+<body> 
+     
+     
+    
+    <div class="Saad-class-hero col-12">
+        <nav>
+          <div class="nav-left">
+            <span class="logo">MINYONG</span>
+          </div>
+          <ul class="nav-center">
+            <li><a href="#property-details.html">BUY</a></li>
+            <li><a href="#down2">MORTGAGE</a></li>
+            <li><a href="#down3">MY PROFILE</a></li>
+          </ul>
+        </nav>
+    
+      
+    </div> 
+    
+
+    <h1>My Property Listings</h1>
+
+    <div class="createproplistbtn" >
+    <button id="create-propList-btn">+ Create a Property Listing</button> 
+
+    <form id="property-form" action="submit_property.php" method="post" enctype="multipart/form-data" style="display: none;"> 
+        <label for="address">Address:</label><br> 
+        <input type="text" id="address" name="address" required><br> 
+         
+        <label for="price">Price:</label><br> 
+        <input type="number" id="price" name="price" required><br> 
+         
+        <label for="description">Description:</label><br> 
+        <textarea id="description" name="description" rows="4" cols="50" required></textarea><br> 
+         
+        <label for="image">Image:</label><br> 
+        <input type="file" id="image" name="image" accept="image/*" required><br> 
+         
+        <button type="submit">Submit</button> 
+    </form> 
+    </div>
+
+    <script> 
+        document.getElementById('create-propList-btn').addEventListener('click', function() { 
+            toggleFormVisibility(); 
+        }); 
+ 
+        function toggleFormVisibility() { 
+            var form = document.getElementById('property-form'); 
+            form.style.display = form.style.display === 'none' ? 'block' : 'none'; 
+        } 
+    </script> 
+ 
+    <div class="property-listing"> 
+        <img src="property-image.jpg" alt="Property Image"> 
+        <div class="property-details"> 
+            <h2>Property Address</h2> 
+            <p>Price: $XXX,XXX</p> 
+            <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> 
+            <p>Views: XX | Favorites: XX</p> 
+            <!-- Add buttons for favorite/unfavorite --> 
+        </div> 
+    </div> 
+
+    <!-- Form to edit property listing -->
+<form action="update_property.php" method="post">
+    <!-- Populate fields with existing data -->
+    <input type="hidden" name="property_id" value="..."> <!-- Hidden field for property ID -->
+    <input type="text" name="address" value="..."> <!-- Address field populated with existing data -->
+    <input type="number" name="price" value="..."> <!-- Price field populated with existing data -->
+    <textarea name="description">...</textarea> <!-- Description field populated with existing data -->
+    <input type="submit" value="Save Changes">
+</form>
+
+<!-- Button to remove property listing -->
+<form action="remove_property.php" method="post">
+    <input type="hidden" name="property_id" value="..."> <!-- Hidden field for property ID -->
+    <input type="submit" value="Remove">
+</form>
+
+
+<a href="Exitpage.html"> 
+    <button id="logout-button" class="btn logout-button"> 
+    Logout 
+  </button> 
+</a> 
+ 
+</body> 
+</html>

@@ -1,0 +1,359 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif; /* Changed font to Arial */
+  box-sizing: border-box;
+}
+
+body {
+  background: #f5f5f5;
+  color: #fff;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px; /* Increased padding */
+  background-color: #263343; /* Changed background color */
+}
+
+nav ul li {
+  display: inline-block;
+  list-style: none;
+  margin: 0 20px; /* Increased margin */
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #fff; /* Changed text color to white */
+  font-weight: bold;
+  transition: color 0.3s; /* Added transition effect */
+}
+
+nav ul li a:hover {
+  color: #8b8b87; /* Changed hover color to grey */
+}
+.Saad-class-detail {
+  color: #263343;
+  margin-left: 8%;
+  margin-top: 13%;
+}
+.Saad-class-detail h3 {
+  font-size: 25px;
+  color: darkcyan;
+  margin-bottom: 20px;
+}
+.Saad-class-detail a {
+  background: #212121;
+  padding: 10px 18px;
+  text-decoration: none;
+  font-weight: bold;
+  color: #263343;
+  margin: 80px 0;
+  border-radius: 10px;
+}
+
+.Saad-class-detail p {
+  color: darkcyan;
+  line-height: 22px;
+  text-align: left;
+}
+
+.intro-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #263343;
+  color: #263343;
+  padding: 20px;
+}
+
+.intro-text {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.intro-text h2 {
+  font-size: 25px;
+  color: darkcyan;
+}
+
+.intro-text p {
+  color: darkcyan;
+  line-height: 22px;
+}
+
+.shape {
+  width: 200px; /* Adjust image width as needed */
+  height: auto;
+  margin-top: 20px;
+}
+
+.bottom {
+  background-color: #fff; /* Changed background color to white */
+  padding: 20px;
+  text-align: center;
+}
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff; /* Changed background color to white */
+}
+
+.btn {
+  border: 1px solid #263343; /* Changed border color */
+  border-radius: 4px; /* Adjusted border radius */
+  text-decoration: none;
+  color: #263343; /* Changed text color */
+  padding: 10px 20px; /* Adjusted padding */
+  margin: 0 10px; /* Adjusted margin */
+  transition: background-color 0.3s, color 0.3s; /* Added transition effect */
+}
+
+.btn.btn2 {
+  background: #263343; /* Changed background color */
+  color: #fff; /* Changed text color */
+}
+
+.btn:hover {
+  background-color: #fff; /* Changed background color on hover */
+  color: #263343; /* Changed text color on hover */
+}
+
+form input,
+.dropdown,
+.dropdown-small {
+  border: 1px solid #ccc; /* Changed border color */
+  border-radius: 4px; /* Adjusted border radius */
+  padding: 10px; /* Adjusted padding */
+  margin: 10px; /* Adjusted margin */
+  font-size: 16px; /* Changed font size */
+}
+
+.dropdowns select {
+  margin: 10px; /* Adjusted margin */
+}
+
+/* Dummy Card */
+.cards-container {
+  display: flex;
+  justify-content: center; /* This will center the cards horizontally */
+  align-items: flex-start; /* This aligns the cards at the top */
+  flex-wrap: wrap; /* Allows wrapping of cards if the screen is too narrow */
+  gap: 30px; /* This adds space between the cards */
+  margin: 30px; /* This adds space around the whole container */
+}
+
+/* Style for individual cards */
+.dummy-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 30%; /* This will make each card take up one third of the container width */
+  margin: 0; /* Reset margins for individual cards */
+  /* The height will automatically be the same if the content is the same, otherwise you might need to set a fixed height */
+}
+
+/* Adjustments for responsiveness */
+@media (max-width: 768px) {
+  .dummy-card {
+    width: 100%; /* Cards will take full width on smaller screens */
+  }
+}
+.card-image-link,
+.card-content-link {
+  text-decoration: none;
+}
+
+.card-image {
+  width: 100%;
+  height: 150px; /* Set the height of the image container */
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 20px;
+  width: 100%;
+  flex: 1; /* Add flex: 1 to make the content container take up the remaining space */
+}
+
+.card-content h3 {
+  font-size: 24px;
+  color: #263343; /* Changed text color */
+  margin-bottom: 10px;
+}
+
+.card-content p {
+  color: #666; /* Changed text color */
+  margin-bottom: 5px;
+}
+
+
+.icons {
+  color: #263343; /* Changed text color */
+  margin-bottom: 10px;
+}
+
+.icons i {
+  margin-right: 5px;
+}
+
+.contact-agent {
+  background-color: #263343; /* Changed background color */
+  color: #fff; /* Changed text color */
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.contact-agent:hover {
+  background-color: #263343; /* Changed background color on hover */
+}
+
+#clear-filter {
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Styling for the property options form */
+/* Additional styling for centered form */
+#propertyOptionsForm {
+  max-width: 600px; /* Set a max-width for the form */
+  margin: 20px auto; /* Center form in the available space */
+  padding: 20px;
+  background: #562c2c;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  text-align: center; /* Align the buttons text to center */
+}
+
+/* Styling for checkbox options */
+.option-section label {
+  padding: 5px;
+  margin: 10px 0; /* Add space between options */
+  display: block; /* Ensure each option is on a new line */
+  cursor: pointer;
+}
+
+/* Change the appearance of the checkboxes */
+.option-section input[type="checkbox"] {
+  accent-color: #263343; /* This will change the color of the checkbox */
+}
+
+/* Styling for the buttons */
+#propertyOptionsForm button {
+  padding: 10px 30px;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  border: none;
+  border-radius: 20px;
+  background-color: #263343;
+  color: #ffffff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  margin: 0 10px; /* Space between buttons */
+}
+
+#propertyOptionsForm button:hover {
+  background-color: #1a2734;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Styling for the button when the mouse is not over it */
+#propertyOptionsForm button:not(:hover) {
+  background-color: #f5f5f5;
+  color: #263343;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #propertyOptionsForm {
+    margin: 20px;
+  }
+}
+
+/* Style adjustments for the dropdowns to align with the new form style */
+.dropdown,
+.dropdown-small {
+  margin-bottom: 10px; /* To give space between dropdowns and the new form */
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal h3 {
+  color: #263343;
+}
+
+.modal p {
+  color: #333;
+}
+.review-button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.review-button:hover {
+  background-color: #45a049;
+}
+

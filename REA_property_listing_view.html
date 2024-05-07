@@ -1,0 +1,254 @@
+<html>
+<head>
+  <title>Home Selling Website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="myStyling.css" rel="stylesheet" type="text/css">
+  <script src="https://kit.fontawesome.com/a769080b3a.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQq7MlhAtt6gK9q3VZDgchRu4/1OgD+qLA5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <div class="Saad-class-hero col-12">
+    <nav>
+      <div class="nav-left">
+        <span class="logo">MINYONG</span>
+      </div>
+      <ul class="nav-center">
+        <li><a href="#property-details.html">BUY</a></li>
+        <li><a href="#down2">MORTGAGE</a></li>
+        <li><a href="#down3">MY PROFILE</a></li>
+      </ul>
+    </nav>
+
+  
+</div> 
+
+  <div class="bottom col-12">
+    <form class="us">
+      <input type="text" name="name" placeholder="Search Keyword">
+      <select name="property-type" id="propertyTypeSelect" class="dropdown" onchange="displayPropertyOptions()">
+        <option value="" disabled selected>Property Type</option>
+        <option value="all">All</option>
+        <option value="condo">Condo</option>
+        <option value="landed">Landed</option>
+        <option value="hdb">HDB</option>
+      </select>
+      <select name="location" class="dropdown">
+        <option value="" disabled selected>Location</option>
+        <option value="central">Central</option>
+        <option value="east">East</option>
+        <option value="north">North</option>
+        <option value="west">West</option>
+        <option value="south">South</option>
+      </select>
+     
+      <select name="price-sort" class="dropdown-small">
+      <option value="" disabled selected>Price Sort</option>
+        <option value="price-low-to-high">Price: Low to High</option>
+        <option value="price-high-to-low">Price: High to Low</option>
+      </select>
+      <select name="bedroom" class="dropdown-small">
+        <option value="" disabled selected>Bedroom</option>
+          <option value="1-bedroom">1</option>
+          <option value="2-bedroom">2</option>
+          <option value="3-bedroom">3</option>
+          <option value="4-bedroom">4</option>
+          <option value="5-bedroom">5</option>
+        </optgroup>
+      </select>
+      <button type="submit" class="btn btn2">Search</button>
+    </form>
+  </div>
+  <div id="propertyOptionsForm" style="display:none;">
+
+    <div id="allOptions" class="option-section" style="display:none;">
+    
+    </div>
+    <!-- Condo Options -->
+    <div id="condoOptions" class="option-section" style="display:none;">
+      <label><input type="checkbox" name="condo-type" value="condominium"> Condominium</label>
+      <label><input type="checkbox" name="condo-type" value="apartment"> Apartment</label>
+      <label><input type="checkbox" name="condo-type" value="walk-up"> Walk-Up</label>
+      <label><input type="checkbox" name="condo-type" value="cluster-house"> Cluster House</label>
+      <label><input type="checkbox" name="condo-type" value="executive-condominium"> Executive Condominium</label>
+    </div>
+  
+    <!-- Landed Options -->
+    <div id="landedOptions" class="option-section" style="display:none;">
+        <label><input type="checkbox" name="landed-type" value="terenced-house">  Terenced House</label>
+        <label><input type="checkbox" name="landed-type" value="detached-house">  Detached House</label>
+        <label><input type="checkbox" name="landed-type" value="semi-detached-house">  Semi Detached House</label>
+        <label><input type="checkbox" name="landed-type" value="corner-terrace">  Corner Terrace</label>
+        <label><input type="checkbox" name="landed-type" value="bungalow-house">  Bungalow House</label>
+        <label><input type="checkbox" name="landed-type" value="good-class-bungalow">  Good Class Bungalow</label>
+        <label><input type="checkbox" name="landed-type" value="shop-house">  Shop House</label>
+        <label><input type="checkbox" name="landed-type" value="land-only">  Land Only</label>
+        <label><input type="checkbox" name="landed-type" value="conservation-house">  Conservation House</label>
+        <label><input type="checkbox" name="landed-type" value="cluster-house">  Cluster House</label>
+    </div>
+  
+    <!-- HDB Options -->
+    <div id="hdbOptions" class="option-section" style="display:none;">
+        <label><input type="checkbox" name="hdb-type" value="1"> 1</label>
+        <label><input type="checkbox" name="hdb-type" value="2"> 2</label>
+        <label><input type="checkbox" name="hdb-type" value="1"> 3</label>
+        <label><input type="checkbox" name="hdb-type" value="2"> 4</label>
+        <label><input type="checkbox" name="hdb-type" value="1"> 5</label>
+
+    </div>
+  
+    <!-- Clear and Apply Buttons -->
+    <button type="button" onclick="clearPropertyOptions()">Clear</button>
+    <button type="button" onclick="applyPropertyOptions()">Apply Filter</button>
+  </div>
+  <div class="cards-container">
+    <!-- Existing Card -->
+    <div class="dummy-card col-12">
+      <div class="card-details">
+        <div class="card-image">
+          <img src="image.png" alt="House Image" />
+        </div>
+
+        <div class="card-content">
+          <h3>Property 1</h3>
+          <p>Address</p>
+          <p>Price: $XXX,XXX</p>
+          <div class="icons">
+            <i class="fas fa-bed"></i> <span>X Beds</span>
+            <i class="fas fa-bath"></i> <span>X Baths</span>
+            <p>Y sqft</p>
+          </div>
+          <p><b>Property Type:</b> Z</p>
+          <p><b>Review:</b> "Seller's Description"</p>
+
+          <button class="contact-agent">Contact Agent</button>
+          <a href="property-details.html" class="review-button">Review</a> 
+        </div>
+      </div>
+    </div>
+
+    <!-- New Card Center -->
+    <div class="dummy-card col-12">
+      <div class="card-details">
+        <div class="card-image">
+          <img src="Image2.jpg" alt="House Image" />
+        </div>
+        <div class="card-content">
+          <h3>Property 2</h3>
+          <p>Address</p>
+          <p>Price: $XXX,XXX</p>
+          <div class="icons">
+            <i class="fas fa-bed"></i> <span>X Beds</span>
+            <i class="fas fa-bath"></i> <span>X Baths</span>
+            <p>Y sqft</p>
+          </div>
+          <p><b>Property Type:</b> Z</p>
+          <p><b>Review:</b> "Seller's Description"</p>
+          <button class="contact-agent">Contact Agent</button>
+          <a href="property-details.html" class="review-button">Review</a>  
+        </div>
+      </div>
+    </div>
+
+    <!-- New Card Right (marked as sold) -->
+    <div class="dummy-card col-12">
+        <div class="card-details">
+            <div class="card-image">
+                <img src="image.png" alt="House Image" />
+            </div>
+            <div class="sold-stamp">
+                <span>SOLD</span>
+            </div>
+            <div class="card-content" class="sold-stamp">
+                <h3>Property 3</h3>
+                <p>Address</p>
+                <p>Price: $XXX,XXX</p>
+                <div class="icons">
+                    <i class="fas fa-bed"></i> <span>X Beds</span>
+                    <i class="fas fa-bath"></i> <span>X Baths</span>
+                    <p>Y sqft</p>
+                </div>
+                <p><b>Property Type:</b> Z</p>
+                <p><b>Review:</b> "Seller's Description"</p>
+        
+                <!-- Disable the buttons for the sold property -->
+                <button class="contact-agent" disabled>Contact Agent</button>
+                <a href="property-details.html" class="review-button" disabled>Review</a>
+            </div>
+        </div>
+    </div>
+      
+
+  <div id="contactAgentModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Contact Information</h3>
+      <p>Phone Number: +65 8888 8888</p>
+      <p>Email: test@test.com</p>
+    </div>
+  </div>
+  <script>
+    function displayPropertyOptions() {
+      // Get the selected value from the dropdown
+      var propertyType = document.getElementById('propertyTypeSelect').value;
+      
+      // Hide all option sections initially
+      var forms = document.querySelectorAll('.option-section');
+      forms.forEach(function(form) {
+        form.style.display = 'none';
+      });
+      
+      // Display the form based on the selected property type
+      if (propertyType !== ' ') {
+        document.getElementById('propertyOptionsForm').style.display = 'block';
+        document.getElementById(propertyType + 'Options').style.display = 'block';
+      } else {
+        document.getElementById('propertyOptionsForm').style.display = 'none';
+      }
+    }
+    
+    function clearPropertyOptions() {
+      // Uncheck all checkboxes in the property options form
+      var checkboxes = document.querySelectorAll('#propertyOptionsForm input[type="checkbox"]');
+      checkboxes.forEach(function(checkbox) {
+        checkbox.checked = false;
+      });
+    }
+    
+    function applyPropertyOptions() {
+      // Perform actions to apply the selected property options
+      // You will need to define what should happen when the filter is applied.
+      // For now, we'll just hide the form.
+      document.getElementById('propertyOptionsForm').style.display = 'none';
+    }
+
+    var modal = document.getElementById("contactAgentModal");
+
+      // Get all the buttons that open the modal
+      var btns = document.querySelectorAll(".contact-agent");
+
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+
+      // When the user clicks any of the buttons, open the modal
+      btns.forEach(function (btn) {
+        btn.onclick = function () {
+          modal.style.display = "block";
+        };
+      });
+
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+    </script>
+</body>
+</html>
+
+
