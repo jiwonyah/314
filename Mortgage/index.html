@@ -9,58 +9,58 @@
         
         <!-- Used for Javascript -->
         <script>
-            function Calculate_Mortgage()
-            {  
-                /*Retrieve the values from the textbox*/
-                var loan_amt = parseFloat(document.getElementById('loan_amt').value);
-                var int_rate = parseFloat(document.getElementById('int_rate').value);
-                var loan_tenure = parseFloat(document.getElementById('loan_tenure').value);
-                
-                // Check if any input field is empty or not a number
-                if (isNaN(loan_amt) || isNaN(int_rate) || isNaN(loan_tenure)) 
-                {
-                    alert('Please enter valid numbers for all fields.');
-                    return;
-                }
-                
-                // Check if interest rate is within a reasonable range
-                if (loan_amt < 100000) 
-                {
-                    alert('Loan Amount must be more than 100,000 SGD!');
-                    return;
-                }
-                // Check if interest rate is within a reasonable range
-                if (interestRate < 0.5 || interestRate >= 100) 
-                {
-                    alert('Please enter a valid interest rate of at least 0.5%!');
-                    return;
-                }
+        function Calculate_Mortgage()
+        {  
+            /*Retrieve the values from the textbox*/
+            var loan_amt = parseFloat(document.getElementById('loan_amt').value);
+            var int_rate = parseFloat(document.getElementById('int_rate').value);
+            var loan_tenure = parseFloat(document.getElementById('loan_tenure').value);
 
-                // Check if loan term is a positive integer
-                if (loanTerm < 5) 
-                {
-                    alert('Please enter a valid loan term of at least 5 years!');
-                    return;
-                }
-                
-                /* Calculate the Loan Amount, Interest Rate and Loan Term */
-                var loanAmount = loan_amt;
-                var interestRate = int_rate/ 100 / 12;
-                var loanTerm = loan_tenure * 12;
-                
-                /* Mortgage is calculated */
-                var mortgage = loanAmount * interestRate * Math.pow(1 + interestRate, loanTerm) / (Math.pow(1 + interestRate, loanTerm) - 1);
-                var resultElement = document.getElementById('result');
-                /* Print the Monthly Mortgage Amount to the HTML Page */
-                if(isNaN(mortgage))
-                {
-                    resultElement.innerHTML = 'Monthly Mortgage Payment: $' + 0.00;    
-                }           
-                else
-                {
-                    resultElement.innerHTML = 'Monthly Mortgage Payment: $' + mortgage.toFixed(2);    
-                }
+            // Check if any input field is empty or not a number
+            if (isNaN(loan_amt) || isNaN(int_rate) || isNaN(loan_tenure)) 
+            {
+                alert('Please enter valid numbers for all fields.');
+                return;
             }
+
+            // Check if interest rate is within a reasonable range
+            if (loan_amt < 100000) 
+            {
+                alert('Loan Amount must be more than 100,000 SGD!');
+                return;
+            }
+            // Check if interest rate is within a reasonable range
+            if (interestRate < 0.5 || interestRate >= 100) 
+            {
+                alert('Please enter a valid interest rate of at least 0.5%!');
+                return;
+            }
+
+            // Check if loan term is a positive integer
+            if (loanTerm < 5) 
+            {
+                alert('Please enter a valid loan term of at least 5 years!');
+                return;
+            }
+
+            /* Calculate the Loan Amount, Interest Rate and Loan Term */
+            var loanAmount = loan_amt;
+            var interestRate = int_rate/ 100 / 12;
+            var loanTerm = loan_tenure * 12;
+
+            /* Mortgage is calculated */
+            var mortgage = loanAmount * interestRate * Math.pow(1 + interestRate, loanTerm) / (Math.pow(1 + interestRate, loanTerm) - 1);
+            var resultElement = document.getElementById('result');
+            /* Print the Monthly Mortgage Amount to the HTML Page */
+            if(isNaN(mortgage))
+            {
+                resultElement.innerHTML = 'Monthly Mortgage Payment: $' + 0.00;    
+            }           
+            else
+            {
+                resultElement.innerHTML = 'Monthly Mortgage Payment: $' + mortgage.toFixed(2);    
+            }
+        }   
         </script>
     </head>
     <body>
@@ -73,11 +73,9 @@
             </div>
       
             <ul class="navbar__menu">
-                <li><a href="guestMainPage.html">Home</a></li>
                 <li><a href="#">Buy</a></li>
-                <li><a href="#">Sell</a></li>
                 <li><a href="#">Mortgage</a></li>
-                <li><a href="#">Login</a></li>
+                <li><a href="#">My Profile</a></li>
             </ul>
         </nav>
         <!-- Navbar End -->

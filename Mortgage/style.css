@@ -1,13 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 /* Main CSS */
 :root {
     --accent-color: #orange;
     --text-color: #f0f4f5;
     --bodybackground-color: lightgray;
 }
-  
-.body {
+ 
+body{
     margin: 0;
-    font-family: 'Montserrat';
+    font-family: 'Poppins';
 }
 
 a {

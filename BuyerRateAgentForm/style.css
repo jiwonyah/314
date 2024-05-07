@@ -1,0 +1,85 @@
+ /* Import Poppins Font */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+    
+    :root {
+    --accent-color: #orange;
+    --text-color: #f0f4f5;
+    --bodybackground-color: lightgray;
+    }
+
+    body{
+        margin: 0;
+        font-family: 'Poppins';
+    }
+
+    a {
+        text-decoration: none;
+        color: var(--text-color);
+    }
+
+    /* Navigation Bar */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #263343;
+        padding: 8px 12px;
+    }
+
+    .navbar__logo a { 
+        color: var(--text-color);
+        padding-left: 0;
+        font-size: 24px; /* 글자 크기 설정 */
+        font-weight: bold; /* 글자 굵기 설정 */
+    }
+
+    .navbar__menu {
+        list-style: none;
+        display: flex;
+        margin: 0;
+        padding-left: 0;
+        padding-right: 70px;
+        margin-left: auto;
+    }
+
+    .navbar__menu li {
+        padding: 8px 60px;
+    }
+
+
+    /*related to Rating Form*/
+    .rating-form {
+        text-align: center;
+    }
+
+    .stars {
+      font-size: 50px;
+    }
+
+    .star {
+      cursor: pointer;
+      color: lightgray;
+    }
+
+    .star.active {
+      color: gold;
+    }
+
+    textarea {
+      margin: 10px 0;
+      width: 25%;
+      height: 200px;
+    }
+
+    button {
+      padding: 10px 50px;
+      background-color: #263343;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover{
+        background-color: lightskyblue;
+    }
+            
