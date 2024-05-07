@@ -1,0 +1,101 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    /* Changed font to Arial */
+    box-sizing: border-box;
+}
+
+body {
+    background: #f5f5f5;
+}
+
+.logo {
+        color: #fff;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    /* Increased padding */
+    background-color: #263343;
+    /* Changed background color */
+}
+
+nav ul li {
+    display: inline-block;
+    list-style: none;
+    margin: 0 20px;
+    /* Increased margin */
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    /* Changed text color to white */
+    font-weight: bold;
+    transition: color 0.3s;
+    /* Added transition effect */
+}
+
+nav ul li a:hover {
+    color: #8b8b87;
+    /* Changed hover color to grey */
+}
+
+.Saad-class-detail {
+    color: #263343;
+    margin-left: 8%;
+    margin-top: 13%;
+}
+
+.Saad-class-detail h3 {
+    font-size: 25px;
+    color: darkcyan;
+    margin-bottom: 20px;
+}
+
+.Saad-class-detail a {
+    background: #212121;
+    padding: 10px 18px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #263343;
+    margin: 80px 0;
+    border-radius: 10px;
+}
+
+.Saad-class-detail p {
+    color: darkcyan;
+    line-height: 22px;
+    text-align: left;
+}
+
+
+.profile {
+    display: flex;
+    align-items: flex-start;
+    margin: 20px;
+}
+
+.profile-picture {
+    width: 90px; /* Adjust as needed */
+    height: 90px; /* Adjust as needed */
+    border-radius: 50%; /* Makes the image round */
+    margin-right: 20px; /* Adjust spacing between picture and details */
+}
+
+.profile-details {
+    flex: 1; /* Takes remaining space */
+    color: black; /* Set text color to black */
+}
+
+.profile-details h2 {
+    margin-top: 0; /* Remove default margin */
+}
+
+.profile-details p {
+    margin: 5px 0; /* Adjust spacing between details */
+}
