@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<head>
+    <style>
+        /* 스타일링 */
+        .agent-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .agent-item {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            display: flex; /* Flexbox를 사용하여 요소를 수평으로 배치 */
+            justify-content: space-between; /* 요소 사이의 여백을 최대로 설정하여 각 요소를 좌우로 배치 */
+            align-items: center; /* 요소를 수직 가운데 정렬 */
+        }
+        .agent-name {
+            font-size: 18px;
+            margin-right: 10px; /* 에이전트 이름 오른쪽 여백 추가 */
+        }
+        .btn {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Find Agents</h1>
+    <ul class="agent-list">
+        {% for agent in agents %}
+        <li class="agent-item">
+            <div class="agent-name">{{ agent.firstName }} {{ agent.lastName }}</div>
+            <a href="/write-review/{{ agent.id }}" class="btn">Write Review</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+{% endblock %}
+
+
+
+
+

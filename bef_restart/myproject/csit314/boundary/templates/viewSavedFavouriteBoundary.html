@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Date</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if favourite_listings %}
+        {% for favourite in favourite_listings %}
+        <tr id="row-{{ favourite.id }}">
+            <td>
+                <a href="{{ url_for('viewPropertyListing.detail', propertyListing_id=favourite.id) }}">
+                    {{ favourite.subject }}</a>
+            </td>
+            <td>{{ favourite.create_date }}</td>
+            <td>
+                <button onclick="toggleFavourite(this, {{ favourite.id }})"
+                        class="favourite-btn"
+                        id="favourite-btn-{{ favourite.id }}">X</button>
+            </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="3">No contents</td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+function toggleFavourite(btn, propertyListingId) {
+    fetch(`/toggle_favourite/${propertyListingId}`, {
+        method: 'POST',
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success) {
+            // If successfully removed from favourites, remove the corresponding listing from the page
+            var row = document.getElementById(`row-${propertyListingId}`);
+            row.parentNode.removeChild(row);
+        } else {
+            // Display error message in case of fail
+            console.error('Failed to remove favorite:', data.error);
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+
+</script>
+
+<style>
+.favourite-btn {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: #ff0000; /* 빨간색 배경 */
+    color: white;
+    cursor: pointer;
+}
+</style>
+
+{% endblock %}
+
+
