@@ -1,0 +1,96 @@
+
+
+.navbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #263343;
+    padding: 8px 12px;
+    box-sizing: border-box;
+}
+
+.navbar__logo {
+    display: flex;
+    align-items: center;
+    color: white; /* Text color */
+    font-size: 24px; /* Font size */
+    font-weight: bold; /* Font weight */
+    padding-right: 20px; /* Add spacing to the right */
+}
+
+.navbar__logo a { 
+    color: var(--text-color);
+    padding-left: 0;
+    font-size: 24px; /* 글자 크기 설정 */
+    font-weight: bold; /* 글자 굵기 설정 */
+}
+
+.navbar__menu {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 70px;
+    margin-left: auto;
+    justify-content: flex-end;
+} 
+
+.navbar__menu li a {
+    text-decoration: none; /* Remove underline */
+    color: white; /* Text color */
+    padding: 8px 20px; /* Padding */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+  
+.navbar__menu li {
+    margin-left: 20px;
+    padding: 8px 60px;
+} 
+
+.navbar__menu li a:hover {
+    background-color: #2f3f53aa; /* Lighter color on hover */
+}
+
+
+.profile {
+    display: flex;
+    align-items: flex-start;
+    margin: 20px;
+}
+
+.profile-picture {
+    width: 90px; /* Adjust as needed */
+    height: 90px; /* Adjust as needed */
+    border-radius: 50%; /* Makes the image round */
+    margin-right: 20px; /* Adjust spacing between picture and details */
+}
+
+.profile-details {
+    flex: 1; /* Takes remaining space */
+    color: black; /* Set text color to black */
+}
+
+.profile-details h2 {
+    margin-top: 0; /* Remove default margin */
+}
+
+.profile-details p {
+    margin: 5px 0; /* Adjust spacing between details */
+}
+
+#leave-review-btn {
+    background-color: #de9f57; 
+    border: none; /* Remove border */
+    color: white; /* White text */
+    padding: 10px 20px; /* Padding */
+    text-align: center; /* Center text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Display as block element */
+    font-size: 16px; /* Font size */
+    margin-bottom: 20px; /* Add margin */
+    cursor: pointer; /* Cursor style */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}

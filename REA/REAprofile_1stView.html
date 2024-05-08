@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="style_profile1st.css">
+</head>
+
+<body>
+    <nav class="navbar">
+            <div class="navbar__logo">
+                <span class="logo">MINYONG</span>
+            </div>
+
+            <ul class="navbar__menu">
+                <li><a href="#down">Buy</a></li>
+                <li><a href="#down2">Mortgage</a></li>
+                <li><a href="#down3">My Profile</a></li>
+            </ul>
+    </nav>
+
+    <div class="profile">
+        <img src="profilepict1.jpg" alt="Profile Picture" class="profile-picture">
+        <div class="profile-details">
+            <p>Name: $UserFullname</p>
+            <p>Username: $Username</p>
+            <p>Email: $UserEmail</p>
+            <p>Phone: $UserPhoneNum</p>
+        </div>
+    </div>
+
+    <hr> <!-- Horizontal rule to separate sections -->
+
+    
+    <div class="reviews-section">
+        <h3>Reviews on me:</h3>
+        <p>$RateStar $ReviewContent </p>
+        <p>/*List of reviews and ratings on REA*/</p>
+        <br><br>
+    
+    </div>
+
+    <a href="Exitpage.html"> 
+        <button id="logout-button" class="btn logout-button"> 
+        Logout 
+      </button> 
+    </a> 
+
+</body>
+
+</html>
