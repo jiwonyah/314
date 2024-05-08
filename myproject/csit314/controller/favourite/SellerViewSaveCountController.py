@@ -4,7 +4,7 @@ from csit314.app import db
 from csit314.entity.Favourite import Favourite
 from csit314.entity.PropertyListing import PropertyListing
 
-bp = Blueprint('view_saved_favourite_controller', __name__, template_folder='boundary/templates')
+bp = Blueprint('view_save_count_controller', __name__, template_folder='boundary/templates')
 
 def update_shortlist_count():
     # Calculate the number of favorites per propertyListing_id in the Favourite model
