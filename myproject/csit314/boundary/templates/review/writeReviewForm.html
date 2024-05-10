@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!--<div class="container mt-5">-->
+<!--action="/write-review/${agentId}"-->
+<form id="write-review-form" method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.agent_id }}
+    <div>
+        {{ form.rating.label }}
+        {{ form.rating }}
+    </div>
+    <div>
+        {{ form.content.label }}
+        {{ form.content }}
+    </div>
+    {{ form.submit }}
+</form>
+
+<script>
+    $(document).ready(function() {
+        $('#write-review-form').submit(function(event) {
+            event.preventDefault();
+
+            var formData = {
+                'rating': $('#rating').val(),
+                'content': $('#content').val(),
+                'agent_id': '{{ agent_id }}'
+            };
+
+            var url = `/write-review/${agentId}`;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // 요청의 Content-Type을 application/json으로 설정
+                    'X-CSRFToken': csrfToken, // CSRF 토큰 추가
+                },
+                body: JSON.stringify(formData) // JSON 문자열을 요청 본문으로 설정
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // 리다이렉트 처리
+                window.location.href = '{{ url_for("write_review_controller.agent_list") }}';
+                //return response.json(); // 응답을 JSON 형태로 파싱
+            })
+            .then(data => {
+                if (data.message) {
+                    // 서버에서 반환된 'successAlert' 문자열을 동적으로 삽입
+                    $('#review-message').html(data.successAlert);
+                    window.location.href = '{{ url_for("write_review_controller.agent_list") }}';
+                } else if (data.error) {
+                    alert(data.error);
+                }
+            })
+            .catch(error => {
+                console.error('There was a problem with your fetch operation:', error);
+                alert('An error occurred. Please try again later.');
+            });
+        });
+    });
+</script>
+
+
+<!--</div>-->
+{% endblock %}
+
+
+
