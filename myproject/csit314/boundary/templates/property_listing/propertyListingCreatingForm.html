@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h5 class="my-3 border-bottom pb-2">Register Property Listing</h5>
+    <form method="post" class="my-3">
+        {{ form.csrf_token }}
+        <!-- 오류표시 Start -->
+        {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            {% for field, errors in form.errors.items() %}
+            <strong>{{ form[field].label }}</strong>
+            <ul>
+                {% for error in errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <!-- 오류표시 End -->
+        <div class="mb-3">
+            <label for="subject">Subject</label>
+            <input type="text" class="form-control" name="subject" id="subject"
+                   value="{{ form.subject.data or '' }}">
+        </div>
+        <div class="mb-3">
+            <label for="content">Property Listing Description</label>
+            <textarea class="form-control" name="content"
+                      id="content" rows="10">{{ form.content.data or '' }}</textarea>
+        </div>
+		<div class="mb-3">
+            <label for="price">Price</label>
+            <input type="number" class="form-control" name="price"
+                      id="price">{{ form.price.data or '' }}</input>
+        </div>
+		<div class="mb-3">
+            <label for="address">Address</label>
+            <input type="text" class="form-control" name="address"
+                      id="address">{{ form.address.data or '' }}</input>
+        </div>
+		<div class="mb-3">
+            <label for="floorSize">Floor Size</label>
+            <input type="number" class="form-control" name="floorSize"
+                      id="floorSize">{{ form.floorSize.data or '' }}</input>
+        </div>
+
+		<div class="mb-3">
+            <label for="floorLevel">Floor Level</label>
+                <select class="form-select" name="floorLevel" id="floorLevel">
+                    {% for value, label in form.floorLevel.choices %}
+                        <option value="{{ value }}" {% if form.floorLevel.data == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+        </div>
+
+		<div class="mb-3">
+            <label for="propertyType">Property type</label>
+                <select class="form-select" name="propertyType" id="propertyType">
+                    {% for value, label in form.propertyType.choices %}
+                        <option value="{{ value }}" {% if form.propertyType.data == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+        </div>
+
+        	<div class="mb-3">
+            <label for="furnishing">Furnishing</label>
+                <select class="form-select" name="furnishing" id="furnishing">
+                    {% for value, label in form.furnishing.choices %}
+                        <option value="{{ value }}" {% if form.furnishing.data == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="builtYear">Built year</label>
+            <input type="number" class="form-control" name="builtYear"
+                      id="builtYear">{{ form.builtYear.data or '' }}</input>
+        </div>
+
+        <div class="mb-3">
+            <label for="client_id">Client</label>
+            <input type="text" class="form-control" name="client_id"
+                      id="client_id">{{ form.client_id.data or '' }}</input>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}
