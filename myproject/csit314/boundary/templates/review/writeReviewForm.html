@@ -7,6 +7,10 @@
     {{ form.hidden_tag() }}
     {{ form.agent_id }}
     <div>
+        <h2>
+            {{ user.firstName }} {{ user.lastName }}
+        </h2>
+        <p class="small-text">Real Estate Agent</p>
         {{ form.rating.label }}
         {{ form.rating }}
     </div>
