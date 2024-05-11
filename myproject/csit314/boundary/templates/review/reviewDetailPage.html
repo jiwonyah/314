@@ -3,7 +3,24 @@
 <div id="reviewDetail">
     <h1>Review Detail</h1>
     <div id="error"></div>
-    <div id="reviewContent"></div>
+    <div id="reviewContentBox">
+        <div class="review-item">
+            <strong>Review ID:</strong> {{ review.id }}
+        </div>
+        <div class="review-item">
+            <strong>Author:</strong> {{ review.author_name }}
+        </div>
+        <div class="review-item">
+            <strong>Rating:</strong> {{ review.rating }}
+        </div>
+        <div class="review-item">
+            <strong>Content:</strong> {{ review.content }}
+        </div>
+        <div class="divider"></div>
+        <div class="review-item date">
+            <strong>Written on:</strong> {{ review.create_date.strftime('%Y-%m-%d') }}
+        </div>
+    </div>
 </div>
 
 <script>
@@ -18,11 +35,23 @@
         if (data.error) {
             document.getElementById('error').innerHTML = `<p>${data.error}</p>`;
         } else {
-            document.getElementById('reviewContent').innerHTML = `
-                <p>ID: ${data.id}</p>
-                <p>Author: ${data.author_userid}</p>
-                <p>Rating: ${data.rating}</p>
-                <p>Content: ${data.content}</p>
+            document.getElementById('reviewContentBox').innerHTML = `
+                <div class="review-item">
+                    <strong>ID:</strong> ${data.id}
+                </div>
+                <div class="review-item">
+                    <strong>Author:</strong> ${data.author_name}
+                </div>
+                <div class="review-item">
+                    <strong>Rating:</strong> ${data.rating}
+                </div>
+                <div class="review-item">
+                    <strong>Content:</strong> ${data.content}
+                </div>
+                <div class="divider"></div>
+                <div class="review-item date">
+                    <strong>Written on:</strong> ${new Date(data.create_date).toISOString().slice(0, 10)}
+                </div>
             `;
         }
     })
