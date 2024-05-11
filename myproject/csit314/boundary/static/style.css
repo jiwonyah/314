@@ -617,3 +617,71 @@ br {
     color: #1E3269;
 }
 
+/*---------------- Review Detail Page (reviewDetailPage.html) ------------------*/
+
+/* Review Detail 페이지 전체 스타일 */
+#reviewDetail {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* 에러 메시지 스타일 */
+#error {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* 리뷰 내용 스타일 */
+#reviewContent {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* 리뷰 내용 항목 스타일 */
+#reviewContent p {
+    margin-bottom: 10px;
+}
+
+/* 리뷰 내용 항목 타이틀 스타일 */
+#reviewContent p:first-child {
+    font-weight: bold;
+}
+
+/* 리뷰 내용 항목 날짜 스타일 */
+#reviewContent p:last-child {
+    font-style: italic;
+    color: #888;
+}
+
+/* 리뷰 내용을 감싸는 박스 스타일 */
+#reviewContentBox {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 30px;
+    background-color: #f9f9f9;
+    margin-top: 20px;
+}
+
+/* Divider 스타일 */
+.divider {
+    border-top: 1px solid #ccc;
+    margin-top: 50px;
+    padding-top: 10px;
+}
+
+/* 각 리뷰 항목의 텍스트 스타일 */
+.review-item {
+    margin-bottom: 25px;
+}
+
+/* 날짜 스타일 */
+.date {
+    font-style: italic;
+    color: #888;
+}
+
+
