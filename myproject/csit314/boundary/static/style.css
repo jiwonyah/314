@@ -552,3 +552,68 @@ br {
 #write-review-form div {
     margin-bottom: 40px; /* Rating 위쪽 마진을 늘려서 간격을 넓힘 */
 }
+
+/*---------------- Reviews on me (viewReviewList.html) ------------------*/
+/* Reviews On Me 페이지 전체 스타일 */
+#reviews-on-me-page {
+    max-width: 800px; /* 폼 너비 확장 */
+    margin: 50px auto 20px; /* 상단 여백을 늘리고 아래 여백을 줄임 */
+    padding: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+/* 작고 회색 글씨 스타일 */
+#reviews-on-me-page p.small-text {
+    font-size: 13px;
+    color: #888;
+}
+
+/* Review 테이블 스타일 */
+#reviewTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+/* Review 테이블 헤더 스타일 */
+#reviewListTableHead {
+    background-color: #f0f0f0;
+}
+
+/* Review 테이블 행 스타일 */
+#reviewListTableRow {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Review 테이블 셀(테이블 내부) 패딩 설정 */
+#reviewTable td {
+    padding: 10px; /* 테이블 셀 패딩 설정 */
+}
+
+/* Review 테이블 셀(작성자 이름) 스타일 */
+#reviewAuthorName {
+    font-weight: bold;
+}
+
+/* Review 테이블 셀(날짜) 스타일 */
+#reviewWrittenDate {
+    font-style: italic;
+}
+
+/* Review ID 링크 스타일 */
+#reviewTable a {
+    text-decoration: none;
+    color: #3C5087;
+}
+
+/* Review ID 링크 호버 효과 스타일 */
+#reviewTable a:hover {
+    text-decoration: underline;
+    color: #1E3269;
+}
+
