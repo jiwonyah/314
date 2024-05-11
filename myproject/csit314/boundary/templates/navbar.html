@@ -13,11 +13,10 @@
 		</div>
 		<ul class="navbar__menu">
 		    <li><a href="{{ url_for('index') }}">Home</a></li>
-		    <li><a href="{{ url_for('viewPropertyListing.index') }}">PropertyListing</a></li>
-			<!--{% if g.user is none or g.user.role != 'AGENT' %}-->
-			<li><a href="{{ url_for('write_review_controller.agent_list') }}">Find Agent</a></li>
-			<!--{% endif %}-->
-		    <li><a href="#">Mortgage</a></li>  <!--page has not been created-->
+		    <li><a href="{{ url_for('viewPropertyListing.index') }}">Property Listing</a></li>
+			<li><a href="{{ url_for('write_review_controller.agent_list_index') }}">Review Agent</a></li>
+		    <li><a href="{{ url_for('calculate_mortgage.calculateMortgage') }}">Mortgage</a></li>
+
 
 			{% if not g.user %}
 			<li class="dropdown">
@@ -31,16 +30,24 @@
 			<li class="dropdown">
 			    <a href="#">My Page</a>
 			    <div class="dropdown-content">
-					<a if="${currentUser != null}" href="@{'/profile/' + ${currentUser.username}}">Profile</a>
-			        <a href="#">Shortlist</a>
-					{% if show_review_button %}
-						<a href="/myreviews">View My Review</a>
+					<!-- 1 -->
+					<a href="{{ url_for('profile.profile', userid=g.user.userid) }}">Profile</a>
+					<!-- 2 -->
+					{% if g.user.role.value == "agent"  %}
+					<a href="{{ url_for('viewPropertyListing.viewPropertyListingHistory')}}">게시물 히스토리</a>
+					<a href="{{ url_for('view_review_controller.agentViewReviews_index')}}">My Reviews</a>
+					{% elif g.user.role.value == "seller" %}
+					<a href="{{ url_for('viewPropertyListing.sellerViewOwnPropertyListing')}}">My Property Listing</a>
+					{% else %}
+			        <a href="{{ url_for('view_saved_favourite_controller.view_my_favourites_index')}}">Shortlist</a>
 					{% endif %}
+
 			        <a href="{{ url_for('logout.logout') }}">Logout</a>
 			    </div>
 			</li>
 			{% endif %}
 		</ul>
+		</div>
 	</nav>
 </body>
 </html>
