@@ -1,31 +1,43 @@
 from flask import Blueprint, render_template, g, redirect, url_for, request, flash, jsonify
 from csit314.entity.Review import Review
-from csit314.entity.User import User, Role
+from csit314.entity.User import User
 from csit314.app import db
-from csit314.controller.authentication.LoginController import login_required, agent_only
 
 bp = Blueprint('view_review_controller', __name__, template_folder='boundary/templates')
 
 @bp.route('/agent/reviews/')
 def agentViewReviews_index():
     reviews = Review.query.filter_by(agent_id=g.user.id).all()
-    return render_template('review/viewReviewList.html', reviews=reviews)
+
+    review_data = []
+    for review in reviews:
+        user = User.query.filter_by(userid=review.author_userid).first()
+        review_data.append({
+            'id': review.id,
+            'author_name': f"{user.firstName} {user.lastName}",
+            'create_date': review.create_date,
+            'rating': review.rating,
+            'content': review.content
+        })
+
+    return render_template('review/viewReviewList.html', reviews=review_data)
+"""
 @bp.route('/api/agent/reviews/')
 def agentViewReviews():
     # 현재 로그인한 사용자(agent)의 id를 사용하여 리뷰를 조회합니다.
     reviews = Review.query.filter_by(agent_id=g.user.id).all()
 
-    # jsonify를 사용하여 JSON 형식으로 리뷰 데이터를 반환합니다.
-    review_data = [
-        {
+    review_data = []
+    for review in reviews:
+        user = User.query.filter_by(userid=review.author_userid).first()
+        review_data.append({
             'id': review.id,
-            'author_userid': review.author_userid,
+            'author_name': f"{user.firstName} {user.lastName}",
             'rating': review.rating,
             'content': review.content
-        } for review in reviews
-    ]
+        })
     return jsonify(review_data)
-
+"""
 @bp.route('/agent/reviewDetail/<int:review_id>')
 def review_detail_index(review_id):
     review = Review.query.filter_by(id=review_id).first()
