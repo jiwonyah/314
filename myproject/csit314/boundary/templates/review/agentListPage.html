@@ -1,30 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<head>
-    <meta charset="UTF-8">
-    <title>Agent List</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-    </style>
-</head>
-<body>
+<div id="agent-list-page">
     <h1>Agent List</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>firstname</th>
-                <th>lastname</th>
+    <table id="agentListTable">
+        <thead id="agentListHead">
+            <tr id="agentListRow">
+                <!--<th>firstname</th>-->
+                <!--<th>lastname</th>-->
             </tr>
         </thead>
         <tbody id="agentList">
@@ -44,9 +27,11 @@
 
                     // create table row with agent data and a button to write a review
                     agents.forEach(agent => {
+                        // Combine firstname and lastname into a single full name
+                        const fullName = `${agent.firstName} ${agent.lastName}`;
+
                         const row = `<tr>
-                                        <td>${agent.firstName}</td>
-                                        <td>${agent.lastName}</td>
+                                        <td>${fullName}</td>
                                         <td><a href="/write-review/${agent.id}" class="review-button">Write Review</a></td>
                                      </tr>`;
                         listElement.innerHTML += row;
@@ -61,8 +46,9 @@
         };
     </script>
 
-</body>
+</div>>
 {% endblock %}
+
 
 
 
