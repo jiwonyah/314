@@ -21,7 +21,8 @@ class WriteReviewForm(FlaskForm):
 @bp.route('/write-review/<int:agent_id>', methods=['GET'])
 def show_reviewForm_index(agent_id):
     form = WriteReviewForm()
-    return render_template('review/writeReviewForm.html', agent_id=agent_id, form=form)
+    user = User.query.get(agent_id)
+    return render_template('review/writeReviewForm.html', agent_id=agent_id, form=form, user=user)
 @bp.route('/write-review/<int:agent_id>', methods=['POST'])
 def write_review(agent_id):
     form = WriteReviewForm(request.form)
@@ -34,6 +35,7 @@ def write_review(agent_id):
         else:
             return jsonify({'error': 'Please log in to submit a review.'}), 401
 
+        user = User.query.get(agent_id)
         new_review = Review(author_userid=current_user_username, agent_id=agent_id, rating=rating, content=content)
         db.session.add(new_review)
         db.session.commit()
