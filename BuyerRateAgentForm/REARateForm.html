@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <link href = "img/favicon.ico" rel="icon">
+        
+        <!-- CSS StyleSheet -->
+        <link rel = "stylesheet" href = "style.css">
+        
+        <!-- Javascript -->       
+        <script>
+        //The purpose of this script is to print the star rating and review text to console, need to amend if inserting into database
+         document.addEventListener("DOMContentLoaded", function() {
+              
+              const stars = document.querySelectorAll(".star");
+              const feedbackTextarea = document.getElementById("feedback");
+              const submitBtn = document.getElementById("submit-btn");
+              
+              // Initial rating is 0 stars
+              let rating = 0;
+
+              // Add click event listener to stars
+              stars.forEach(star => {
+                star.addEventListener("click", function() {
+                  rating = parseInt(this.getAttribute("data-rating"));
+                  highlightStars(rating);
+                });
+              });
+
+              // Highlight stars up to the selected one by user
+              function highlightStars(index) {
+                stars.forEach((star, i) => {
+                  if (i < index) {
+                    star.classList.add("active");
+                  } else {
+                    star.classList.remove("active");
+                  }
+                });
+              }
+
+              // Submit button click event
+              submitBtn.addEventListener("click", function() {
+                //Retrieve the value of feedback text area
+                const feedback = feedbackTextarea.value;
+                
+                //value of the stars + feedback printed to console
+                console.log("Rating:", rating);
+                console.log("Feedback:", feedback);
+                
+                // Reset form
+                feedbackTextarea.value = "";
+                rating = 0;
+                highlightStars(rating);
+              });
+            });
+        </script>   
+    </head>
+    <body>
+         <!-- Navbar Start -->
+        <nav class="navbar">
+
+            <div class="navbar__logo">
+                <i class="fas fa-blog"></i>
+                <a href="">MINYONG</a>
+            </div>
+      
+            <ul class="navbar__menu">
+                <li><a href="#">Buy</a></li>
+                <li><a href="#">Mortgage</a></li>
+                <li><a href="#">My Profile</a></li>
+            </ul>
+        </nav>
+        <!-- Navbar End -->
+        
+        <!-- Rating Start -->
+        <div class="rating-form">
+            <!-- $REA_Name = Real estate agent name -->
+            <h2>Leave Feedback for $REA_Name:</h2>
+                <div class="stars">
+                    <span class="star" data-rating="1">&#9733;</span>
+                    <span class="star" data-rating="2">&#9733;</span>
+                    <span class="star" data-rating="3">&#9733;</span>
+                    <span class="star" data-rating="4">&#9733;</span>
+                    <span class="star" data-rating="5">&#9733;</span>
+                </div>
+                <textarea id="feedback" placeholder="Leave your feedback"></textarea><br>
+            <button id="submit-btn">Submit</button>
+        </div>
+        <!-- Rating End -->
+    </body>
+</html>

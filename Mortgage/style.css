@@ -83,24 +83,47 @@ a {
 }
 
 #loan_amt,#int_rate,#loan_tenure{
-    width: 200px;
-    height: 20px;
+    width: 750px;
+    height: 35px;
+    border:0;
+    border-radius: 25px;
+    /*font-weight: bold;*/
+    font-size: 25px;
 }
 
 #mortgage_btn
 {
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color:#0056b3;
     color: #fff;
     border: none;
-    border-radius: 3px;
+    border-radius: 25px;
     cursor: pointer;
+    font-size: 30px;
 }
 
 #mortgage_btn:hover
 {
-    background-color: #0056b3;
+    background-color:#007bff;
 }
+
+
+#mort-form
+{
+    border-radius: 25px;
+    background-color:lightblue;
+}
+
+#form-inner
+{
+    padding:20px;
+}
+
+#result
+{
+    font-size: 40px;
+}
+
 
 
 
