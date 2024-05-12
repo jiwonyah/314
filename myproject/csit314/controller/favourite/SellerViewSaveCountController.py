@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, g, jsonify
+from flask import Blueprint
 from sqlalchemy import func
 from csit314.app import db
 from csit314.entity.Favourite import Favourite
@@ -19,5 +19,3 @@ def update_shortlist_count():
         property_listing.shortlist_count = count
         db.session.add(property_listing)
     db.session.commit()
-
-# Need to implement more (Seller can see the number of times shortlisted)
