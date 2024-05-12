@@ -1,8 +1,5 @@
 from flask import Blueprint, render_template, g, jsonify
-from sqlalchemy.exc import SQLAlchemyError
-from datetime import datetime
 from csit314.entity.Favourite import Favourite
-from csit314.app import db
 from sqlalchemy import desc
 
 bp = Blueprint('view_saved_favourite_controller', __name__, template_folder='boundary/templates')
@@ -23,4 +20,5 @@ def view_my_favourites():
             'create_date': f.create_date.strftime('%Y-%m-%d')
         } for f in favourites
     ]
+    # The client using the API will receive and process the user's favourites list in JSON format.
     return jsonify(favourite_listings)
