@@ -1,10 +1,9 @@
-from flask import Blueprint, request, jsonify, g
+from flask import Blueprint, jsonify, g
 from datetime import datetime
 from csit314.app import db
 from csit314.entity.Favourite import Favourite
 from sqlalchemy.exc import SQLAlchemyError
 from csit314.controller.favourite.SellerViewSaveCountController import update_shortlist_count
-#from csit314.controller.authentication.LoginController import login_required
 
 bp = Blueprint('save_favourite_controller', __name__, template_folder='boundary/templates')
 
@@ -37,5 +36,5 @@ def toggle_favourite(propertyListing_id):
 
     except SQLAlchemyError as e:
         db.session.rollback()
+        # Enable appropriate error handling on the client side based on database errors
         return jsonify({'success': False, 'error': 'Database error: ' + str(e)}), 500
-
