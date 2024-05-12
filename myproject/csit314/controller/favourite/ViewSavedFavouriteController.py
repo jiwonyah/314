@@ -17,7 +17,6 @@ def view_my_favourites():
         {
             'id': f.propertyListing.id,
             'subject': f.propertyListing.subject,
-            'create_date': f.create_date.strftime('%Y-%m-%d')
         } for f in favourites
     ]
     # The client using the API will receive and process the user's favourites list in JSON format.
