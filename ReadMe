@@ -1,16 +1,28 @@
-<Notice>
-Please ignore the folder named 314Project.
-All valid files are in the folder 314.
+## Which foler you have to check: /myproject/csit314
+There are all backend code and combined frontend code. (For frontend code, only files in named folder works. Rest of them are just for backup. You can ignore them.)
 
------------------------------------------
-<Database>
-I did not use MySql but used ORM with H2 console.
-If you want to deal with db, follow the steps.
+## What have done:
+**review**
+- [x]  AgentViewReviewController.py
+    - [x]  viewReviewList.html
+    - [x]  reviewDetailPage.html
+- [ ]  BuyerSellerWriteReviewController.py ()
+    - [x]  agentListPage.html
+    - [ ]  writeReviewForm.html
 
-1. Go to C Drive ---> Users --> [Username]
-2. Create a file named test.mv.db (mv.db is extension. it is a db file)
-3. check if the created file is 0 byte.
-4. Turn on the server (the method depends on your IDE. I'm using STS)
-5. Go to 'http://localhost:8080/h2-console' via browser
-6. Press Connect button
-7. Now can manage db
+**favourite**
+- [x]  SaveFavouriteController.py
+- [x]  SellerViewSaveCountController.py
+- [x]  ViewSavedFavouriteController.py
+    - [x]  viewSavedFavouriteBoundary.html
+
+**mortgage**
+- [x]  BuyerCalculateMortgageController.py
+    - [x]  calculateMortgage.html
+
+
+## What should be done:
+* BuyerSellerWriteReviewController.py: Need to fix redirect code. (`return redirect(url_for('write_review_controller.agent_list_index'))`)
+* Apply CSS for property listing. -> ViewShortlistPage accordingly
+
+All the code I've posted is functional. If it doesn't work, please check your settings. Especially, don't forget to add the blueprint to `app.py`. Also, update the database.
