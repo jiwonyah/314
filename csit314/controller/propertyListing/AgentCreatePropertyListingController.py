@@ -7,14 +7,11 @@ from flask_wtf.file import FileField, FileAllowed
 from csit314.controller.role_service.decorators import agent_only
 from werkzeug.utils import secure_filename
 import os
-from csit314.app import db
-from csit314 import app
 
 bp = Blueprint('createPropertyListing', __name__, template_folder='boundary/templates')
 
 class PropertyListingForm(FlaskForm):
     subject = StringField('Subject', validators=[DataRequired()])
-    images = FileField('Images', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')])
     content = TextAreaField('Content')
     price = IntegerField('Price', validators=[DataRequired()])
     address = StringField('Address', validators=[DataRequired()])
@@ -49,9 +46,9 @@ def index():
 @bp.route('/propertyListing/create/', methods=['POST'])
 #@login_required
 def createPropertyListing():
-    form = PropertyListingForm()
+    form = PropertyListingForm(request.form)
     details = {
-        'subject': request.form['subject'],
+        'subject': form.subject.data,
         'content': request.form['content'],
         'price': request.form['price'],
         'address': request.form['address'],
@@ -63,15 +60,18 @@ def createPropertyListing():
         'client_id': request.form['client_id'],
         'agent_id': session['user_id']
     }
-    images = request.files.getlist('images')
-    property_listing = PropertyListing(**details)
-    if images:
+    UPLOAD_FOLDER = 'csit314/boundary/static/images/property_listings'
+    image_files = []
+    if 'images' in request.files:
+        images = request.files.getlist('images')
         for image in images:
-            filename = secure_filename(image.filename)
-            image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            property_image = PropertyImage(filename=filename, property_id=property_listing.id)
-            db.session.add(property_image)
-    success = PropertyListing.createPropertyListing(details)
+            if image and allowed_file(image.filename):
+                filename = secure_filename(image.filename)
+                filepath = os.path.join(UPLOAD_FOLDER, filename)
+                image.save(filepath)
+                image_files.append(filepath)
+    # PropertyListing 생성
+    success = PropertyListing.createPropertyListing(details, image_files)
     if success:
         return jsonify({'success': True, 'message': 'Property listing created successfully'})
     else:
@@ -83,4 +83,7 @@ def createPropertyListing():
 @bp.errorhandler(ValueError)
 def handle_value_error(error):
     return jsonify({'success': False, 'error': str(error)}), 400
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'jpg', 'png', 'jpeg'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 

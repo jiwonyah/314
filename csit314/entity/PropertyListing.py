@@ -27,6 +27,12 @@ class PropertyImage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     filename = db.Column(db.String(255), nullable=False)
     property_id = db.Column(db.Integer, db.ForeignKey('propertyListing.id'), nullable=False)
+    @classmethod
+    def createImage(cls, filename, property_id):
+        new_image = cls(filename=filename, property_id=property_id)
+        db.session.add(new_image)
+        db.session.commit()
+        return new_image
 
 class PropertyListing(db.Model):
     __tablename__ = 'propertyListing'
@@ -69,7 +75,7 @@ class PropertyListing(db.Model):
         return property_listings
 
     @classmethod
-    def createPropertyListing(cls, details: dict) -> bool:
+    def createPropertyListing(cls, details: dict, image_files: list = None) -> bool:
         agent_id = details.get('agent_id')
         agent = User.query.filter_by(id=agent_id, role=Role.AGENT.value).first()
         if not agent:
@@ -80,6 +86,11 @@ class PropertyListing(db.Model):
             return False
         new_listing = cls(**details, create_date=datetime.now())
         db.session.add(new_listing)
+        db.session.commit()
+        if image_files:
+            for image_file in image_files:
+                new_image = PropertyImage.createImage(filename=image_file, property_id=new_listing.id)
+                db.session.add(new_image)
         db.session.commit()
         return True
 

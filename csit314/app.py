@@ -20,6 +20,7 @@ def create_app():
     app = Flask(__name__,
                 static_folder='boundary/static',
                 template_folder='boundary/templates')
+    app.config['UPLOAD_FOLDER'] = '/csit314/boundary/static/images/property_listings'
     app.config.from_object(config)
     app.config['SECRET_KEY'] = '1q2w3e4r!'
     # # JWTManager 초기화

@@ -11,6 +11,20 @@
 
     <!-- 부동산 리스트 정보 출력 -->
     <h2>{{ propertyListing.subject }}</h2>
+    <div class="image-gallery">
+        <div class="gallery-container">
+            {% for image in propertyListing.images %}
+            <div class="gallery-item">
+                {% set image_url = url_for('static', filename='images/property_listings/' + image.filename) %}
+                <img src="{{ image_url }}" alt="Property Image">
+            </div>
+            <button class="prev-btn" onclick="prevSlide()">&#10094;</button>
+            <button class="next-btn" onclick="nextSlide()">&#10095;</button>
+            {% endfor %}
+        </div>
+    </div>
+
+
     <div class="card my-3">
         <div class="card-body">
             <h3>Property Description</h3>
@@ -82,12 +96,11 @@
 
 {% block script %}
 <script>
-// Remove 버튼 클릭 시 삭제 확인 모달 표시 및 삭제 요청
 document.addEventListener('DOMContentLoaded', () => {
     const deleteButtons = document.querySelectorAll('.delete');
     deleteButtons.forEach(button => {
         button.addEventListener('click', () => {
-            if (confirm('정말로 삭제하시겠습니까?')) {
+            if (confirm('Are you sure to remove the post?')) {
                 const uri = button.getAttribute('data-uri');
                 fetch(uri, {
                     method: 'DELETE',
@@ -97,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .then(response => {
                     if (response.ok) {
-                        // 삭제 성공 시 페이지 리로드
+                        alert('Property listing successfully removed.');
                         window.location.href = '/propertyListing/';
                     } else {
                         throw new Error('부동산 리스트 삭제에 실패했습니다.');
@@ -111,6 +124,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+let slideIndex = 0;
+function showSlides() {
+    const slides = document.querySelectorAll('.gallery-item');
+    const galleryContainer = document.querySelector('.gallery-container');
+    if (slideIndex >= slides.length) {
+        slideIndex = 0;
+    } else if (slideIndex < 0) {
+        slideIndex = slides.length - 1;
+    }
+    const offset = -slideIndex * slides[0].offsetWidth;
+    galleryContainer.style.transform = `translateX(${offset}px)`;
+}
+function nextSlide() {
+    slideIndex++;
+    showSlides();
+}
+function prevSlide() {
+    slideIndex--;
+    showSlides();
+}
+showSlides();
 </script>
+
 {% endblock %}
 

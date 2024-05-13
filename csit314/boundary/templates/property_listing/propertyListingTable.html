@@ -69,6 +69,9 @@
             <th style="width:50%">Subject</th>
             <th>author</th>
             <th>Date</th>
+            {% if g.user and g.user.role.value == "buyer" %}
+            <th>Bookmark</th>
+            {% endif %}
         </tr>
         </thead>
         <tbody>
@@ -85,7 +88,6 @@
             {% else %}
             <td>{{ propertyListing.create_date.strftime('%Y-%m-%d')  }}</td>
             {% endif %}
-
 
             <!-- favourite button start -->
             {% if g.user and g.user.role.value == "buyer" %}
@@ -117,10 +119,7 @@
 {% endif %}
 {% endblock %}
 
-
-
 {% block script %}
-
 <script>
     function searchProperty() {
         var searchQuery = document.getElementById('searchInput').value.trim();
@@ -185,7 +184,6 @@
         console.error('Error:', error);
     });
 }
-
 </script>
 
 <script>

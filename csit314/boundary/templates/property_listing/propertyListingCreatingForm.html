@@ -49,6 +49,7 @@
     margin-bottom: 10px;
   }
 </style>
+
 <div>
     <h1>Register Property Listing</h1>
     <form id="createPropertyForm" method="POST" action="/propertyListing/create/"
@@ -62,8 +63,9 @@
         <br><br>
         <div>
              <label for="images">Upload Images</label>
-            <input type="file" name="images" id="images" multiple>
+            <input type="file" name="images" id="images" multiple onchange="previewImages(event)">
         </div>
+        <div id="preview-container"></div>
         <br><br>
         <div>
             <label for="content">Property Listing Description</label>
@@ -126,8 +128,53 @@
         <button type="submit">Submit</button>
     </form>
 </div>
+    <script>
+        document.getElementById('images').addEventListener('change', handleImageSelection);
 
-<script>
+        function handleImageSelection(event) {
+            const files = event.target.files;
+            const previewContainer = document.getElementById('preview-container');
+
+            // Loop through each selected file
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+
+                // Closure to capture the file information
+                reader.onload = function(e) {
+                    // Create a new image container for each selected file
+                    const imgElement = document.createElement('div');
+                    imgElement.classList.add('preview-image-container');
+
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.classList.add('preview-image');
+                    img.style.maxWidth = '550px'; // Set maximum width for preview
+                    img.style.height = 'auto'; // Maintain aspect ratio
+
+                    // Create delete button
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.innerHTML = 'X';
+                    deleteBtn.classList.add('delete-button');
+                    deleteBtn.onclick = function() {
+                        // Remove the parent container (preview-image-container) on delete button click
+                        previewContainer.removeChild(imgElement);
+                    };
+
+                    // Append image and delete button to the image container
+                    imgElement.appendChild(img);
+                    imgElement.appendChild(deleteBtn);
+
+                    // Append the new image container to the preview container
+                    previewContainer.appendChild(imgElement);
+                };
+
+                // Read the image file as a data URL
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+    <script>
             document.getElementById('createPropertyForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -148,5 +195,6 @@
                 errorDiv.style.display = 'block';
             }
         });
-</script>
+    </script>
+
 {% endblock %}
