@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Login</h2>
+    <form id="loginForm">
+        <div>
+            <label for="userid">UserID:</label>
+            <input type="text" id="userid" name="userid" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const userid = document.getElementById("userid").value;
+            const password = document.getElementById("password").value;
+
+            fetch('/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userid: userid,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    window.location.href = '/';
+                } else {
+                    alert(data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Login error:', error);
+                document.getElementById("message").textContent = 'An error occurred during login.';
+            });
+        });
+    </script>
+{% endblock %}

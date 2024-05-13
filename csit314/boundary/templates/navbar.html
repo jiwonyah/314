@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Navigation bar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+</head>
+
+<body>
+	<nav class = "navbar">
+		<div class="navbar__logo">
+			<i class="fas fa-blog"></i>
+			<a href="{{ url_for('index') }}">MINYONG</a>
+		</div>
+		<ul class="navbar__menu">
+		    <li><a href="{{ url_for('index') }}">Home</a></li>
+		    <li><a href="{{ url_for('viewPropertyListing.index')}}" >Property Listing</a></li> <!--href="{{ url_for('viewPropertyListing.index') }}" -->
+
+			<li><a href="{{ url_for('write_review_controller.agent_list_index') }}">Agent Review</a></li>
+
+		    <li><a href="{{ url_for('calculate_mortgage.calculateMortgage') }}">Mortgage</a></li>  <!--page has not been created-->
+
+			{% if g.user%}
+			<li class="dropdown">
+			    <a href="#">My Page</a>
+			    <div class="dropdown-content">
+					<!-- 1 -->
+					<a href="{{ url_for('profile.profile', userid=g.user.userid) }}">Profile</a>
+					<!-- 2 -->
+					{% if g.user.role.value == "agent"  %}
+					<a href="{{ url_for('viewPropertyListing.viewPropertyListingHistory')}}">Post History</a>
+					<a href="{{ url_for('view_review_controller.agentViewReviews_index')}}">Reviews</a>
+					{% elif g.user.role.value == "seller" %}
+					<a href="{{ url_for('viewPropertyListing.sellerViewOwnPropertyListing')}}">My Property</a>
+					{% else %}
+			        <a href="{{ url_for('view_saved_favourite_controller.view_my_favourites_index')}}">Shortlist</a>
+					{% endif %}
+			        <a id="logoutButton">Logout</a>
+			    </div>
+			</li>
+
+			{% else %}
+			<li class="dropdown">
+			    <a href="#" >Login</a>
+			    <div class="dropdown-content">
+			        <a href="{{ url_for('login.index') }}">Login</a>
+			        <a href="{{ url_for('signup.index') }}">Signup</a>
+			    </div>
+			</li>
+			{% endif %}
+		</ul>
+		</div>
+	</nav>
+</body>
+<script>
+// 로그아웃 요청을 보내는 함수
+function logout() {
+    // 서버에 로그아웃 요청 보내기
+    fetch('/logout/')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // 로그아웃 성공 메시지 표시
+                alert(data.message);
+                // 홈페이지로 리디렉션 (또는 다른 처리)
+                window.location.href = '/';
+            } else {
+                // 로그아웃 실패 메시지 표시
+                alert('Failed to logout: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Logout error:', error);
+            alert('An error occurred during logout.');
+        });
+}
+
+// 로그아웃 버튼 클릭 이벤트 처리
+document.addEventListener("DOMContentLoaded", function() {
+    const logoutButton = document.getElementById("logoutButton");
+    if (logoutButton) {
+        logoutButton.addEventListener("click", function() {
+            logout(); // 로그아웃 함수 호출
+        });
+    }
+});
+</script>
+</html>
+
+
+

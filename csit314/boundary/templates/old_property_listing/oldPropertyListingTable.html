@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block content %}
+<head>
+    <style>
+        .search-container {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .search-input {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            max-width: 500px; /* 최대 너비 설정 */
+            width: 100%;
+        }
+        .search-button {
+            padding: 8px 16px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+        }
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+    </style>
+</head>
+<div class="container">
+    <div>
+    <h1 class="my-3 border-bottom pb-2">Old Property Listings</h1>
+
+
+    <div style="text-align: right; margin-top: 20px;" class="ordinal_btn">
+        <a href="{{ url_for('viewPropertyListing.index') }}" >
+            View Property Listings
+        </a>
+    </div>
+    </div>
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search by subject...">
+        <button onclick="searchProperty()" class="search-button">Search</button>
+    </div>
+    <table class="table">
+        <thead>
+        <tr class="text-center">
+            <th style="width:50%">Subject</th>
+            <th>Author</th>
+            <th>Date</th>
+            <th>Bookmark</th>
+        </tr>
+        </thead>
+        <tbody id="propertyListingTable">
+        </tbody>
+    </table>
+</div>
+
+<script>
+    window.onload = function () {
+        fetch('api/oldPropertyListing', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.old_property_listings) {
+                const oldPropertyListings = data.old_property_listings;
+                const tableBody = document.getElementById('propertyListingTable');
+
+                oldPropertyListings.forEach(listing => {
+                      let row = '';
+                      if (listing) {
+                        row = `<tr class="text-center">
+                          <td>
+                            <a href="/propertyListing/detail/${listing.id}/">
+                              ${listing.subject}
+                            </a>
+                          </td>
+                          <td>${listing.agent_id}</td>
+                          ${listing.modify_date
+                            ? `<td>${listing.modify_date}</td>`
+                            : `<td>${listing.create_date}</td>`
+                          }
+                          <!-- favourite button start -->
+                        </tr>`;
+                      } else {
+                        row = `<tr class="text-center">
+                          <td colspan="3">No contents</td>
+                        </tr>`;
+                      }
+                      tableBody.innerHTML += row;
+                });
+            } else {
+                alert('Failed to load old property listings');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    };
+</script>
+
+{% endblock %}

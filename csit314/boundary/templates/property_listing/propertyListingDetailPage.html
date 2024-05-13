@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-3">
+    <!-- Flash 메시지 출력 -->
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-danger" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    <!-- 부동산 리스트 정보 출력 -->
+    <h2>{{ propertyListing.subject }}</h2>
+    <div class="card my-3">
+        <div class="card-body">
+            <h3>Property Description</h3>
+            <div class="card-text" style="white-space: pre-line;">{{ propertyListing.content }}</div>
+            <h3>Price</h3>
+            <div class="card-text">{{ propertyListing.price }}</div>
+            <h3>Address</h3>
+            <div class="card-text">{{ propertyListing.address }}</div>
+            <h3>Floor Size</h3>
+            <div class="card-text">{{ propertyListing.floorSize }}</div>
+            <h3>Floor Level</h3>
+            <div class="card-text">{{ propertyListing.floorLevel }}</div>
+            <h3>Property Type</h3>
+            <div class="card-text">{{ propertyListing.propertyType }}</div>
+            <h3>Furnishing</h3>
+            <div class="card-text">{{ propertyListing.furnishing }}</div>
+            <h3>Built Year</h3>
+            <div class="card-text">{{ propertyListing.builtYear }}</div>
+            <h3>Author</h3>
+            <div class="card-text">{{ propertyListing.agent.userid }}</div>
+
+            {% if g.user == propertyListing.agent or g.user.userid == propertyListing.client_id %}
+            <h3>Client</h3>
+            <div>{{ propertyListing.client_id }}</div>
+            {% endif %}
+
+            <h3>Date</h3>
+            <div class="d-flex justify-content-end">
+                {% if propertyListing.modify_date %}
+                <div class="badge bg-light text-dark p-2 text-start mx-3">
+                    <div class="mb-2">Modified at</div>
+                    <div>{{ propertyListing.modify_date }}</div>
+                </div>
+                {% else %}
+                <div class="badge bg-light text-dark p-2">
+                    {{ propertyListing.create_date }}
+                </div>
+                {% endif %}
+            </div>
+
+            {% if g.user.userid == propertyListing.client_id %}
+            <h3>View Counts</h3>
+            <div>{{ propertyListing.view_counts }}</div>
+            {% endif %}
+
+
+            {% if propertyListing.is_sold == True %}
+            <h2>거래 완료</h2>
+            {% else %}
+            <h2> 거래중</h2>
+            {% endif %}
+
+
+
+
+            <!-- 에이전트(등록자)인 경우 Edit 및 Remove 버튼 표시 -->
+            <div class="my-3">
+                {% if g.user == propertyListing.agent %}
+                <a href="{{ url_for('editPropertyListing.index', propertyListing_id=propertyListing.id) }}"
+                   class="ordinal_btn">Edit</a>
+                <a href="#" class="delete ordinal_btn"
+                   data-uri="{{ url_for('removePropertyListing.remove_property_listing', listing_id=propertyListing.id) }}">Remove</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+// Remove 버튼 클릭 시 삭제 확인 모달 표시 및 삭제 요청
+document.addEventListener('DOMContentLoaded', () => {
+    const deleteButtons = document.querySelectorAll('.delete');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (confirm('정말로 삭제하시겠습니까?')) {
+                const uri = button.getAttribute('data-uri');
+                fetch(uri, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // 삭제 성공 시 페이지 리로드
+                        window.location.href = '/propertyListing/';
+                    } else {
+                        throw new Error('부동산 리스트 삭제에 실패했습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Delete error:', error.message);
+                    alert('부동산 리스트 삭제에 실패했습니다.');
+                });
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
+

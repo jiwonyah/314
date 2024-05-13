@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id="reviewDetail">
+    <h1>Review Detail</h1>
+    <div id="error"></div>
+    <div id="reviewContent"></div>
+</div>
+
+<script>
+    fetch('/api/agent/reviewDetail/{{review.id}}')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.error) {
+            document.getElementById('error').innerHTML = `<p>${data.error}</p>`;
+        } else {
+            document.getElementById('reviewContent').innerHTML = `
+                <p>ID: ${data.id}</p>
+                <p>Author: ${data.author_userid}</p>
+                <p>Rating: ${data.rating}</p>
+                <p>Content: ${data.content}</p>
+            `;
+        }
+    })
+    .catch(error => {
+        document.getElementById('error').innerHTML = `<p>There was a problem with your fetch operation: ${error.message}</p>`;
+    });
+</script>
+{% endblock %}
