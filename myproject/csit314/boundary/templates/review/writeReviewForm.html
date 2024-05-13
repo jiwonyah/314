@@ -1,54 +1,93 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<!--
-Users can view a list of registered agents on this page,
-and can click the 'Write Review' button next to each agent to navigate to the review writing page.
--->
-<div id="agent-list-page">
-    <h1>Agent List</h1>
-    <table id="agentListTable">
-        <thead id="agentListHead">
-            <tr id="agentListRow">
-            </tr>
-        </thead>
-        <tbody id="agentList">
-            <!-- Agent data should be in here. -->
-        </tbody>
-    </table>
+<!--<div class="container mt-5">-->
+<!--action="/write-review/${agentId}"-->
+<form id="write-review-form" method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.agent_id }}
+    <div>
+        <h2>
+            {{ user.firstName }} {{ user.lastName }}
+        </h2>
+        <!--<p class="small-text">Real Estate Agent</p>-->
+        <p class="small-text">Please leave rating by click the star</p>
+        <div class="stars">
+            <span class="star" data-rating="1">&#9733;</span>
+            <span class="star" data-rating="2">&#9733;</span>
+            <span class="star" data-rating="3">&#9733;</span>
+            <span class="star" data-rating="4">&#9733;</span>
+            <span class="star" data-rating="5">&#9733;</span>
+            <input type="hidden" name="rating" id="rating" value="0">
+        </div>
+    </div>
+    <div>
+        {{ form.content.label }}
+        {{ form.content }}
+    </div>
+    {{ form.submit }}
+</form>
 
-    <script>
-        // Asynchronously request agent data from the /api/agents path
-        function fetchAgents() {
-            fetch('api/agents')
-                // If a successful response is received from the server, dynamically update the page content using response data (JSON object)
-                .then(response => response.json())
-                .then(data => {
-                    const agents = data.agents;
-                    const listElement = document.getElementById('agentList');
-                    listElement.innerHTML = ''; // empty existing list
 
-                    // create table row with agent data and a button to write a review
-                    agents.forEach(agent => {
-                        // Combine firstname and lastname into a single full name
-                        const fullName = `${agent.firstName} ${agent.lastName}`;
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const stars = document.querySelectorAll(".star");
+        const feedbackTextarea = document.getElementById("feedback");
+        const submitBtn = document.getElementById("submit-btn");
+        let rating = 0;
 
-                        const row = `<tr>
-                                        <td>
-                                            <div class="agentName">${fullName}</div>
-                                        </td>
-                                        <td><a href="/write-review/${agent.id}" class="review-button">Write Review</a></td>
-                                     </tr>`;
-                        listElement.innerHTML += row;
-                    });
-                })
-                // Display an error message in the console if the network request fails or an error occurs
-                .catch(error => console.error('Error:', error));
+        // Highlight stars up to the selected one by user
+        function highlightStars(index) {
+            stars.forEach((star, i) => {
+                star.classList.toggle("active", i < index);
+            });
         }
 
-        // bring agent data when page loads
-        window.onload = function() {
-            fetchAgents();
-        };
-    </script>
-</div>
+        // Add click event listener to stars
+        stars.forEach(star => {
+            star.addEventListener("click", function() {
+                rating = parseInt(this.getAttribute("data-rating"));
+                document.getElementById("rating").value = rating;
+                highlightStars(rating);
+            });
+        });
+
+        // Submit button click event
+        submitBtn.addEventListener("click", function(event) {
+            event.preventDefault();
+
+            const formData = {
+                'rating': rating,
+                'content': feedbackTextarea.value,
+                'agent_id': '{{ agent_id }}'
+            };
+
+            const url = `/write-review/{{ agent_id }}`;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                window.location.href = '{{ url_for("write_review_controller.agent_list") }}';
+            })
+            .catch(error => {
+                console.error('There was a problem with your fetch operation:', error);
+                alert('An error occurred. Please try again later.');
+            });
+        });
+    });
+
+</script>
+
+
+<!--</div>-->
 {% endblock %}
+
