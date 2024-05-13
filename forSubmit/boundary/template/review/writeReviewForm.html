@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!--
+<form id="write-review-form" method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.agent_id }}
+    <div>
+        <h2>
+            {{ user.firstName }} {{ user.lastName }}
+        </h2>
+        <p class="small-text">Real Estate Agent</p>
+        {{ form.rating.label }}
+        {{ form.rating }}
+    </div>
+    <div>
+        {{ form.content.label }}
+        {{ form.content }}
+    </div>
+    {{ form.submit }}
+</form>
+-->
+
+<form id="write-review-form" method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.agent_id }}
+    <div>
+        <h2>
+            {{ user.firstName }} {{ user.lastName }}
+        </h2>
+        <p class="small-text">Real Estate Agent</p>
+        <div class="mb-3">
+            <strong>Rating</strong>
+            <div>
+                <input type="radio" class="form-control" name="rating" id="rating1" value="1" {{ 'checked' if form.rating.data == 1 }}>
+                <label for="rating1">1</label>
+            </div>
+            <div>
+                <input type="radio" class="form-control" name="rating" id="rating2" value="2" {{ 'checked' if form.rating.data == 2 }}>
+                <label for="rating2">2</label>
+            </div>
+            <div>
+                <input type="radio" class="form-control" name="rating" id="rating3" value="3" {{ 'checked' if form.rating.data == 3 }}>
+                <label for="rating3">3</label>
+            </div>
+            <div>
+                <input type="radio" class="form-control" name="rating" id="rating4" value="4" {{ 'checked' if form.rating.data == 4 }}>
+                <label for="rating4">4</label>
+            </div>
+            <div>
+                <input type="radio" class="form-control" name="rating" id="rating5" value="5" {{ 'checked' if form.rating.data == 5 }}>
+                <label for="rating5">5</label>
+            </div>
+        </div>
+
+    </div>
+    <div>
+        <div class="mb-3">
+            <label for="content">Content</label>
+            <input type="text" class="form-control" name="content" id="content" value="{{ form.content.data }}">
+
+        </div>
+
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+    form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+        const agent_id = window.location.pathname.split('/').pop();
+
+        const url = `/write-review/${agent_id}`;  // Construct the URL with the retrieved agent_id
+        console.log('Agent ID:', agent_id);
+        console.log('URL:', url);
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify(Object.fromEntries(formData))
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const responseData = await response.json();
+            if (responseData.success) {
+                alert(responseData.message);
+                window.location.href = '/agents';  // Redirect on success
+            } else {
+                alert(`Failed to submit the review: ${responseData.error}`);
+            }
+        } catch (error) {
+            console.error('There was a problem with your fetch operation:', error);
+            alert('Failed to submit the review. Please try again later.');
+        }
+    });
+});
+
+</script>
+
+
+
+
+
+<!--
+<script>
+    $(document).ready(function() {
+        $('#write-review-form').submit(function(event) {
+            event.preventDefault();
+
+            var formData = {
+                'rating': $('#rating').val(),
+                'content': $('#content').val(),
+                'agent_id': '{{ agent_id }}'
+            };
+
+            var url = `/write-review/${formData.agent_id}`;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // 요청의 Content-Type을 application/json으로 설정
+                    'X-CSRFToken': csrfToken, // CSRF 토큰 추가
+                },
+                body: JSON.stringify(formData) // JSON 문자열을 요청 본문으로 설정
+            })
+            const responseData = await response.json();  // 응답 데이터를 JSON 형식으로 파싱
+            if (responseData.success) {
+                alert(responseData.message);
+                window.location.href = '/agents';
+            } else {
+                alert(`Failed to submit review: ${responseData.error}`);
+            }
+        });
+    });
+</script>
+-->
+<!--
+<script>
+    $(document).ready(function() {
+        $('#write-review-form').submit(function(event) {
+            event.preventDefault();
+
+            var formData = {
+                'rating': $('#rating').val(),
+                'content': $('#content').val(),
+                'agent_id': '{{ agent_id }}'
+            };
+
+            var url = `/write-review/${formData.agent_id}`;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // 요청의 Content-Type을 application/json으로 설정
+                    'X-CSRFToken': csrfToken, // CSRF 토큰 추가
+                },
+                body: JSON.stringify(formData) // JSON 문자열을 요청 본문으로 설정
+            })
+            .then(response => response.json()) // 응답을 JSON 형태로 파싱
+            .then(responseData => {
+                if (responseData.success) {
+                    // 성공 시의 처리: 사용자에게 성공 메시지를 알리고, 지정된 경로로 리디렉션
+                    alert(responseData.message);
+                    window.location.href = '/agents'; // 성공 시 리디렉션할 경로
+                } else {
+                    // 실패 시의 처리: 사용자에게 실패 메시지를 알림
+                    alert(`Failed to submit review: ${responseData.error}`);
+                }
+            })
+            .catch(error => {
+                console.error('There was a problem with your fetch operation:', error);
+                alert('An error occurred. Please try again later.');
+            });
+        });
+    });
+</script>
+-->
+
+<!--
+<script>
+    $(document).ready(function() {
+        $('#write-review-form').submit(function(event) {
+            event.preventDefault();
+
+            var formData = {
+                'rating': $('#rating').val(),
+                'content': $('#content').val(),
+                'agent_id': '{{ agent_id }}'
+            };
+
+            var url = `/write-review/${agentId}`;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // 요청의 Content-Type을 application/json으로 설정
+                    'X-CSRFToken': csrfToken, // CSRF 토큰 추가
+                },
+                body: JSON.stringify(formData) // JSON 문자열을 요청 본문으로 설정
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // 리다이렉트 처리
+                window.location.href = '{{ url_for("write_review_controller.agent_list") }}';
+                //return response.json(); // 응답을 JSON 형태로 파싱
+            })
+            .then(data => {
+                const responseData = await response.json();
+                if (data.message) {
+                    // 서버에서 반환된 'successAlert' 문자열을 동적으로 삽입
+                    $('#review-message').html(data.successAlert);
+                    window.location.href = '/agents';
+                } else if (data.error) {
+                    alert(data.error);
+                }
+            })
+            .catch(error => {
+                console.error('There was a problem with your fetch operation:', error);
+                alert('An error occurred. Please try again later.');
+            });
+        });
+    });
+</script>
+-->
+
+<!--</div>-->
+{% endblock %}
+
+
+
