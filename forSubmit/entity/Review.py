@@ -34,4 +34,7 @@ class Review(db.Model):
         db.session.commit()
         return True
 
+    @classmethod
+    def displayReviewsToAgent(cls):
+        return cls.query.filter_by(agent_id=g.user.id).all()
 
