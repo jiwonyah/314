@@ -1,5 +1,4 @@
 from flask import Blueprint, jsonify, g
-from datetime import datetime
 from csit314.app import db
 from csit314.entity.Favourite import Favourite
 from sqlalchemy.exc import SQLAlchemyError
@@ -16,25 +15,20 @@ def toggle_favourite(propertyListing_id):
     user_id = g.user.userid  # Get user_id from g.user
 
     try:
-        # Check if is is already added into shortlist
+        # Check if is already added into shortlist
         favourite = Favourite.query.filter_by(user_userid=user_id, propertyListing_id=propertyListing_id).first()
 
         if favourite:
             # Delete from shortlist
-            db.session.delete(favourite)
-            db.session.commit()
-            update_shortlist_count() # Count shortlisted count
-            return jsonify({'success': True})
+            successBool = Favourite.removeShortlist(propertyListing_id=propertyListing_id, user_userid=user_id)
+            update_shortlist_count()  # Count shortlisted count
+            return jsonify({'success': successBool})
         else:
             # Add to shortlist
-            new_favourite = Favourite(user_userid=user_id, propertyListing_id=propertyListing_id,
-                                      create_date=datetime.now())
-            db.session.add(new_favourite)
-            db.session.commit()
+            successBool = Favourite.createPropertyShortlist(propertyListing_id=propertyListing_id, user_userid=user_id)
             update_shortlist_count()  # Count shortlisted count
-            return jsonify({'success': True})
+            return jsonify({'success': successBool})
 
     except SQLAlchemyError as e:
         db.session.rollback()
-        # Enable appropriate error handling on the client side based on database errors
         return jsonify({'success': False, 'error': 'Database error: ' + str(e)}), 500
