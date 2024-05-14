@@ -37,8 +37,8 @@ def login():
     user = UserAccount.findAUserByUserID(userid=userid)
     if user and bcrypt.checkpw(password.encode('UTF-8'), user.password.encode('UTF-8')):
         session['user_id'] = user.id
-        #serialized_role = user.serialize_enum()
-        return jsonify({'success': True, 'message': 'Login successful'})
+
+        return jsonify({'success': True, 'message': 'Login successful', 'role':user.role})
     return jsonify({'success': False, 'error': 'User information does not exist.'}), 401
 
 @bp.before_app_request

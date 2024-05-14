@@ -3,13 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Create User Account Form</title>
+<title>Update User Account Form</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Concert+One&display=swap');
+
+        .home-section{
+        position: relative;
+        background-color: var(--color-body);
+        min-height: 100vh;
+        top:0;
+        left:78px;
+        width: calc(100% - 78px);
+        transition: all .5s ease;
+        z-index: 2;
+        }
 
         .home-section h2{
         display: inline-block;
@@ -38,8 +49,6 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
-
 
         .form-group {
             margin-bottom: 20px;
@@ -90,54 +99,65 @@
     </style>
 </head>
 <body>
- {% include "UserAccount/admin_navbar.html" %}
+   {% include "UserAccount/admin_navbar.html" %}
     <section class="home-section">
         <div class="container">
-            <h2>User Account Creation</h2>
-            <form action="/create_user_account" method="POST" id="createAccountForm">
+            <h2>User Account Update</h2>
+            <form action="/update_user_account/{{ user.userid }}" method="POST" id="updateAccountForm" data-userid="{{ user.userid }}">
                 <div class="form-group">
                     <label for="firstName">First Name:</label>
-                    <input type="text" id="firstName" name="firstName" required>
+                    <input type="text" id="firstName" name="firstName" value="{{ user.firstName }}" required>
                 </div>
                 <div class="form-group">
                     <label for="lastName">Last Name:</label>
-                    <input type="text" id="lastName" name="lastName" required>
+                    <input type="text" id="lastName" name="lastName" value="{{ user.lastName }}" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email Address:</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email" value="{{ user.email }}" required>
                 </div>
                 <div class="form-group">
                     <label for="userid">Username:</label>
-                    <input type="text" id="userid" name="userid" required>
+                    <input type="text" id="userid" name="userid" value="{{ user.userid }}" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Password:</label>
                     <input type="password" id="password" name="password" required>
                 </div>
-                <div class="form-group">
-                    <label for="role">Role:</label>
-                    <select id="role" name="role" required>
-                        <option value="agent">Agent</option>
-                        <option value="buyer">Buyer</option>
-                        <option value="seller">Seller</option>
-                    </select>
+                <div class="form-group" style="display: flex; align-items: center;">
+                <label for="role" style="margin-right: 10px;">Role:</label>
+                <select id="role" name="role" required>
+                    <option value="admin">Admin</option>
+                    <option value="agent">Agent</option>
+                    <option value="buyer">Buyer</option>
+                    <option value="seller">Seller</option>
+                </select>
                 </div>
-                <br/>
+                {% if user.status == 'Suspended' %}
+                <div>
+                    <label for="suspended" style="margin-left: 150px;">Unsuspend:</label>
+                    <input type="checkbox" id="suspended" name="suspended"
+                    style="width: 20px; height: 20px">
+                </div>
+                {% endif %}
+                <br><br>
                 <span></span>
                 <div class="form-group">
-                    <button type="submit" class="btn">Submit</button>
+                    <button type="submit" class="btn">Update</button>
                     <button type="button" class="btn btn-secondary" onclick="window.location.href = '/user_account_dashboard'">Cancel</button>
                 </div>
+
             </form>
         </div>
     </section>
     <script>
-        document.getElementById('createAccountForm').addEventListener('submit', async(e) => {
+        document.getElementById('updateAccountForm').addEventListener('submit', async(e) => {
             e.preventDefault();
 
             const formData = new FormData(e.target);
-            const response = await fetch('/create_user_account', {
+            const userid = e.target.getAttribute('data-userid')
+            const url = '/update_user_account/' + userid;
+            const response = await fetch(url, {
                 method: 'POST',
                 body: formData
             });

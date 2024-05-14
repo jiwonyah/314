@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USER ACCOUNT VIEW HOME PAGE</title>
+    <title>USER PROFILE UPDATE HOME PAGE</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -14,7 +14,6 @@
         @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Concert+One&display=swap');
-
 
         .home-section{
         position: relative;
@@ -80,41 +79,6 @@
             margin-right: 10px;
             font-size: 56px;
         }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 50%;
-            text-align: center;
-        }
-
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-         .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
 
     </style>
 </head>
@@ -122,56 +86,30 @@
  {% include "UserAccount/admin_navbar.html" %}
       <section class="home-section">
         <h2 class="main-heading"><i class="fas fa-arrow-left" style="cursor: pointer;"
-                                    onclick="window.location.href = '/user_account_dashboard'"></i> View User Account</h2>
+                                    onclick="window.location.href = '/user_profile_dashboard'"></i> Update User Profile</h2>
         <div class="account-view-container" id="account-view-container">
-            <h2 id="account-view-heading">All Users</h2>
+            <h2 id="account-view-heading">All Roles</h2>
             <table id="view-account-user-table">
                 <thead>
                     <tr>
-                    <th>Username</th>
+                    <th>Role</th>
                     <th>Action</th>
                     </tr>
                 </thead>
-                <tbody id="user-table-body">
-                    {% for user in users %}
+                <tbody id="profile-table-body">
+                    {% for profile in profiles %}
                     <tr>
-                        <td>{{user.userid}}</td>
-                        <td><button onclick="viewUserDetails('{{user.userid}}')">View Details</button></td>
+                        <td>{{profile.profileName}}</td>
+                        <td><button onclick="window.location.href = '/update_user_profile/{{profile.profileName}}'">
+                            Update</button></td>
                     </tr>
                 </tbody>
                     {% endfor %}
             </table>
-             <div id="userDetailsModal" class="modal">
-                 <div class="modal-content">
-                <span class="close" onclick="closeModal()">&times;</span>
-            <div id="userDetails"></div>
-        </div>
+
     </div>
         </div>
 
       </section>
 </body>
-<script>
-    function viewUserDetails(userid){
-     var modal = document.getElementById('userDetailsModal');
-     var userDetailsDiv = document.getElementById('userDetails');
-     modal.style.display = 'block';
-     fetch('/view_user_account_details/' + userid)
-            .then(response => response.json())
-            .then(data => {
-                userDetailsDiv.innerHTML = '<h2>User Details</h2>' +
-                        '<p><strong>userid:</strong> ' + data.userid + '</p>' +
-                        '<p><strong>Name:</strong> ' + data.full_name + '</p>' +
-                        '<p><strong>Email:</strong> ' + data.email + '</p>' +
-                        '<p><strong>Password:</strong> ' + data.password + '</p>' +
-                        '<p><strong>Role:</strong> ' + data.role + '</p>' +
-                        '<p><strong>Status:</strong> ' + data.status + '</p>';
-            });
-    }
-
-    function closeModal() {
-            var modal = document.getElementById('userDetailsModal');
-            modal.style.display = 'none';
-    }
-</script>
 </html>

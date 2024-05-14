@@ -1,4 +1,3 @@
-import bcrypt
 from flask import Flask, render_template
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -7,6 +6,7 @@ from sqlalchemy import MetaData
 from flask_jwt_extended import JWTManager
 import json
 from enum import Enum
+
 
 naming_convention = {
     "ix": 'ix_%(column_0_label)s',
@@ -58,8 +58,10 @@ def create_app():
     from csit314.controller.review import (AgentViewReviewController, BuyerSellerWriteReviewController)
     from csit314.controller.favourite import (SaveFavouriteController, ViewSavedFavouriteController)
     from csit314.controller.mortgage import BuyerCalculateMortgageController
-    from csit314.controller.admin import (AdminHomePageController, AccountDashboardController,
-                                          CreateUserAccountController, ViewUserAccountController)
+    from csit314.controller.admin.UserAccount import CreateUserAccountController
+    from csit314.controller.admin.UserAccount import ViewUserAccountController
+
+
     app.register_blueprint(SignUpController.bp)
     app.register_blueprint(ViewPropertyListingController.bp)
     app.register_blueprint(AgentCreatePropertyListingController.bp)
@@ -75,10 +77,42 @@ def create_app():
     app.register_blueprint(SearchFilterPropertyListing.bp)
     app.register_blueprint(BuyerCalculateMortgageController.bp)
     app.register_blueprint(BuyerViewOldPropertyListing.bp)
+
+
+
+
+
+
+    # yuyang class structure
+    from csit314.controller.admin.UserAccount import (create_account_controller, update_account_controller,
+                                                view_account_controller, search_account_controller,
+                                                suspend_account_controller, AccountDashboardController)
+    from csit314.controller.admin.UserProfile import (create_profile_controller, update_profile_controller,
+                                                view_profile_controller, search_profile_controller,
+                                                suspend_profile_controller, ProfileDashboardController)
+
+    #Admin Home
+    from csit314.controller.admin.UserAccount import AdminHomePageController
     app.register_blueprint(AdminHomePageController.bp)
+
+    #UserAccount
     app.register_blueprint(AccountDashboardController.bp)
-    app.register_blueprint(CreateUserAccountController.bp)
-    app.register_blueprint(ViewUserAccountController.bp)
+    app.register_blueprint(create_account_controller)
+    app.register_blueprint(view_account_controller)
+    app.register_blueprint(update_account_controller)
+    app.register_blueprint(search_account_controller)
+    app.register_blueprint(suspend_account_controller)
+
+    #UserProfile
+    app.register_blueprint(ProfileDashboardController.bp)
+    app.register_blueprint(create_profile_controller)
+    app.register_blueprint(view_profile_controller)
+    app.register_blueprint(update_profile_controller)
+    app.register_blueprint(search_profile_controller)
+    app.register_blueprint(suspend_profile_controller)
+
+
+
 
     @app.route('/')
     def index():
