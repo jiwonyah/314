@@ -381,7 +381,7 @@
     <section class="home-section">
         <div class="container">
             <h2>User Profile Creation</h2>
-            <form action="#">
+            <form action="/create_user_profile" method="post" id="createProfileForm">
 
                 <div class="form-group">
                     <label for="profileName">Profile Name:</label>
@@ -392,12 +392,13 @@
                     <textarea id="profileDescription" name="profileDescription" placeholder="Enter here..." required></textarea>
                 </div>
                 <button type="submit" class="btn">Submit</button>
-                <button type="button" class="btn btn-secondary">Cancel</button>
+                <button type="button" class="btn btn-secondary"
+                        onclick="window.location.href = '/user_profile_dashboard'">Cancel</button>
             </form>
         </div>
     </section>
     <script>
-        document.getElementById('createAccountForm').addEventListener('submit', async(e) => {
+        document.getElementById('createProfileForm').addEventListener('submit', async(e) => {
             e.preventDefault();
 
             const formData = new FormData(e.target);

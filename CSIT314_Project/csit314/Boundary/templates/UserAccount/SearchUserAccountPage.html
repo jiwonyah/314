@@ -391,7 +391,7 @@
 <section class="home-section">
     <div class="container">
         <h2>User Account Search</h2>
-        <form action="/search" method="GET" id="searchForm">
+        <form action="/search_account" method="GET" id="searchForm">
             <label for="search">Search User Account:</label>
             <input type="text" id="search" name="search" placeholder="Enter username">
             <div class="form-group">
@@ -422,7 +422,7 @@
     form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const searchQuery = document.getElementById('search').value;
-    const response = await fetch(`/search?search=${searchQuery}`);
+    const response = await fetch(`/search_account?search=${searchQuery}`);
     const data = await response.json();
 
     if (data.error) {

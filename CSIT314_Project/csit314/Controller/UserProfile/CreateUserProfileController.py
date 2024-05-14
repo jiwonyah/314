@@ -1,25 +1,30 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, render_template
 
 from csit314.Entity.UserProfile import UserProfile
 
 
-bp = Blueprint('createProfile', __name__, template_folder="/boundary/templates")
+class CreateUserProfileController(Blueprint):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.add_url_rule("/create_user_profile", view_func=self.create_user_profile, methods=['GET', 'POST'])
 
+    def create_user_profile(self):
+        if request.method == 'GET':
+            return render_template('UserProfile/CreateNewUserProfilePage.html')
 
-@bp.route('/create_user_account', methods=['POST'])
-def createUserProfile():
-    profileName = request.form['profileName']
-    profileDescription = request.form['profileDescription']
+        elif request.method == 'POST':
+            profileName = request.form['profileName']
+            profileDescription = request.form['profileDescription']
+            status = 'Active'
 
-    profile_details = {
-        'profileName': profileName,
-        'profileDescription': profileDescription,
-    }
+            profile_details = {
+                'profileName': profileName,
+                'profileDescription': profileDescription,
+                'status': status
+            }
 
-    results = UserProfile.createUserProfile(profile_details)
-    if results:
-        return jsonify({'success': True, 'message': 'User Profile created successfully'})
-    elif UserProfile.profileNameExists(profile_details):
-        return jsonify({'success': False, 'error': 'Profile Name Exists'})
-
-
+            results = UserProfile.createUserProfile(profile_details)
+            if results:
+                return jsonify({'success': True, 'message': 'User Profile created successfully'})
+            else:
+                return jsonify({'success': False, 'error': 'Profile Name Exists'})

@@ -20,7 +20,10 @@ def create_app():
     from csit314.Controller.UserAccount import (CreateUserAccountController, UpdateUserAccountController,
                                                 ViewUserAccountController, AccountDashboardController,
                                                 SearchUserAccountController, SuspendUserAccountController)
-    from csit314.Controller.UserProfile import (ProfileDashboardController, CreateUserProfileController)
+    from csit314.Controller.UserProfile import (ProfileDashboardController, CreateUserProfileController,
+                                                ViewUserProfileController, UpdateUserProfileController,
+                                                SearchUserProfileController, SuspendUserProfileController)
+    from csit314.Controller.UserProfile import create_profile_controller
 
     #registering of blueprints
     app.register_blueprint(AccountDashboardController.bp)
@@ -31,7 +34,11 @@ def create_app():
     app.register_blueprint(SuspendUserAccountController.bp)
 
     app.register_blueprint(ProfileDashboardController.bp)
-    app.register_blueprint(CreateUserProfileController.bp)
+    app.register_blueprint(create_profile_controller)
+    app.register_blueprint(ViewUserProfileController.bp)
+    app.register_blueprint(UpdateUserProfileController.bp)
+    app.register_blueprint(SearchUserProfileController.bp)
+    app.register_blueprint(SuspendUserProfileController.bp)
 
     @app.route('/')
     def adminHomePage():

@@ -1,0 +1,3 @@
+from .CreateUserProfileController import CreateUserProfileController
+create_profile_controller = CreateUserProfileController(name="CreateUserProfileController", import_name=__name__)
+

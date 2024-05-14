@@ -6,4 +6,4 @@ bp = Blueprint('profileDashboard', __name__, template_folder="/boundary/template
 #for displaying profile dashboard
 @bp.route('/user_profile_dashboard')
 def dashboard():
-    return render_template("UserProfile/UserProfileDashboard.html")
+    return render_template("UserProfile/UserProfileDashboardPage.html")

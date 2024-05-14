@@ -2,12 +2,13 @@ from csit314.app import db
 
 
 class UserAccount(db.Model):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     full_name = db.Column(db.String(50))
     email = db.Column(db.String(50), unique=True)
     username = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(50))
-    role = db.Column(db.String(50))
+    role = db.Column(db.String(50), db.ForeignKey('roles.profileName'))
     status = db.Column(db.String(50))
 
     @classmethod

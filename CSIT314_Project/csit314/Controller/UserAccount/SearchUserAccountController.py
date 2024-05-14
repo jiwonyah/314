@@ -10,7 +10,7 @@ def search_page():
     return render_template("/UserAccount/SearchUserAccountPage.html")
 
 
-@bp.route('/search')
+@bp.route('/search_account')
 def search_account():
     searchQuery = request.args.get('search')
     accounts = UserAccount.search_account(searchQuery)

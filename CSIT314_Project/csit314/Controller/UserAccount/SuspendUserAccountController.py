@@ -14,5 +14,7 @@ def suspend_account():
     results = UserAccount.suspend_account(username)
     if results:
         return jsonify({'success': True, 'message': 'User Account suspended successfully'})
+    elif UserAccount.getUserDetails(username) is None:
+        return jsonify({'success': False, 'message': 'Username does not exist'})
     else:
         return jsonify({'success': False, 'message': 'User Account already suspended'})
