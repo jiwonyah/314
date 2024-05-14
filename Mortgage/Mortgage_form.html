@@ -30,14 +30,14 @@
                 return;
             }
             // Check if interest rate is within a reasonable range
-            if (interestRate < 0.5 || interestRate >= 100) 
+            if (int_rate < 0.5 || int_rate >= 100) 
             {
                 alert('Please enter a valid interest rate of at least 0.5%!');
                 return;
             }
 
             // Check if loan term is a positive integer
-            if (loanTerm < 5) 
+            if (loan_tenure < 5) 
             {
                 alert('Please enter a valid loan term of at least 5 years!');
                 return;
