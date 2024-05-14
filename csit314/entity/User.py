@@ -20,7 +20,7 @@ class User(db.Model):
     status = db.Column(db.String(50))
 
     def serialize_enum(self):
-        return self.role.value
+        return self.role.name
 
     @classmethod
     def findAUserByUserID(cls, userid: str) -> "User | None":
