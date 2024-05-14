@@ -1,0 +1,173 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif; /* Changed font to Arial */
+  box-sizing: border-box;
+}
+
+body {
+  background: #f5f5f5;
+  color: #fff;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px; /* Increased padding */
+  background-color: #263343; /* Changed background color */
+}
+
+nav ul li {
+  display: inline-block;
+  list-style: none;
+  margin: 0 20px; /* Increased margin */
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #fff; /* Changed text color to white */
+  font-weight: bold;
+  transition: color 0.3s; /* Added transition effect */
+}
+
+nav ul li a:hover {
+  color: #8b8b87; /* Changed hover color to grey */
+}
+
+.property-images {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.image-container {
+
+  padding: 10px;
+}
+
+.large-image {
+  width: 70%;
+  height: auto;
+  margin-bottom: 10px;
+  margin-left: 200px;
+  margin-top: 50px;
+}
+
+.image-text {
+  margin-bottom: 10px;
+  color:#263343;
+  margin-left: 100px;
+  margin-top: 30px;
+}
+
+.image-buttons {
+
+  bottom: 10px;
+  right: 10px;
+  margin-top: 5px;
+  margin-left: 60%;
+  
+}
+
+.small-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 5px 10px; 
+  border: none;
+  border-radius: 5px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.small-button i {
+  margin-right: 5px;
+}
+
+.agent {
+  background-color: #263343; /* Changed background color */
+  color: #fff; /* Changed text color */
+  border: none;
+  margin-top: 10px;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.agent:hover {
+  background-color: #263343; /* Changed background color on hover */
+}
+
+
+.condo-details {
+  margin-top: 20px;
+  text-align: center;
+  margin-right: 70%;
+}
+
+.condo-details hr {
+  width: 50%;
+  margin: 0 auto;
+  border: 0.5px solid #ccc;
+}
+
+.left-details {
+  display: inline-block;
+  width: calc(50% - 5px); /* Adjust as needed */
+  vertical-align: top;
+  
+}
+/* Existing CSS styles */
+
+.about-property {
+  color:#263343;
+  width: 50%;
+  float: left;
+  margin-top: 20px;
+}
+
+.about-property h2 {
+  margin-left: 100px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.about-property p {
+  margin-top: 10px;
+  margin-left: 100px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.more-details {
+  margin-top: 20px;
+  margin-left: 112px ;
+}
+
+.more-details h2 {
+  color: #263343;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.details-row {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.left-column,
+.right-column {
+  width: 30%;
+}
+
+.left-column p,
+.right-column p {
+  color: #263343;
+  margin: 0;
+  margin-top: 10px;
+}
+
+.left-column p {
+  color: #263343;
+  font-weight: bold;
+}
