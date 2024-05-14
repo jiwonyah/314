@@ -1,7 +1,3 @@
-h1{
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    text-align: center;
-}
 
 body {
     display: flex;
@@ -16,15 +12,21 @@ body {
     margin-bottom: 50px;
 }
 
-.logout-button.btn {
-    width: 200%;
-    height: 40px;
-    background: lightblue;
-    border: none;
-    outline: none;
-    border-radius: 45px;
-    font-weight: bold;
-    margin-bottom: 20px;
+/* latin-ext */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/poppins/v21/pxiEyp8kv8JHgFVrJJnecmNE.woff2) format('woff2');
+  unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/poppins/v21/pxiEyp8kv8JHgFVrJJfecg.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 #create-propList-btn {
@@ -112,4 +114,297 @@ body {
 
 .navbar__menu li a:hover {
     background-color: #2f3f53aa; /* Lighter color on hover */
+}
+
+
+  /* Dummy Card */
+  .cards-container {
+    display: flex;
+    justify-content: center; /* This will center the cards horizontally */
+    align-items: flex-start; /* This aligns the cards at the top */
+    flex-wrap: wrap; /* Allows wrapping of cards if the screen is too narrow */
+    gap: 30px; /* This adds space between the cards */
+    margin: 30px; /* This adds space around the whole container */
+  }
+  
+  /* Style for individual cards */
+  .dummy-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 30%; /* This will make each card take up one third of the container width */
+    margin: 0; /* Reset margins for individual cards */
+    /* The height will automatically be the same if the content is the same, otherwise you might need to set a fixed height */
+  }
+  
+  /* Adjustments for responsiveness */
+  @media (max-width: 768px) {
+    .dummy-card {
+      width: 100%; /* Cards will take full width on smaller screens */
+    }
+  }
+  .card-image-link,
+  .card-content-link {
+    text-decoration: none;
+  }
+  
+  .card-image {
+    width: 100%;
+    height: 150px; /* Set the height of the image container */
+  }
+  
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .card-content {
+    padding: 20px;
+    width: 100%;
+    flex: 1; /* Add flex: 1 to make the content container take up the remaining space */
+  }
+  
+  .card-content h3 {
+    font-size: 24px;
+    color: #263343; /* Changed text color */
+    margin-bottom: 10px;
+  }
+  
+  .card-content p {
+    color: #666; /* Changed text color */
+    margin-bottom: 5px;
+  }
+  
+  
+  .icons {
+    color: #263343; /* Changed text color */
+    margin-bottom: 10px;
+  }
+  
+  .icons i {
+    margin-right: 5px;
+  }
+  
+  .contact-agent {
+    background-color: #263343; /* Changed background color */
+    color: #fff; /* Changed text color */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .contact-agent:hover {
+    background-color: #263343; /* Changed background color on hover */
+  }
+  
+  #clear-filter {
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  /* Styling for the property options form */
+  /* Additional styling for centered form */
+  #propertyOptionsForm {
+    max-width: 600px; /* Set a max-width for the form */
+    margin: 20px auto; /* Center form in the available space */
+    padding: 20px;
+    background: #562c2c;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Align the buttons text to center */
+  }
+  
+  /* Styling for checkbox options */
+  .option-section label {
+    padding: 5px;
+    margin: 10px 0; /* Add space between options */
+    display: block; /* Ensure each option is on a new line */
+    cursor: pointer;
+  }
+  
+  /* Change the appearance of the checkboxes */
+  .option-section input[type="checkbox"] {
+    accent-color: #263343; /* This will change the color of the checkbox */
+  }
+  
+  /* Styling for the buttons */
+  #propertyOptionsForm button {
+    padding: 10px 30px;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    border: none;
+    border-radius: 20px;
+    background-color: #263343;
+    color: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin: 0 10px; /* Space between buttons */
+  }
+  
+  #propertyOptionsForm button:hover {
+    background-color: #1a2734;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Styling for the button when the mouse is not over it */
+  #propertyOptionsForm button:not(:hover) {
+    background-color: #f5f5f5;
+    color: #263343;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    #propertyOptionsForm {
+      margin: 20px;
+    }
+  }
+  
+  /* Style adjustments for the dropdowns to align with the new form style */
+  .dropdown,
+  .dropdown-small {
+    margin-bottom: 10px; /* To give space between dropdowns and the new form */
+  }
+  
+  /* The Modal (background) */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .modal h3 {
+    color: #263343;
+  }
+  
+  .modal p {
+    color: #333;
+  }
+  .review-button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  
+  .review-button:hover {
+    background-color: #45a049;
+  }
+
+  .editing-button {
+    background-color: #d4d22b; 
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+
+  .editing-button:hover {
+    background-color: #a4a226; /* Darker yellow */
+}
+
+  .remove-button {
+    background-color: #db2c2c; 
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  
+  .remove-button:hover {
+    background-color: #bd2828;
+  }
+
+  .editing-modal {
+    display: none; /* Hidden by default */
+   position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top of everything */
+    left: 0;
+    top: 0;
+   width: 100%;
+   height: 100%;
+   overflow: auto; /* Enable scrolling if needed */
+   background-color: rgba(0, 0, 0, 0.4); /* Black background with opacity */
+  }
+
+  .editing-modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* Center modal vertically and horizontally */
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 5px;
+    max-width: 400px; /* Adjust max width as needed */
+  }
+
+  .editing-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+.editing-close:hover,
+.editing-close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
