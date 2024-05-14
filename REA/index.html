@@ -20,9 +20,9 @@
         </div>
   
         <ul class="navbar__menu">
-            <li><a href="index.html">Buy</a></li>
-            <li><a href="#">Mortgage</a></li>
-            <li><a href="#">My Profile</a></li>
+            <li><a href="property-details.html">Buy</a></li>
+            <li><a href="Mortgage_form.html">Mortgage</a></li>
+            <li><a href="REAprofile_1stView.html">My Profile</a></li>
         </ul>
     </nav>
 
@@ -32,15 +32,47 @@
     <button id="create-propList-btn">+ Create a Property Listing</button> 
 
     <form id="property-form" action="submit_property.php" method="post" enctype="multipart/form-data" style="display: none;"> 
+       
+        <label for="sellerusername">Seller's Username:</label><br> 
+        <input type="text" id="sellerusername" name="sellerusername" required><br><br>
+     
+        <label for="name">Property Name:</label><br> 
+        <input type="text" id="name" name="name" required><br><br>
+       
         <label for="address">Address:</label><br> 
-        <input type="text" id="address" name="address" required><br> 
+        <input type="text" id="address" name="address" required><br><br>
          
         <label for="price">Price:</label><br> 
-        <input type="number" id="price" name="price" required><br> 
+        <input type="number" id="price" name="price" required><br><br>
          
         <label for="description">Description:</label><br> 
-        <textarea id="description" name="description" rows="4" cols="50" required></textarea><br> 
-         
+        <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
+        
+        <label for="sqrft">Sqaurefeet:</label><br> 
+        <input type="number" id="sqrft" name="sqrft" required><br><br> 
+
+        <label for="bedsnum">Beds:</label><br> 
+        <input type="number" id="bedsnum" name="bedsnum" required><br><br>
+
+        <label for="bathsnum">Baths:</label><br> 
+        <input type="number" id="bathsnum" name="bathsnum" required><br><br>
+
+        <label for="type">Property Type:</label><br> 
+        <select id="property-type" name="property-type">
+          <option value="condo">Condo</option>
+          <option value="hdb">HDB</option>
+          <option value="landed">Landed</option>
+      </select><br><br>
+
+      <label for="location">Location:</label><br> 
+        <select id="prop-location" name="prop-location">
+          <option value="central">Central</option>
+          <option value="north">North</option>
+          <option value="south">South</option>
+          <option value="east">East</option>
+          <option value="west">West</option>
+      </select><br><br>
+
         <label for="image">Image:</label><br> 
         <input type="file" id="image" name="image" accept="image/*" required><br> 
          
@@ -59,39 +91,234 @@
         } 
     </script> 
  
-    <div class="property-listing"> 
-        <img src="property-image.jpg" alt="Property Image"> 
-        <div class="property-details"> 
-            <h2>Property Address</h2> 
-            <p>Price: $XXX,XXX</p> 
-            <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> 
-            <p>Views: XX | Favorites: XX</p> 
-            <!-- Add buttons for favorite/unfavorite --> 
-        </div> 
-    </div> 
+     <!-- Existing Card -->
+     <div class="cards-container">
+     <div class="dummy-card col-12">
+        <div class="card-details">
+          <div class="card-image">
+            <img src="image.png" alt="House Image" />
+          </div>
+  
+          <div class="card-content">
+            <h3>Property 1</h3>
+            <p>Address</p>
+            <p>Price: $XXX,XXX</p>
+            <div class="icons">
+              <i class="fas fa-bed"></i> <span>X Beds</span>
+              <i class="fas fa-bath"></i> <span>X Baths</span>
+              <p>Y sqft</p>
+            </div>
+            <p><b>Property Type:</b> Z</p>
+            <p><b>Location:</b> xx</p>
+            <p><b>Review:</b> "Seller's Description"</p>
+  
+            <a href="property-details.html" class="review-button">See More</a> 
+            <button class="editing-button" onclick="displayModal()">Edit</button>
+            <button class="remove-button">Remove</button>
+          </div>
+        </div>
+      </div>
+ 
+    <!-- New Card Center -->
+    <div class="dummy-card col-12">
+        <div class="card-details">
+          <div class="card-image">
+            <img src="Image2.jpg" alt="House Image" />
+          </div>
+          <div class="card-content">
+            <h3>Property 2</h3>
+            <p>Address</p>
+            <p>Price: $XXX,XXX</p>
+            <div class="icons">
+              <i class="fas fa-bed"></i> <span>X Beds</span>
+              <i class="fas fa-bath"></i> <span>X Baths</span>
+              <p>Y sqft</p>
+            </div>
+            <p><b>Property Type:</b> Z</p>
+            <p><b>Location:</b> xx</p>
+            <p><b>Review:</b> "Seller's Description"</p>
+            <a href="property-details.html" class="review-button">See More</a>  
+            <button class="editing-button" onclick="displayModal()">Edit</button>
+            <button class="remove-button">Remove</button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- New Card Right -->
+      <div class="dummy-card col-12">
+        <div class="card-details">
+          <div class="card-image">
+            <img src="image.png" alt="House Image" />
+          </div>
+          <div class="card-content">
+            <h3>Property 3</h3>
+            <p>Address</p>
+            <p>Price: $XXX,XXX</p>
+            <div class="icons">
+              <i class="fas fa-bed"></i> <span>X Beds</span>
+              <i class="fas fa-bath"></i> <span>X Baths</span>
+              <p>Y sqft</p>
+            </div>
+            <p><b>Property Type:</b> Z</p>
+            <p><b>Location:</b> xx</p>
+            <p><b>Review:</b> "Seller's Description"</p>
+  
+            <a href="property-details.html" class="review-button">See More</a> 
+            <button class="editing-button" onclick="displayModal()">Edit</button>
+            <button class="remove-button">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    
+<!-- Edit Modal -->
+<div id="editing-modal" class="modal">
+  <div class="editing-modal-content">
+    <span class="editing-close">&times;</span>
+    <!-- Your edit form content goes here -->
+    <form id="edit-form">
+      <!-- Form fields -->
+      <label for="edit-name">Property Name:</label><br>
+      <input type="text" id="edit-name" name="edit-name" value="123 Main St"><br><br>
 
-    <!-- Form to edit property listing -->
-<form action="update_property.php" method="post">
-    <!-- Populate fields with existing data -->
-    <input type="hidden" name="property_id" value="..."> <!-- Hidden field for property ID -->
-    <input type="text" name="address" value="..."> <!-- Address field populated with existing data -->
-    <input type="number" name="price" value="..."> <!-- Price field populated with existing data -->
-    <textarea name="description">...</textarea> <!-- Description field populated with existing data -->
-    <input type="submit" value="Save Changes">
-</form>
+      <label for="edit-address">Property Address:</label><br>
+      <input type="text" id="edit-address" name="edit-address" value="Address" ><br><br>
 
-<!-- Button to remove property listing -->
-<form action="remove_property.php" method="post">
-    <input type="hidden" name="property_id" value="..."> <!-- Hidden field for property ID -->
-    <input type="submit" value="Remove">
-</form>
+      <label for="edit-price">Property Price:</label><br>
+      <input type="number" id="edit-price" name="edit-price" value="200000"><br><br>
+
+      <label for="edit-description">Property Description:</label><br>
+      <textarea id="edit-description" name="edit-description" rows="4" cols="50">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</textarea><br><br>
+
+      <label for="edit-sqrft">Sqaurefeet:</label><br>
+      <input type="number" id="edit-sqrft" name="edit-sqrft" value="200000"><br><br>
+
+      <label for="edit-bedsNum">Beds:</label><br>
+      <input type="number" id="edit-bedsNum" name="edit-bedsNum" value="200000"><br><br>
+
+      <label for="edit-bathsNum">Baths:</label><br>
+      <input type="number" id="edit-bathsNum" name="edit-bathsNum" value="200000"><br><br>
+
+      <label for="edit-type">Property Type:</label><br>
+      <select id="property-type" name="property-type">
+        <option value="condo">Condo</option>
+        <option value="hdb">HDB</option>
+        <option value="landed">Landed</option>
+    </select><br><br>
+
+    <label for="edit-location">Location:</label><br> 
+        <select id="prop-location" name="prop-location">
+          <option value="central">Central</option>
+          <option value="north">North</option>
+          <option value="south">South</option>
+          <option value="east">East</option>
+          <option value="west">West</option>
+      </select><br><br>
+
+      <button type="submit">Save Changes</button>
+    </form>
+  </div>
+</div>
+
+<script>
+// Get the modal and the button that triggers it
+var modal = document.getElementById('editing-modal');
+var editButton = document.getElementById('editing-button');
+
+// Get the <span> element that closes the modal
+var closeBtn = modal.querySelector('.editing-close');
+
+// When the user clicks the button, open the modal 
+function displayModal() {
+  modal.style.display = 'block';
+}
+
+// When the user clicks on <span> (x), close the modal
+closeBtn.onclick = function() {
+  modal.style.display = 'none';
+}
+
+// Close the modal if the user clicks anywhere outside of it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = 'none';
+  }
+}
+
+// JavaScript for edit and remove functionality
+
+// Edit button click event
+document.querySelectorAll('.editing-button').forEach(button => {
+    button.addEventListener('click', function() {
+        // Get the property details
+        var propertyDetails = {
+            Id: this.dataset.propertyId,
+            Name: this.dataset.propertyName,
+            Address: this.dataset.propertyAddress,
+            Price: this.dataset.propertyPrice,
+            Description: this.dataset.propertyDescription,
+            SqrFt: this.dataset.propertySqrFt,
+            Type: this.dataset.propertyType,
+            BedsNum: this.dataset.propertyBedsNum,
+            BathsNum: this.dataset.propertyBathsNum,
+            Location: this.dataset.propertyLocation,
+        };
+
+        // Show the edit form/modal and populate it with the property details
+        showEditForm(propertyDetails);
+    });
+});
+
+// Function to show the edit form/modal
+function showEditForm(propertyDetails) {
+    // Show the edit form
+    var editForm = document.getElementById('edit-property-form');
+    editForm.style.display = 'block';
+
+    // Populate the form with the property details
+    editForm.querySelector('#edit-name').value = propertyDetails.Name;
+    editForm.querySelector('#edit-address').value = propertyDetails.Address;
+    editForm.querySelector('#edit-price').value = propertyDetails.Price;
+    editForm.querySelector('#edit-description').value = propertyDetails.Description;
+    editForm.querySelector('#edit-sqrft').value = propertyDetails.SqrFt;
+    editForm.querySelector('#edit-type').value = propertyDetails.Type;
+    editForm.querySelector('#edit-bedsNum').value = propertyDetails.BedsNum;
+    editForm.querySelector('#edit-bathsNum').value = propertyDetails.BathsNum;
+    editForm.querySelector('#edit-location').value = propertyDetails.Location;
+
+    // Add event listener to handle form submission
+    editForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Get updated property details from the form
+        var updatedPropertyDetails = {
+            Id: propertyDetails.Id,
+            Name: editForm.querySelector('#edit-name').value,
+            Address: editForm.querySelector('#edit-address').value,
+            Price: editForm.querySelector('#edit-price').value,
+            Description: editForm.querySelector('#edit-description').value,
+            SqrFt: editForm.querySelector('#edit-sqrft').value,
+            Type: editForm.querySelector('#edit-type').value,
+            BedsNum: editForm.querySelector('#edit-bedsNum').value,
+            BathsNum: editForm.querySelector('#edit-bedsNum').value,
+            Location: editForm.querySelector('#edit-location').value,
+        };
+    });
+}
+
+// Remove button click event
+document.querySelectorAll('.remove-button').forEach(button => {
+    button.addEventListener('click', function() {
+        // Perform the remove action by sending an AJAX request to the server
+        var Id = this.dataset.propertyId;
+    });
+});
 
 
-<a href="Exitpage.html"> 
-    <button id="logout-button" class="btn logout-button"> 
-    Logout 
-  </button> 
-</a> 
+</script>
+
+
  
 </body> 
 </html>
