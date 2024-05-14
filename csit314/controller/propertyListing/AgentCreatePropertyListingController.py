@@ -4,7 +4,7 @@ from wtforms import StringField, IntegerField, SelectField, TextAreaField, Boole
 from wtforms.validators import DataRequired
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from csit314.controller.role_service.decorators import agent_only
+from csit314.controller.role_service.decorators import login_required, agent_only
 from werkzeug.utils import secure_filename
 from csit314.app import db
 import os
@@ -39,6 +39,7 @@ class PropertyListingForm(FlaskForm):
     is_sold = BooleanField('Is Sold')
 
 @bp.route('/propertyListing/create/')
+@login_required
 @agent_only
 def index():
     form = PropertyListingForm()
@@ -46,6 +47,8 @@ def index():
                            form=form)
 
 @bp.route('/propertyListing/create/', methods=['POST'])
+@login_required
+@agent_only
 def createPropertyListing():
     form = PropertyListingForm(request.form)
     details = {
@@ -82,7 +85,6 @@ def createPropertyListing():
 
 
 #----------------------------------------------------------------------------------------------------
-
 
 @bp.errorhandler(ValueError)
 def handle_value_error(error):

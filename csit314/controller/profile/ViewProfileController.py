@@ -5,7 +5,6 @@ from flask import Blueprint, url_for, render_template, flash, request, redirect,
 from csit314.controller.role_service.decorators import login_required
 
 bp = Blueprint('profile', __name__)
-@login_required
 @bp.route('/profile/<userid>/')
 def profile(userid):
     user = User.query.filter_by(userid=userid).first()

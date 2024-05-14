@@ -4,26 +4,25 @@ from csit314.entity.PropertyListing import PropertyListing
 from werkzeug.utils import redirect
 from csit314.controller.role_service.decorators import login_required, agent_only
 from datetime import datetime
-from wtforms import StringField, IntegerField, SelectField, TextAreaField, BooleanField
-from flask_wtf.file import FileField, FileAllowed
-from wtforms.validators import DataRequired
-from flask_wtf import FlaskForm
 from csit314.entity.PropertyListing import PropertyListing, FloorLevel, PropertyType, Furnishing, PropertyImage
 
 bp = Blueprint('editPropertyListing', __name__, template_folder='boundary/templates')
 
 @bp.route('/propertyListing/edit/<int:propertyListing_id>/') #methods=['GET']
+@login_required
+@agent_only
 def index(propertyListing_id):
     propertyListing = PropertyListing.query.get(propertyListing_id)
-    if g.user != propertyListing.agent:
-        return render_template('error/error.html',
-                               message='You don\'t have authority to edit the post.'), 404
-    else:
-        form = PropertyListingForm(obj=propertyListing)
-        return render_template('property_listing/propertyListingEditForm.html', form=form)
+    # if g.user != propertyListing.agent:
+    #     return render_template('error/error.html',
+    #                            message='You don\'t have authority to edit the post.'), 404
+    # else:
+    form = PropertyListingForm(obj=propertyListing)
+    return render_template('property_listing/propertyListingEditForm.html', form=form)
 
 @bp.route('/propertyListing/edit/<int:propertyListing_id>/', methods=['POST'])
 @login_required
+@agent_only
 def editPropertyListing(propertyListing_id):
     propertyListing = PropertyListing.query.get(propertyListing_id)
     if not propertyListing:

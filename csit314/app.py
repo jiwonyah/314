@@ -5,7 +5,6 @@ from flask_sqlalchemy import SQLAlchemy
 import config
 from sqlalchemy import MetaData
 from flask_jwt_extended import JWTManager
-# from csit314.entity.User import User, Role
 import json
 from enum import Enum
 
@@ -75,9 +74,8 @@ def create_app():
     from csit314.controller.review import (AgentViewReviewController, BuyerSellerWriteReviewController)
     from csit314.controller.favourite import (SaveFavouriteController, ViewSavedFavouriteController)
     from csit314.controller.mortgage import BuyerCalculateMortgageController
-    from csit314.controller.admin import (AdminHomePageController, AccountDashboardController)
-
-
+    from csit314.controller.admin import (AdminHomePageController, AccountDashboardController,
+                                          CreateUserAccountController, ViewUserAccountController)
     app.register_blueprint(SignUpController.bp)
     app.register_blueprint(ViewPropertyListingController.bp)
     app.register_blueprint(AgentCreatePropertyListingController.bp)
@@ -95,6 +93,8 @@ def create_app():
     app.register_blueprint(BuyerViewOldPropertyListing.bp)
     app.register_blueprint(AdminHomePageController.bp)
     app.register_blueprint(AccountDashboardController.bp)
+    app.register_blueprint(CreateUserAccountController.bp)
+    app.register_blueprint(ViewUserAccountController.bp)
 
     @app.route('/')
     def index():

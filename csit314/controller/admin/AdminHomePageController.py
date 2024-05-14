@@ -1,14 +1,10 @@
 from flask import Blueprint, render_template, g, jsonify
 from csit314.entity.User import Role
-
+from csit314.controller.role_service.decorators import login_required, admin_only
 bp = Blueprint('adminHome', __name__, template_folder="/boundary/templates")
 
 @bp.route('/admin/')
+@login_required
+@admin_only
 def adminHomePage():
-    if not g.user:
-        return jsonify(success=False,
-                       error='Login required to view old property listing.'), 401
-    elif g.user.role != Role.ADMIN:
-        return jsonify(success=False,
-                       error='Only buyers can view old property listings.'), 403
     return render_template('AdminHomePage.html')

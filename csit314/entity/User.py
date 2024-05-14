@@ -1,6 +1,7 @@
 import enum
 from csit314.app import db
 from flask import flash
+
 class Role(enum.Enum):
     SELLER = 'seller'
     BUYER = 'buyer'
@@ -62,7 +63,7 @@ class User(db.Model):
     # ---------------------------------admin function-------------------------------------------
     @classmethod
     def createUserAccount(cls, accountDetails: dict):
-        userid = cls.query.filter_by(userid=accountDetails["username"]).one_or_none()
+        userid = cls.query.filter_by(userid=accountDetails["userid"]).one_or_none()
         email = cls.query.filter_by(email=accountDetails["email"]).one_or_none()
         if userid or email:
             return False
