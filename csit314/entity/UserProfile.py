@@ -2,6 +2,7 @@ from csit314.app import db
 
 class UserProfile(db.Model):
     __tablename__ = 'profile'
+
     id = db.Column(db.Integer, primary_key=True)
     profileName = db.Column(db.String(50), unique=True)
     profileDescription = db.Column(db.String(50))

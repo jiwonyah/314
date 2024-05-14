@@ -1,4 +1,4 @@
-from csit314.entity.User import User, Role
+from csit314.entity.UserAccount import UserAccount    #, Role
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, PasswordField, EmailField
 from wtforms.validators import DataRequired, Length, EqualTo, Email, ValidationError
@@ -30,10 +30,15 @@ class UserCreateForm(FlaskForm):
     firstName = StringField('First Name', validators=[DataRequired()])
     lastName = StringField('Last Name', validators=[DataRequired()])
     role = SelectField('Role', choices=[
-        (Role.SELLER.value, 'Seller'),
-        (Role.BUYER.value, 'Buyer'),
-        (Role.AGENT.value, 'Agent')
+        ('seller', 'Seller'),
+        ('buyer', 'Buyer'),
+        ('agent', 'Agent')
     ], validators=[DataRequired()])
+    # role = SelectField('Role', choices=[
+    #     (Role.SELLER.value, 'Seller'),
+    #     (Role.BUYER.value, 'Buyer'),
+    #     (Role.AGENT.value, 'Agent')
+    # ], validators=[DataRequired()])
 
 @bp.route('/signup/')
 def index():
@@ -61,8 +66,8 @@ def signUp():
     if password != password2:
         return jsonify({'success': False, 'error': 'Password does not match.'})
 
-    userid_exists = User.query.filter_by(userid=user_details["userid"]).one_or_none()
-    email_exists = User.query.filter_by(email=user_details["email"]).one_or_none()
+    userid_exists = UserAccount.query.filter_by(userid=user_details["userid"]).one_or_none()
+    email_exists = UserAccount.query.filter_by(email=user_details["email"]).one_or_none()
     if userid_exists:
         return jsonify({'error': 'The ID is already registered.'})
     if len(userid) < 5 or len(userid) > 25:
@@ -71,7 +76,7 @@ def signUp():
         return jsonify({'error': 'Password must be 8~25.'})
     if email_exists:
         return jsonify({'error': 'The email is already registered.'})
-    success = User.createNewUser(user_details)
+    success = UserAccount.createNewUser(user_details)
     if success:
         return jsonify({'success': True, 'message': 'User created successfully'})
     else:

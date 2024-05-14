@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, render_template
-from csit314.entity.User import User
+from csit314.entity.UserAccount import UserAccount
 from csit314.controller.role_service.decorators import login_required, admin_only
 
 bp = Blueprint('createAccount', __name__, template_folder="/boundary/templates")
@@ -31,10 +31,10 @@ def createUserAccount():
         'role': role,
         'status': status
     }
-    results = User.createUserAccount(account_details)
+    results = UserAccount.createUserAccount(account_details)
     if results:
         return jsonify({'success': True, 'message': 'User Account created successfully'})
-    elif User.useridExists(account_details):
+    elif UserAccount.useridExists(account_details):
         return jsonify({'success': False, 'error': 'UserID Exists'})
-    elif User.emailExists(account_details):
+    elif UserAccount.emailExists(account_details):
         return jsonify({'success': False, 'error': 'Email Exists'})

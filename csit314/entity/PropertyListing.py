@@ -1,12 +1,9 @@
 import enum
 from csit314.app import db
-from . import User
-from csit314.entity.User import User,Role
+from csit314.entity.UserAccount import UserAccount    #,Role
 from sqlalchemy.orm import validates
 from datetime import datetime
-from flask import g
 
-#enum type data
 class FloorLevel(enum.Enum):
     LOW = 'low'
     MEDIUM = 'medium'
@@ -57,9 +54,9 @@ class PropertyListing(db.Model):
     create_date = db.Column(db.DateTime(), nullable=False)
     modify_date = db.Column(db.DateTime(), nullable=True)
     agent_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
-    agent = db.relationship('User', foreign_keys=[agent_id], backref=db.backref('property_listing_set'))
+    agent = db.relationship('UserAccount', foreign_keys=[agent_id], backref=db.backref('property_listing_set'))
     client_id = db.Column(db.String, db.ForeignKey('user.userid', ondelete='CASCADE'), nullable=False)
-    client = db.relationship('User', foreign_keys=[client_id], backref=db.backref('client_property_listings'))
+    client = db.relationship('UserAccount', foreign_keys=[client_id], backref=db.backref('client_property_listings'))
     view_counts = db.Column(db.Integer, default=0, nullable=False)
     favourites = db.relationship('Favourite', back_populates='propertyListing', lazy='dynamic')
     is_sold = db.Column(db.Boolean(), default=False)
@@ -68,11 +65,11 @@ class PropertyListing(db.Model):
     @validates('client_id')
     def validate_client_id(self, key, client_id):
         # Check if the userid exists in the User table
-        user_with_client_id = User.query.filter_by(userid=client_id).first()
+        user_with_client_id = UserAccount.query.filter_by(userid=client_id).first()
         if not user_with_client_id:
             raise ValueError('The provided userid does not exist')
         # Check if the provided client_id corresponds to a seller user
-        seller_user = User.query.filter_by(userid=client_id, role=Role.SELLER).first()
+        seller_user = UserAccount.query.filter_by(userid=client_id, role='seller').first() #role=Role.SELLER
         if not seller_user:
             raise ValueError('The client must correspond to a seller user')
         return client_id
@@ -85,7 +82,7 @@ class PropertyListing(db.Model):
     @classmethod
     def createPropertyListing(cls, details: dict, image_files: list = None) -> bool:
         agent_id = details.get('agent_id')
-        agent = User.query.filter_by(id=agent_id, role=Role.AGENT.value).first()
+        agent = UserAccount.query.filter_by(id=agent_id, role='agent').first()    #role=Role.AGENT.value
         if not agent:
             return False
         required_fields = ['subject', 'price', 'address', 'floorSize', 'floorLevel', 'propertyType', 'furnishing',
@@ -147,13 +144,12 @@ class PropertyListing(db.Model):
     @classmethod
     def removePropertyListing(cls, listing_id: int) -> bool:
         property_listing = cls.getPropertyListing(listing_id)
-        if not property_listing:
-            return False
-        if not g.user:
-            return False  # 로그인되지 않은 경우 삭제 권한 없음
-        # 로그인된 사용자가 해당 부동산 리스트의 에이전트(등록자)인지 확인
-        if property_listing.agent_id != g.user.id:
-            return False  # 삭제 권한 없음
+        # if not property_listing:
+        #     return False
+        # if not g.user:
+        #     return False
+        # if property_listing.agent_id != g.user.id:
+        #     return False
         db.session.delete(property_listing)
         db.session.commit()
         return True

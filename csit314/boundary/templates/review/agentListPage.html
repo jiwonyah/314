@@ -35,7 +35,7 @@
                                             <a href="/profile/${agent.userid}/">
                                             ${fullName}</a>
                                         </td>
-                                        {% if g.user.role.value == "buyer" or g.user.role.value == "seller" %}
+                                        {% if g.user.role == "buyer" or g.user.role == "seller" %}
                                         <td><a href="/write-review/${agent.id}" class="review-button">Write Review</a></td>
                                         {% endif %}
                                      </tr>`;

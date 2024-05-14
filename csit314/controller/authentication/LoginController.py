@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired, Length
 from flask import jsonify, Blueprint, url_for, render_template, redirect, session
-from csit314.entity.User import User
+from csit314.entity.UserAccount import UserAccount
 from flask import request, g, flash
 import bcrypt
 
@@ -34,11 +34,11 @@ def login():
     credential = request.json
     userid = credential['userid']
     password = credential['password']
-    user = User.findAUserByUserID(userid=userid)
+    user = UserAccount.findAUserByUserID(userid=userid)
     if user and bcrypt.checkpw(password.encode('UTF-8'), user.password.encode('UTF-8')):
         session['user_id'] = user.id
-        serialized_role = user.serialize_enum()
-        return jsonify({'success': True, 'message': 'Login successful', 'role': serialized_role})
+        #serialized_role = user.serialize_enum()
+        return jsonify({'success': True, 'message': 'Login successful'})
     return jsonify({'success': False, 'error': 'User information does not exist.'}), 401
 
 @bp.before_app_request
@@ -47,5 +47,5 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = User.query.get(user_id)
+        g.user = UserAccount.query.get(user_id)
 

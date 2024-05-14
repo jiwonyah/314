@@ -1,15 +1,11 @@
 from flask import Blueprint, render_template, g, jsonify
-from csit314.entity.User import User, Role
-
+from csit314.entity.UserAccount import UserAccount    #, Role
+from csit314.controller.role_service.decorators import login_required, buyer_only
 bp = Blueprint('calculate_mortgage', __name__, template_folder='boundary/templates')
 
 # Calculating mortgage is only for BUYER.
 @bp.route('/mortgage')
+@login_required
+@buyer_only
 def calculateMortgage():
-    if not g.user:
-        return jsonify(success=False,
-                       error='Login required to calculate mortgage.'), 401
-    elif g.user.role != Role.BUYER:
-        return jsonify(success=False,
-                       error='You are not authorized to calculate mortgage.'), 403
     return render_template('mortgage/calculateMortgage.html')

@@ -51,7 +51,7 @@
 <div>
     <div>
         <h1 class="my-3 border-bottom pb-2">Property Listings</h1>
-        {% if g.user and g.user.role.value == "buyer" %}
+        {% if g.user and g.user.role == "buyer" %}
         <div style="text-align: right; margin-top: 20px;" class="ordinal_btn">
             <a href="{{ url_for('viewOldPropertyListings.view_old_property_listings_index') }}" >
                 View Old Property Listings
@@ -69,7 +69,7 @@
             <th style="width:50%">Subject</th>
             <th>author</th>
             <th>Date</th>
-            {% if g.user and g.user.role.value == "buyer" %}
+            {% if g.user and g.user.role == "buyer" %}
             <th>Bookmark</th>
             {% endif %}
         </tr>
@@ -90,7 +90,7 @@
             {% endif %}
 
             <!-- favourite button start -->
-            {% if g.user and g.user.role.value == "buyer" %}
+            {% if g.user and g.user.role == "buyer" %}
             <td>
                 <button onclick="toggleFavourite(this, {{ propertyListing.id }})"
                         class="favourite-btn"
@@ -112,7 +112,7 @@
     </table>
 </div>
 <!-- Button for posting new property listing -->
-{% if g.user and g.user.role.value == "agent" %}
+{% if g.user and g.user.role == "agent" %}
 <div style="text-align: right; margin-top: 20px;" class="ordinal_btn">
     <a href="{{ url_for('createPropertyListing.createPropertyListing') }}" >Create New Property Listing</a>
 </div>

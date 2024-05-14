@@ -25,34 +25,18 @@ def create_app():
     app.config['UPLOAD_FOLDER'] = '/csit314/boundary/static/images/property_listings'
     app.config.from_object(config)
     app.config['SECRET_KEY'] = '1q2w3e4r!'
-    # # JWTManager 초기화
-    app.config['JWT_SECRET_KEY'] = 'csit314'  # JWT 시크릿 키 설정
-    # jwt = JWTManager(app)
+    app.config['JWT_SECRET_KEY'] = 'csit314'
 
     # Load app configuration from config.py
     app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config.SQLALCHEMY_TRACK_MODIFICATIONS
 
-    # with app.app_context():
-    #     db.create_all()
-    #     admin = User(
-    #         userid="admin",
-    #         email="jiwon0502@gmail.com",
-    #         password="$2y$10$/U0fxuv5TH2liyswZNWsAeLdd4/UgLgE..7XrjAtNk5dpPJ55t8Di",
-    #         first_name=None,
-    #         last_name=None,
-    #         role=Role.ADMIN.value,
-    #         status=None
-    #     )
-    #     db.session.add(admin)
-    #     db.session.commit()
-    # Enum 객체를 직렬화할 수 있는 커스텀 JSONEncoder 정의
     class CustomJSONEncoder(json.JSONEncoder):
         def default(self, obj):
             if isinstance(obj, Enum):
                 return obj.value
             return super().default(obj)
-    # Flask 애플리케이션에 커스텀 JSONEncoder 설정
+
     app.json_encoder = CustomJSONEncoder
     jwt = JWTManager(app)
 

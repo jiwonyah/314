@@ -1,42 +1,11 @@
 from flask import Blueprint, render_template, request, jsonify, session
-from csit314.entity.PropertyListing import PropertyListing, FloorLevel, PropertyType, Furnishing, PropertyImage
-from wtforms import StringField, IntegerField, SelectField, TextAreaField, BooleanField
-from wtforms.validators import DataRequired
-from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
+from csit314.entity.PropertyListing import PropertyListing
 from csit314.controller.role_service.decorators import login_required, agent_only
 from werkzeug.utils import secure_filename
-from csit314.app import db
+from .Form.PropertyListingForm import PropertyListingForm
 import os
 
 bp = Blueprint('createPropertyListing', __name__, template_folder='boundary/templates')
-
-class PropertyListingForm(FlaskForm):
-    subject = StringField('Subject', validators=[DataRequired()])
-    images = FileField('Images', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')])
-    content = TextAreaField('Content')
-    price = IntegerField('Price', validators=[DataRequired()])
-    address = StringField('Address', validators=[DataRequired()])
-    floorSize = IntegerField('Floor Size', validators=[DataRequired()])
-    floorLevel = SelectField('Floor Level', choices=[
-        (FloorLevel.LOW.value, 'Low'),
-        (FloorLevel.MEDIUM.value, 'Medium'),
-        (FloorLevel.HIGH.value, 'High')
-    ], validators=[DataRequired()])
-    propertyType = SelectField('Property Type', choices=[
-        (PropertyType.HDB.value, 'HDB'),
-        (PropertyType.CONDO.value, 'Condo'),
-        (PropertyType.APARTMENT.value, 'Apartment'),
-        (PropertyType.STUDIO.value, 'Studio')
-    ], validators=[DataRequired()])
-    furnishing = SelectField('Furnishing', choices=[
-        (Furnishing.PartiallyFurnished.value, 'Partially furnished'),
-        (Furnishing.FullyFurnished.value, 'Fully furnished'),
-        (Furnishing.NotFurnished.value, 'Not furnished')
-    ], validators=[DataRequired()])
-    builtYear = IntegerField('Built Year', validators=[DataRequired()])
-    client_id = StringField('Client',  validators=[DataRequired()])
-    is_sold = BooleanField('Is Sold')
 
 @bp.route('/propertyListing/create/')
 @login_required

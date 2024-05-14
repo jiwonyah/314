@@ -3,7 +3,7 @@ from csit314.entity.PropertyListing import PropertyListing
 from csit314.app import db
 from csit314.controller.role_service.decorators import login_required, agent_only, seller_only
 from flask import Blueprint, render_template, request, url_for, g, jsonify
-from csit314.entity.User import User
+from csit314.entity.UserAccount import UserAccount
 from functools import wraps
 
 bp = Blueprint('viewPropertyListing', __name__, template_folder='boundary/templates')

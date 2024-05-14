@@ -1,10 +1,10 @@
 from flask import Blueprint, render_template, request, g, jsonify
-from .AgentCreatePropertyListingController import PropertyListingForm
+from .Form.PropertyListingForm import PropertyListingForm
 from csit314.entity.PropertyListing import PropertyListing
 from werkzeug.utils import redirect
 from csit314.controller.role_service.decorators import login_required, agent_only
 from datetime import datetime
-from csit314.entity.PropertyListing import PropertyListing, FloorLevel, PropertyType, Furnishing, PropertyImage
+from csit314.entity.PropertyListing import PropertyListing
 
 bp = Blueprint('editPropertyListing', __name__, template_folder='boundary/templates')
 

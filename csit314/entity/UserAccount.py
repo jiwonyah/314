@@ -2,13 +2,13 @@ import enum
 from csit314.app import db
 from flask import flash
 
-class Role(enum.Enum):
-    SELLER = 'seller'
-    BUYER = 'buyer'
-    AGENT = 'agent'
-    ADMIN = 'admin'
+# class Role(enum.Enum):
+#     SELLER = 'seller'
+#     BUYER = 'buyer'
+#     AGENT = 'agent'
+#     ADMIN = 'admin'
 
-class User(db.Model):
+class UserAccount(db.Model):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -17,14 +17,15 @@ class User(db.Model):
     email = db.Column(db.String, nullable=False, unique=True)
     firstName = db.Column(db.String)
     lastName = db.Column(db.String)
-    role = db.Column(db.Enum(Role, values_callable=lambda x: [str(member.value) for member in Role]), nullable=False)
+    # role = db.Column(db.Enum(Role, values_callable=lambda x: [str(member.value) for member in Role]), nullable=False)
+    role = db.Column(db.String(10))
     status = db.Column(db.String(50))
 
-    def serialize_enum(self):
-        return self.role.name
+    # def serialize_enum(self):
+    #     return self.role.name
 
     @classmethod
-    def findAUserByUserID(cls, userid: str) -> "User | None":
+    def findAUserByUserID(cls, userid: str) -> "UserAccount | None":
         """
         Find a user by user ID.
         :param userid: The user ID to search for.
@@ -33,7 +34,7 @@ class User(db.Model):
         return cls.query.filter_by(userid=userid).one_or_none()
 
     @classmethod
-    def searchAllUsers(cls) -> list["User"]:
+    def searchAllUsers(cls) -> list["UserAccount"]:
         """
         Retrieve all users from the database.
         :return: A list of User objects.
@@ -52,7 +53,9 @@ class User(db.Model):
         if userid or email:
             # Reject creation of a user with already registered userid or email
             return False
-        if user_details.get('role') == Role.ADMIN.value:
+
+        #Role.ADMIN.value
+        if user_details.get('role') == 'admin':
             # Reject creation of a user with the role as Admin
             return False
         # Create a new user
@@ -107,7 +110,8 @@ class User(db.Model):
         user.email = new_email or user.email
         user.userid = new_userid or user.userid
         user.password = updateDetails.get('password', user.password)
-        user.Role = updateDetails.get('role', user.Role)
+        user.role = updateDetails.get('role', user.role)
+        # user.Role = updateDetails.get('role', user.Role)
         user.status = updateDetails.get('status', user.status)
 
         db.session.commit()
@@ -127,7 +131,8 @@ class User(db.Model):
             'email': self.email,
             'userid': self.userid,
             'password': self.password,
-            'role': self.Role,
+            'role': self.role,
+            # 'role': self.Role,
             'status': self.status
         }
 

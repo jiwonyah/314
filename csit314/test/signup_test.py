@@ -1,7 +1,7 @@
 import unittest
 from flask_testing import TestCase
 from csit314.app import db, create_app
-from csit314.entity.User import User, Role
+from csit314.entity.UserAccount import User, Role
 from flask import json
 
 class TestSignUpController(TestCase):

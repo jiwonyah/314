@@ -17,7 +17,7 @@
 
 				<li><a href="{{ url_for('write_review_controller.agent_list_index') }}">Agent Review</a></li>
 
-				{% if g.user and g.user.role.value == "buyer" %}
+				{% if g.user and g.user.role == "buyer" %}
 				<li><a href="{{ url_for('calculate_mortgage.calculateMortgage') }}">Mortgage</a></li>  <!--page has not been created-->
 				{% endif %}
 
@@ -28,12 +28,12 @@
 						<!-- 1 -->
 						<a href="{{ url_for('profile.profile', userid=g.user.userid) }}">My Info</a>
 						<!-- 2 -->
-						{% if g.user.role.value == "agent"  %}
+						{% if g.user.role == "agent"  %}
 						<a href="{{ url_for('viewPropertyListing.viewPropertyListingHistory')}}">Post History</a>
 						<a href="{{ url_for('view_review_controller.agentViewReviews_index')}}">Reviews</a>
-						{% elif g.user.role.value == "seller" %}
+						{% elif g.user.role == "seller" %}
 						<a href="{{ url_for('viewPropertyListing.sellerViewOwnPropertyListing')}}">My Property</a>
-						{% elif g.user.role.value == "buyer" %}
+						{% elif g.user.role == "buyer" %}
 						<a href="{{ url_for('view_saved_favourite_controller.view_my_favourites_index')}}">Shortlist</a>
 						{% endif %}
 						<a id="logoutButton">Logout</a>

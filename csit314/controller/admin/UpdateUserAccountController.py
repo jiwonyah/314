@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, render_template
 from csit314.controller.role_service.decorators import login_required, admin_only
-from csit314.entity.User import User
+from csit314.entity.UserAccount import UserAccount
 
 bp = Blueprint('updateAccount', __name__, template_folder="/boundary/templates")
 
@@ -10,7 +10,7 @@ bp = Blueprint('updateAccount', __name__, template_folder="/boundary/templates")
 @login_required
 @admin_only
 def view_user_accounts():
-    userList = User.getUserAccounts()
+    userList = UserAccount.getUserAccounts()
     return render_template("UserAccount/UpdateUserAccountPage.html", users=userList)
 
 
@@ -19,7 +19,7 @@ def view_user_accounts():
 @login_required
 @admin_only
 def display_update_form(userid):
-    user = User.getUserDetails(userid)
+    user = UserAccount.getUserDetails(userid)
     return render_template("UserAccount/UpdateUserAccountForm.html", user=user)
 
 
@@ -27,7 +27,7 @@ def display_update_form(userid):
 @login_required
 @admin_only
 def update_user_account(userid):
-    user = User.getUserDetails(userid)
+    user = UserAccount.getUserDetails(userid)
     full_name = request.form['full_name']
     email = request.form['email']
     new_username = request.form['userid']
@@ -48,10 +48,10 @@ def update_user_account(userid):
         'status': status
     }
 
-    results = User.updateUserAccount(user.userid, updateDetails)
+    results = UserAccount.updateUserAccount(user.userid, updateDetails)
     if results:
         return jsonify({'success': True, 'message': 'User Account updated successfully'})
-    elif new_username != user.userid and User.useridExists(updateDetails):
+    elif new_username != user.userid and UserAccount.useridExists(updateDetails):
         return jsonify({'success': False, 'error': 'Username Exists'})
-    elif email != user.email and User.emailExists(updateDetails):
+    elif email != user.email and UserAccount.emailExists(updateDetails):
         return jsonify({'success': False, 'error': 'Email Exists'})

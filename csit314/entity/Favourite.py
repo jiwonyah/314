@@ -4,7 +4,7 @@ from datetime import datetime
 from sqlalchemy import desc
 from sqlalchemy import func
 from csit314.entity.PropertyListing import PropertyListing
-from csit314.entity.User import User
+from csit314.entity.UserAccount import UserAccount
 
 class Favourite(db.Model):
     id = db.Column(db.Integer, primary_key=True)

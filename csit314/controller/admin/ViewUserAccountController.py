@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, render_template
 from csit314.controller.role_service.decorators import login_required, admin_only
-from csit314.entity.User import User
+from csit314.entity.UserAccount import UserAccount
 
 bp = Blueprint('viewAccount', __name__, template_folder="/boundary/templates")
 
@@ -19,7 +19,7 @@ def view_user_accounts():
 @admin_only
 def view_account_details(userid):
     #getting the user object from UserAccount class method
-    user = User.getUserDetails(userid)
+    user = UserAccount.getUserDetails(userid)
     full_name = f"{user.firstName} {user.lastName}" if user.firstName and user.lastName else None
     serialized_role = user.serialize_enum()
     return jsonify({
@@ -28,7 +28,7 @@ def view_account_details(userid):
         'email': user.email,
         'userid': user.userid,
         'password': user.password,
-        'role': serialized_role,
+        'role': user.role, #serialized_role,
         'status': user.status,
         'full_name': full_name
     })
