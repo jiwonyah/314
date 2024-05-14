@@ -6,8 +6,7 @@
         <thead>
         <tr>
             <th>Subject</th>
-            <th>Date</th>
-            <th>Action</th>
+            <th> </th>
         </tr>
         </thead>
         <tbody id="favourite-table-body">
@@ -20,32 +19,41 @@
         .then(response => response.json())
         .then(data => {
             const tableBody = document.getElementById('favourite-table-body');
-            data.forEach(favourite => {
-                const row = document.createElement('tr');
-                row.id = `row-${favourite.id}`;
+            if(data.length === 0) { // If no data exists
+                const noDataRow = document.createElement('tr');
+                const noDataCell = document.createElement('td');
+                noDataCell.colSpan = 3;
+                noDataCell.textContent = 'No favourite property listing yet.';
+                noDataCell.style.textAlign = 'center';
+                noDataRow.appendChild(noDataCell);
+                tableBody.appendChild(noDataRow);
+            } else {
+                data.forEach(favourite => {
+                    const row = document.createElement('tr');
+                    row.id = `row-${favourite.id}`;
 
-                const subjectCell = document.createElement('td');
-                const subjectLink = document.createElement('a');
-                subjectLink.href = `/viewPropertyListing/detail/${favourite.id}`;
-                subjectLink.textContent = favourite.subject;
-                subjectCell.appendChild(subjectLink);
+                    const subjectCell = document.createElement('td');
+                    const subjectLink = document.createElement('a');
+                    subjectLink.href = `/viewPropertyListing/detail/${favourite.id}`;
+                    subjectLink.textContent = favourite.subject;
+                    subjectCell.appendChild(subjectLink);
 
-                const dateCell = document.createElement('td');
-                dateCell.textContent = favourite.create_date;
+                    const dateCell = document.createElement('td');
+                    dateCell.textContent = favourite.create_date;
 
-                const actionCell = document.createElement('td');
-                const favouriteButton = document.createElement('button');
-                favouriteButton.onclick = () => toggleFavourite(this, favourite.id);
-                favouriteButton.className = 'favourite-btn';
-                favouriteButton.id = `favourite-btn-${favourite.id}`;
-                favouriteButton.textContent = 'X';
-                actionCell.appendChild(favouriteButton);
+                    const actionCell = document.createElement('td');
+                    const favouriteButton = document.createElement('button');
+                    favouriteButton.onclick = () => toggleFavourite(this, favourite.id);
+                    favouriteButton.className = 'favourite-btn';
+                    favouriteButton.id = `favourite-btn-${favourite.id}`;
+                    favouriteButton.textContent = 'X';
+                    actionCell.appendChild(favouriteButton);
 
-                row.appendChild(subjectCell);
-                row.appendChild(dateCell);
-                row.appendChild(actionCell);
-                tableBody.appendChild(row);
-            });
+                    row.appendChild(subjectCell);
+                    row.appendChild(actionCell);
+                    tableBody.appendChild(row);
+                });
+            }
         })
         .catch(error => {
             console.error('Error fetching favourite listings:', error);
@@ -58,11 +66,20 @@
         .then(response => response.json())
         .then(data => {
             if(data.success) {
-                // If successfully removed from favourites, remove the corresponding listing from the page
                 var row = document.getElementById(`row-${propertyListingId}`);
                 row.parentNode.removeChild(row);
+                // Check if no favourites left and display message
+                if(document.getElementById('favourite-table-body').rows.length === 0) {
+                    const tableBody = document.getElementById('favourite-table-body');
+                    const noDataRow = document.createElement('tr');
+                    const noDataCell = document.createElement('td');
+                    noDataCell.colSpan = 3;
+                    noDataCell.textContent = 'No favourite property listing yet.';
+                    noDataCell.style.textAlign = 'center';
+                    noDataRow.appendChild(noDataCell);
+                    tableBody.appendChild(noDataRow);
+                }
             } else {
-                // Display error message in case of fail
                 console.error('Failed to remove favorite:', data.error);
             }
         })
@@ -72,11 +89,12 @@
     }
 </script>
 
+
 <style>
 .favourite-btn {
     padding: 5px 10px;
     border: 1px solid #ccc;
-    background-color: #ff0000; /* 빨간색 배경 */
+    background-color: #ff0000;
     color: white;
     cursor: pointer;
 }

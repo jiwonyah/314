@@ -48,34 +48,41 @@
         /* Print the Monthly Mortgage Amount to the HTML Page */
         if(isNaN(mortgage))
         {
-            resultElement.innerHTML = 'Monthly Mortgage Payment: $' + 0.00;
+            resultElement.innerHTML = "Mortgage Amount: " + 0.00;
         }
         else
         {
-            resultElement.innerHTML = 'Monthly Mortgage Payment: $' + mortgage.toFixed(2);
+            resultElement.innerHTML = "Mortgage Amount: $" + mortgage.toFixed(2) + " /year";
         }
     }
     </script>
 
-    <body>
+    <div id="calculate-mortgage-page">
+
         <!-- Mortgage Calculation Form -->
         <h1 id = "mortgage_title">Mortgage Calculation</h1>
-        <section id = "mortgage_calc">
+        <section id = "mortgage_calc" name = "mortgage_calc">
             <!-- Mortgage Calculation Form -->
             <div>
-                <br><br>
-                <label for = "loan_amt">Enter Loan Amount($): </label><br>
-                <input type = "text" id = "loan_amt"><br>
-                <label for = "int_rate">Enter Interest Rate(%): </label><br>
-                <input type = "text" id = "int_rate"><br>
-                <label for = "loan_tenure">Enter Loan Tenure(Years): </label><br>
-                <input type = "text" id = "loan_tenure">
-                <br><br>
-                <button type = "button" onclick = "Calculate_Mortgage()" id = "mortgage_btn">Calculate Mortgage</button>
                 <br>
-                <div id="result"></div>
+                <div id = "mort-form">
+                    <div id = "form-inner">
+                        <label for = "loan_amt">Enter Loan Amount($): </label><br>
+                        <input type = "text" id = "loan_amt"><br><br>
+                        <label for = "int_rate">Enter Interest Rate(%): </label><br>
+                        <input type = "text" id = "int_rate"><br><br>
+                        <label for = "loan_tenure">Enter Loan Tenure(Years): </label><br>
+                        <input type = "text" id = "loan_tenure">
+                        <br><br>
+                        <button type = "button" onclick = "Calculate_Mortgage()" id = "mortgage_btn">Calculate Mortgage</button>
+                    </div>
+                </div>
+                <br>
+                <div id = "mortgage_amt_display">
+                    <b><div id="result"></div></b>
+                </div>
             </div>
         </section>
-    </body>
+    </div>
 </div>
 {% endblock %}

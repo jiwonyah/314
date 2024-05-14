@@ -103,7 +103,5 @@ class TestSignUpController(TestCase):
         user = User.query.filter_by(userid=form_data['userid']).first()
         self.assertIsNone(user) # it must be true
 
-
-
 if __name__ == '__main__':
     unittest.main()

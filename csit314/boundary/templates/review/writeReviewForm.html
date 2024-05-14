@@ -10,9 +10,16 @@
         <h2>
             {{ user.firstName }} {{ user.lastName }}
         </h2>
-        <p class="small-text">Real Estate Agent</p>
-        {{ form.rating.label }}
-        {{ form.rating }}
+        <!--<p class="small-text">Real Estate Agent</p>-->
+        <p class="small-text">Please leave rating by click the star</p>
+        <div class="stars">
+            <span class="star" data-rating="1">&#9733;</span>
+            <span class="star" data-rating="2">&#9733;</span>
+            <span class="star" data-rating="3">&#9733;</span>
+            <span class="star" data-rating="4">&#9733;</span>
+            <span class="star" data-rating="5">&#9733;</span>
+            <input type="hidden" name="rating" id="rating" value="0">
+        </div>
     </div>
     <div>
         {{ form.content.label }}
@@ -21,43 +28,55 @@
     {{ form.submit }}
 </form>
 
+
 <script>
-    $(document).ready(function() {
-        $('#write-review-form').submit(function(event) {
+    document.addEventListener("DOMContentLoaded", function() {
+        const stars = document.querySelectorAll(".star");
+        const feedbackTextarea = document.getElementById("feedback");
+        const submitBtn = document.getElementById("submit-btn");
+        let rating = 0;
+
+        // Highlight stars up to the selected one by user
+        function highlightStars(index) {
+            stars.forEach((star, i) => {
+                star.classList.toggle("active", i < index);
+            });
+        }
+
+        // Add click event listener to stars
+        stars.forEach(star => {
+            star.addEventListener("click", function() {
+                rating = parseInt(this.getAttribute("data-rating"));
+                document.getElementById("rating").value = rating;
+                highlightStars(rating);
+            });
+        });
+
+        // Submit button click event
+        submitBtn.addEventListener("click", function(event) {
             event.preventDefault();
 
-            var formData = {
-                'rating': $('#rating').val(),
-                'content': $('#content').val(),
+            const formData = {
+                'rating': rating,
+                'content': feedbackTextarea.value,
                 'agent_id': '{{ agent_id }}'
             };
 
-            var url = `/write-review/${agentId}`;
+            const url = `/write-review/{{ agent_id }}`;
 
             fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json', // 요청의 Content-Type을 application/json으로 설정
-                    'X-CSRFToken': csrfToken, // CSRF 토큰 추가
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
                 },
-                body: JSON.stringify(formData) // JSON 문자열을 요청 본문으로 설정
+                body: JSON.stringify(formData)
             })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                // 리다이렉트 처리
                 window.location.href = '{{ url_for("write_review_controller.agent_list") }}';
-                //return response.json(); // 응답을 JSON 형태로 파싱
-            })
-            .then(data => {
-                if (data.message) {
-                    // 서버에서 반환된 'successAlert' 문자열을 동적으로 삽입
-                    $('#review-message').html(data.successAlert);
-                    window.location.href = '{{ url_for("write_review_controller.agent_list") }}';
-                } else if (data.error) {
-                    alert(data.error);
-                }
             })
             .catch(error => {
                 console.error('There was a problem with your fetch operation:', error);
@@ -65,6 +84,7 @@
             });
         });
     });
+
 </script>
 
 

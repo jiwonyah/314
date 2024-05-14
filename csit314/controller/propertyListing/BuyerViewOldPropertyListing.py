@@ -1,10 +1,5 @@
-from flask import Blueprint, render_template, request, url_for, g, flash, jsonify
-from csit314.controller.propertyListing.AgentCreatePropertyListingController import PropertyListingForm
-from csit314.app import db
+from flask import Blueprint, render_template, g, jsonify
 from csit314.entity.PropertyListing import PropertyListing
-from werkzeug.utils import redirect
-from csit314.controller.role_service.decorators import login_required, agent_only
-from datetime import datetime
 from csit314.entity.User import User, Role
 
 
@@ -14,15 +9,21 @@ bp = Blueprint('viewOldPropertyListings', __name__, template_folder='boundary/te
 def view_old_property_listings_index():
     if not g.user:
         return jsonify(success=False,
-                       error='Login required to view old property listing'), 401
+                       error='Login required to view old property listing.'), 401
     elif g.user.role != Role.BUYER:
         return jsonify(success=False,
-                       error='You are not authorized to view old property listings'), 403
+                       error='Only buyers can view old property listings.'), 403
     else:
         return render_template('old_property_listing/oldPropertyListingTable.html')
 
 @bp.route('/api/oldPropertyListing')
 def view_old_property_listings():
+    if not g.user:
+        return jsonify(success=False,
+                       error='Login required to view old property listing.'), 401
+    elif g.user.role != Role.BUYER:
+        return jsonify(success=False,
+                       error='Only buyers can view old property listings.'), 403
     old_property_listings = PropertyListing.displayAllSoldPropertyListing()
     old_property_listing_data = [
         {

@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
+<style>
+
+</style>
+
+
     <h2>Login</h2>
     <form id="loginForm">
         <div>
@@ -35,7 +40,11 @@
             .then(data => {
                 if (data.success) {
                     alert(data.message);
-                    window.location.href = '/';
+                    if (data.role.value === 'admin') {
+                        window.location.href = '/admin/';
+                    } else {
+                        window.location.href = '/';
+                    }
                 } else {
                     alert(data.error);
                 }

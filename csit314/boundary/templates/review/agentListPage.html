@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% block content %}
@@ -15,8 +14,6 @@
             <!-- Agent data should be in here. -->
         </tbody>
     </table>
-</div>
-
 
     <script>
         // function to fetch agent data from /agents directory
@@ -34,8 +31,13 @@
                         const fullName = `${agent.firstName} ${agent.lastName}`;
 
                         const row = `<tr>
-                                        <td>${fullName}</td>
+                                        <td >
+                                            <a href="/profile/${agent.userid}/">
+                                            ${fullName}</a>
+                                        </td>
+                                        {% if g.user.role.value == "buyer" or g.user.role.value == "seller" %}
                                         <td><a href="/write-review/${agent.id}" class="review-button">Write Review</a></td>
+                                        {% endif %}
                                      </tr>`;
                         listElement.innerHTML += row;
                     });
@@ -48,4 +50,6 @@
             fetchAgents();
         };
     </script>
+
+</div>
 {% endblock %}

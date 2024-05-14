@@ -33,6 +33,14 @@ class PropertyImage(db.Model):
         db.session.add(new_image)
         db.session.commit()
         return new_image
+    @classmethod
+    def delete_image(cls, image_id):
+        image = cls.query.get(image_id)
+        if image:
+            db.session.delete(image)
+            db.session.commit()
+            return True
+        return False
 
 class PropertyListing(db.Model):
     __tablename__ = 'propertyListing'
@@ -121,6 +129,8 @@ class PropertyListing(db.Model):
                 listing.builtYear = details['builtYear']
             if 'modify_date' in details:
                 listing.modify_date = datetime.now()
+            if 'client_id' in details:
+                listing.client_id = details['client_id']
             if 'is_sold' in details:
                 listing.is_sold = details['is_sold']
             db.session.commit()

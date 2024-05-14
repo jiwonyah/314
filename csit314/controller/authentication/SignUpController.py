@@ -61,22 +61,23 @@ def signUp():
     if password != password2:
         return jsonify({'success': False, 'error': 'Password does not match.'})
 
-    success = User.createNewUser(user_details)
     userid_exists = User.query.filter_by(userid=user_details["userid"]).one_or_none()
     email_exists = User.query.filter_by(email=user_details["email"]).one_or_none()
-
+    if userid_exists:
+        return jsonify({'error': 'The ID is already registered.'})
     if len(userid) < 5 or len(userid) > 25:
-        return jsonify({'success': False, 'error': 'ID length must be 5~25.'})
+        return jsonify({'error': 'ID length must be 5~25.'})
     if len(password) < 8 or len(password) > 25:
-        return jsonify({'success': False, 'error': 'Password must be 8~25.'})
-
+        return jsonify({'error': 'Password must be 8~25.'})
+    if email_exists:
+        return jsonify({'error': 'The email is already registered.'})
+    success = User.createNewUser(user_details)
     if success:
         return jsonify({'success': True, 'message': 'User created successfully'})
     else:
-        if userid_exists:
-            return jsonify({'success': False, 'error': 'The ID is already registered.'})
-        if email_exists:
-            return jsonify({'success': False, 'error': 'The email is already registered.'})
+        return jsonify({'success': False, 'message': 'Failed to register new account.'})
+
+
 
 
 

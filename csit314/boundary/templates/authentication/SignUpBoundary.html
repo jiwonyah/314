@@ -48,7 +48,7 @@
                 alert(data.message);
                 window.location.href = '/';
             } else {
-                alert(data.message);
+                alert(data.error);
                 const errorDiv = document.getElementById('formError');
                 errorDiv.textContent = data.error;
                 errorDiv.style.display = 'block';

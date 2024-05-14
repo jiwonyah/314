@@ -14,10 +14,13 @@ class User(db.Model):
     userid = db.Column(db.String(32), nullable=False, unique=True)
     password = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String, nullable=False, unique=True)
-    #phone = db.Column(db.String(250), nullable=False, unique=True)
     firstName = db.Column(db.String)
     lastName = db.Column(db.String)
     role = db.Column(db.Enum(Role, values_callable=lambda x: [str(member.value) for member in Role]), nullable=False)
+    status = db.Column(db.String(50))
+
+    def serialize_enum(self):
+        return self.role.value
 
     @classmethod
     def findAUserByUserID(cls, userid: str) -> "User | None":
@@ -39,7 +42,7 @@ class User(db.Model):
     @classmethod
     def createNewUser(cls, user_details: dict) -> bool:
         """
-        Create a new user with the provided details.
+        This class method is for user sign up.
         :param user_details: A dictionary containing user details.
         :return: True if the user was successfully created, False otherwise.
         """
@@ -56,6 +59,86 @@ class User(db.Model):
         db.session.add(new_user)
         db.session.commit()
         return True
+    # ---------------------------------admin function-------------------------------------------
+    @classmethod
+    def createUserAccount(cls, accountDetails: dict):
+        userid = cls.query.filter_by(userid=accountDetails["username"]).one_or_none()
+        email = cls.query.filter_by(email=accountDetails["email"]).one_or_none()
+        if userid or email:
+            return False
+        new_account = cls(**accountDetails)
+        db.session.add(new_account)
+        db.session.commit()
+        return True
+
+    @classmethod
+    def useridExists(cls, accountDetails):
+        return cls.query.filter_by(userid=accountDetails["userid"]).one_or_none()
+
+    @classmethod
+    def emailExists(cls, accountDetails):
+        return cls.query.filter_by(email=accountDetails["email"]).one_or_none()
+
+    @classmethod
+    def getUserAccounts(cls):
+        return cls.query.all()
+
+    @classmethod
+    def getUserDetails(cls, userid):
+        return cls.query.filter_by(userid=userid).first()
+
+    @classmethod
+    def updateUserAccount(cls, userid, updateDetails):
+        user = cls.getUserDetails(userid)
+        new_email = updateDetails.get('email')
+        new_userid = updateDetails.get('userid')
+
+        if new_email and new_email != user.email:
+            if cls.emailExists(updateDetails):
+                return False
+
+        if new_userid and new_userid != user.userid:
+            if cls.useridExists(updateDetails):
+                return False
+
+        user.firstName = updateDetails.get('firstName', user.firstName)
+        user.lastName = updateDetails.get('lastName', user.lastName)
+        user.email = new_email or user.email
+        user.userid = new_userid or user.userid
+        user.password = updateDetails.get('password', user.password)
+        user.Role = updateDetails.get('role', user.Role)
+        user.status = updateDetails.get('status', user.status)
+
+        db.session.commit()
+        return True
+
+    @classmethod
+    def search_account(cls, searchQuery):
+        accounts = cls.query.filter(cls.userid.ilike(f'%{searchQuery}%')).all()
+        if not accounts:
+            return None
+        return [account.serialize() for account in accounts]
+
+    def serialize(self):
+        return {
+            'firstName': self.firstName,
+            'lastName': self.lastName,
+            'email': self.email,
+            'userid': self.userid,
+            'password': self.password,
+            'role': self.Role,
+            'status': self.status
+        }
+
+    @classmethod
+    def suspend_account(cls, userid):
+        account = cls.getUserDetails(userid)
+        if account.status == 'Active':
+            account.status = 'Suspended'
+            db.session.commit()
+            return True
+        else:
+            return False
 
 
 
