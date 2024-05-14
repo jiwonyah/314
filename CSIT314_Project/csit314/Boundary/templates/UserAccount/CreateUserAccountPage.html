@@ -349,8 +349,8 @@
         <ul class="nav-list">
 
             <li>
-                <a href="#">
-                <i class="bx bx-group"></i>
+                <a href="/">
+                <i class="bx bx-group" onclick="window.location.href = '/'"></i>
                 <span class="link_name">User Management</span>
                 </a>
                 <span class="tooltip">User Management</span>
@@ -391,7 +391,9 @@
                     <label for="role">Role:</label>
                     <select id="role" name="role" required>
                         {% for profile in profiles %}
+                        {% if profile.status != 'Suspended' %}
                         <option value="{{ profile.profileName }}">{{ profile.profileName}}</option>
+                        {% endif %}
                         {% endfor %}
                     </select>
                 </div>

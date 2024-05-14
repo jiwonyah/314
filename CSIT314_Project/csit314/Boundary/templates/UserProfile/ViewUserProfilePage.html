@@ -375,8 +375,8 @@
         <ul class="nav-list">
 
             <li>
-                <a href="#">
-                <i class="bx bx-group"></i>
+                <a href="/">
+                <i class="bx bx-group" onclick="window.location.href = '/'"></i>
                 <span class="link_name">User Management</span>
                 </a>
                 <span class="tooltip">User Management</span>
@@ -451,7 +451,8 @@
             .then(response => response.json())
             .then(data => {
                 profileDetailsDiv.innerHTML = '<h2>Profile Details</h2>' +
-                        '<p><strong>Role Description:</strong> ' + data.profileDescription + '</p>';
+                        '<p><strong>Role Description:</strong> ' + data.profileDescription + '</p>' +
+                        '<p><strong>Status:</strong> ' + data.status + '</p>';
             });
     }
 

@@ -357,8 +357,8 @@
         <ul class="nav-list">
 
             <li>
-                <a href="#">
-                <i class="bx bx-group"></i>
+                <a href="/">
+                <i class="bx bx-group" onclick="window.location.href = '/'"></i>
                 <span class="link_name">User Management</span>
                 </a>
                 <span class="tooltip">User Management</span>
@@ -381,7 +381,11 @@
         <form action="/suspend_profile" id="suspendProfileForm">
             <div class="form-group">
                 <label for="profileName">Role Name:</label>
-                <input type="text" id="profileName" name="profileName" placeholder="Enter role name" required>
+                <select id="profileName" name="profileName" required style="width: 450px;">
+                        {% for profile in profiles %}
+                        <option value="{{ profile.profileName }}">{{ profile.profileName}}</option>
+                        {% endfor %}
+                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Suspend">

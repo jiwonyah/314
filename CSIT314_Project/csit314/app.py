@@ -17,28 +17,28 @@ def create_app():
     migrate.init_app(app, db)
 
     #import statements
-    from csit314.Controller.UserAccount import (CreateUserAccountController, UpdateUserAccountController,
-                                                ViewUserAccountController, AccountDashboardController,
-                                                SearchUserAccountController, SuspendUserAccountController)
-    from csit314.Controller.UserProfile import (ProfileDashboardController, CreateUserProfileController,
-                                                ViewUserProfileController, UpdateUserProfileController,
-                                                SearchUserProfileController, SuspendUserProfileController)
-    from csit314.Controller.UserProfile import create_profile_controller
+    from csit314.Controller.UserAccount import (create_account_controller, update_account_controller,
+                                                view_account_controller, search_account_controller,
+                                                suspend_account_controller, AccountDashboardController)
+    from csit314.Controller.UserProfile import (create_profile_controller, update_profile_controller,
+                                                view_profile_controller, search_profile_controller,
+                                                suspend_profile_controller, ProfileDashboardController)
+
 
     #registering of blueprints
     app.register_blueprint(AccountDashboardController.bp)
-    app.register_blueprint(CreateUserAccountController.bp)
-    app.register_blueprint(ViewUserAccountController.bp)
-    app.register_blueprint(UpdateUserAccountController.bp)
-    app.register_blueprint(SearchUserAccountController.bp)
-    app.register_blueprint(SuspendUserAccountController.bp)
+    app.register_blueprint(create_account_controller)
+    app.register_blueprint(view_account_controller)
+    app.register_blueprint(update_account_controller)
+    app.register_blueprint(search_account_controller)
+    app.register_blueprint(suspend_account_controller)
 
     app.register_blueprint(ProfileDashboardController.bp)
     app.register_blueprint(create_profile_controller)
-    app.register_blueprint(ViewUserProfileController.bp)
-    app.register_blueprint(UpdateUserProfileController.bp)
-    app.register_blueprint(SearchUserProfileController.bp)
-    app.register_blueprint(SuspendUserProfileController.bp)
+    app.register_blueprint(view_profile_controller)
+    app.register_blueprint(update_profile_controller)
+    app.register_blueprint(search_profile_controller)
+    app.register_blueprint(suspend_profile_controller)
 
     @app.route('/')
     def adminHomePage():
