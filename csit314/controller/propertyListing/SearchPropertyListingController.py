@@ -1,12 +1,13 @@
 from flask import request, jsonify, Blueprint
 from csit314.entity.PropertyListing import PropertyListing
-from sqlalchemy import or_
+from csit314.controller.role_service.decorators import suspended
 
 class SearchPropertyListingController(Blueprint):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.add_url_rule("/search_property_listings/", view_func=self.search_property_listings, methods=['GET'])
 
+    @suspended
     def search_property_listings(self):
         search_query = request.args.get('query')
         if not search_query:

@@ -2,7 +2,7 @@ import json
 
 from flask import Blueprint, render_template, request, g, jsonify
 from .Form.PropertyListingForm import PropertyListingForm
-from csit314.controller.role_service.decorators import login_required, agent_only
+from csit314.controller.role_service.decorators import login_required, agent_only, suspended
 from datetime import datetime
 from csit314.entity.PropertyListing import PropertyListing
 
@@ -14,6 +14,7 @@ class AgentEditPropertyListingController(Blueprint):
 
     @login_required
     @agent_only
+    @suspended
     def index(self, propertyListing_id):
         propertyListing = PropertyListing.getPropertyListing(propertyListing_id)
         images = json.loads(propertyListing.images) if propertyListing.images else []
@@ -27,6 +28,7 @@ class AgentEditPropertyListingController(Blueprint):
 
     @login_required
     @agent_only
+    @suspended
     def editPropertyListing(self, propertyListing_id):
         propertyListing = PropertyListing.getPropertyListing(propertyListing_id)
         if not propertyListing:

@@ -4,7 +4,7 @@ from csit314.entity.UserAccount import UserAccount
 from csit314.app import db
 from .Form.WriteReviewForm import WriteReviewForm
 from datetime import datetime
-from csit314.controller.role_service.decorators import login_required, buyer_seller_only
+from csit314.controller.role_service.decorators import login_required, buyer_seller_only, suspended
 
 bp = Blueprint('write_review_controller', __name__, template_folder='boundary/templates')
 
@@ -12,6 +12,7 @@ bp = Blueprint('write_review_controller', __name__, template_folder='boundary/te
 @bp.route('/write-review/<int:agent_id>', methods=['GET'])
 @login_required
 @buyer_seller_only
+@suspended
 def show_reviewForm_index(agent_id):
     form = WriteReviewForm()
     user = UserAccount.query.get(agent_id)
@@ -20,6 +21,7 @@ def show_reviewForm_index(agent_id):
 @bp.route('/write-review/<int:agent_id>', methods=['POST'])
 @login_required
 @buyer_seller_only
+@suspended
 def write_review(agent_id):
     form = WriteReviewForm(request.form)
     if form.validate_on_submit():
@@ -37,11 +39,14 @@ def write_review(agent_id):
     else:
         return jsonify({'error': 'Invalid form data.'}), 400
 
+
 @bp.route('/agents')
+@suspended
 def agent_list_index():
     return render_template('review/agentListPage.html')
 
 @bp.route('/api/agents')
+@suspended
 def agent_list():
     agents = UserAccount.query.filter_by(role='agent').all()
     agent_data = [

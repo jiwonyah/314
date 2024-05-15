@@ -1,12 +1,5 @@
-import enum
 from csit314.app import db
-from flask import flash
 
-# class Role(enum.Enum):
-#     SELLER = 'seller'
-#     BUYER = 'buyer'
-#     AGENT = 'agent'
-#     ADMIN = 'admin'
 
 class UserAccount(db.Model):
     __tablename__ = 'user'
@@ -19,10 +12,6 @@ class UserAccount(db.Model):
     lastName = db.Column(db.String)
     role = db.Column(db.String(10))
     status = db.Column(db.String(50), default="Active", nullable=False)
-    # role = db.Column(db.Enum(Role, values_callable=lambda x: [str(member.value) for member in Role]), nullable=False)
-
-    # def serialize_enum(self):
-    #     return self.role.name
 
     @classmethod
     def findAUserByUserID(cls, userid: str) -> "UserAccount | None":
@@ -63,7 +52,7 @@ class UserAccount(db.Model):
         db.session.add(new_user)
         db.session.commit()
         return True
-    # ---------------------------------admin function-------------------------------------------
+# -----------------------------------admin function-------------------------------------------
     @classmethod
     def createUserAccount(cls, accountDetails: dict):
         userid = cls.query.filter_by(userid=accountDetails["userid"]).one_or_none()

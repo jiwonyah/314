@@ -1,21 +1,19 @@
-from csit314.entity.UserAccount import UserAccount    #, Role
-from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, PasswordField, EmailField
-from wtforms.validators import DataRequired, Length, EqualTo, Email, ValidationError
-from flask import Blueprint, render_template, request, jsonify, flash
+from csit314.entity.UserAccount import UserAccount
+from flask import Blueprint, render_template, request, jsonify
 import bcrypt
 from .Form.UserSignUpForm import UserSignUpForm
+from csit314.controller.role_service.decorators import already_logged_in, is_logged_in
 
 bp = Blueprint('signup', __name__, template_folder='boundary/templates')
 
-
-
 @bp.route('/signup/')
+@already_logged_in
 def index():
     form = UserSignUpForm()
     return render_template('authentication/SignUpBoundary.html', form=form)
 
 @bp.route('/signup/', methods=['POST'])
+@already_logged_in
 def signUp():
     userid = request.form['userid']
     password = request.form['password']
@@ -27,7 +25,7 @@ def signUp():
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
     user_details = {
         'userid': userid,
-        'password': hashed_password.decode('utf-8'),  # 해싱된 비밀 번호 저장
+        'password': hashed_password.decode('utf-8'),
         'email': email,
         'firstName': firstName,
         'lastName': lastName,

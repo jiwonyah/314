@@ -1,11 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, g
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 import config
 from sqlalchemy import MetaData
-from flask_jwt_extended import JWTManager
-import json
-from enum import Enum
+from csit314.controller.role_service.decorators import suspended
 
 
 naming_convention = {
@@ -30,14 +28,6 @@ def create_app():
     # Load app configuration from config.py
     app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config.SQLALCHEMY_TRACK_MODIFICATIONS
-
-    # class CustomJSONEncoder(json.JSONEncoder):
-    #     def default(self, obj):
-    #         if isinstance(obj, Enum):
-    #             return obj.value
-    #         return super().default(obj)
-    #
-    # app.json_encoder = CustomJSONEncoder
 
     # ORM
     db.init_app(app)
@@ -107,8 +97,14 @@ def create_app():
     app.register_blueprint(search_profile_controller)
     app.register_blueprint(suspend_profile_controller)
 
+    @suspended
     @app.route('/')
     def index():
+        # if g.user and g.user.status == "Suspended":
+        #     return render_template('error/error.html',
+        #                            message='Your account is suspended.'
+        #                                    'Send Active Request to Administrator.'
+        #                                    'admin@minyong.com'), 403
         return render_template('index.html')
 
     return app

@@ -1,32 +1,37 @@
 from flask import Blueprint, render_template, g, jsonify
 from csit314.entity.Favourite import Favourite
-from csit314.entity.UserAccount import UserAccount    #, Role
+
 bp = Blueprint('view_saved_favourite_controller', __name__, template_folder='boundary/templates')
 
 @bp.route('/shortlisted')
 def view_my_favourites_index():
     if not g.user:
-        return jsonify(success=False,
-                       error='Login required to view old property listing'), 401
-    #elif g.user.role != Role.BUYER:
-    elif g.user.role != 'buyer':
-        return jsonify(success=False,
-                       error='You are not authorized to view old property listings'), 403
-    #favourites = Favourite.query.filter_by(user_userid=g.user.userid).order_by(desc(Favourite.create_date)).all()
+        return render_template('error/error.html',
+                                message='You need to login as buyer if you want to view your shortlists.'), 401
+    if g.user.role != 'buyer':
+        return render_template('error/error.html',
+                               message='Only buyers can make and view shortlists.'), 403
+    if g.user.status == "Suspended":
+        return render_template('error/error.html',
+                               message='Your account is suspended.'
+                                       'Send Active Request to Administrator.'
+                                       'admin@minyong.com'), 403
     favourites = Favourite.displayShortlist()
     return render_template('favourite/viewSavedFavouriteBoundary.html', favourites=favourites)
 
 @bp.route('/api/shortlisted')
 def view_my_favourites():
     if not g.user:
-        return jsonify(success=False,
-                       error='You need to login as buyer if you want your shortlists.'), 401
-    #elif g.user.role != Role.BUYER:
-    elif g.user.role != 'buyer':
-        return jsonify(success=False,
-                       error='You are not authorized to make and view shortlists.'), 403
-    # View created_date favorites that match the userid of the current user in descending order
-    #favourites = Favourite.query.filter_by(user_userid=g.user.userid).order_by(desc(Favourite.create_date)).all()
+        return render_template('error/error.html',
+                                message='You need to login as buyer if you want to view your shortlists.'), 401
+    if g.user.role != 'buyer':
+        return render_template('error/error.html',
+                               message='Only buyers can make and view shortlists.'), 403
+    if g.user.status == "Suspended":
+        return render_template('error/error.html',
+                               message='Your account is suspended.'
+                                       'Send Active Request to Administrator.'
+                                       'admin@minyong.com'), 403
     favourites = Favourite.displayShortlist()
     favourite_listings = [
         {

@@ -1,28 +1,23 @@
-from flask import jsonify, Blueprint, url_for, render_template, redirect, session
+from flask import jsonify, Blueprint, render_template, session
 from csit314.entity.UserAccount import UserAccount
-from flask import request, g, flash
+from flask import request, g
 import bcrypt
 from .Form.UserLoginForm import UserLoginForm
+from csit314.controller.role_service.decorators import already_logged_in, is_logged_in
+
 
 bp = Blueprint('login', __name__, template_folder='boundary/templates')
 
 
-def is_logged_in():
-    # check logged in status
-    return 'user_id' in session
-
 @bp.route('/login/')    # GET
+@already_logged_in
 def index():
-    if is_logged_in():
-        flash('You are already logged in. Please log out first.')
-        return redirect(url_for('index'))
     form = UserLoginForm()
     return render_template('authentication/login.html', form=form)
 
 @bp.route('/login/', methods=['POST'])
+@already_logged_in
 def login():
-    if is_logged_in():
-        return jsonify({'error': 'Already logged in'}), 400
     credential = request.json
     userid = credential['userid']
     password = credential['password']
@@ -40,4 +35,6 @@ def load_logged_in_user():
         g.user = None
     else:
         g.user = UserAccount.query.get(user_id)
+
+
 

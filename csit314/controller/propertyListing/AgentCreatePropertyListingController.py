@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, jsonify, session
 from csit314.entity.PropertyListing import PropertyListing
-from csit314.controller.role_service.decorators import login_required, agent_only
+from csit314.controller.role_service.decorators import login_required, agent_only,suspended
 from werkzeug.utils import secure_filename
 from .Form.PropertyListingForm import PropertyListingForm
 import os
@@ -13,6 +13,7 @@ class AgentCreatePropertyListingController(Blueprint):
 
     @login_required
     @agent_only
+    @suspended
     def index(self):
         form = PropertyListingForm()
         return render_template('property_listing/propertyListingCreatingForm.html',
@@ -20,6 +21,7 @@ class AgentCreatePropertyListingController(Blueprint):
 
     @login_required
     @agent_only
+    @suspended
     def createPropertyListing(self):
         try:
             client_id = request.form['client_id']

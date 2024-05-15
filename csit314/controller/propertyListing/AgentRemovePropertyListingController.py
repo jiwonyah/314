@@ -1,6 +1,6 @@
 from flask import Blueprint, g, jsonify
 from csit314.entity.PropertyListing import PropertyListing
-from csit314.controller.role_service.decorators import login_required, admin_only
+from csit314.controller.role_service.decorators import login_required, admin_only, suspended
 
 class AgentRemovePropertyListingController(Blueprint):
     def __init__(self, *args, **kwargs):
@@ -8,6 +8,7 @@ class AgentRemovePropertyListingController(Blueprint):
         self.add_url_rule("/propertyListing/remove/<int:listing_id>/",
                           view_func=self.remove_property_listing, methods=['DELETE'])
 
+    @suspended
     def remove_property_listing(self, listing_id):
         property_listing = PropertyListing.getPropertyListing(listing_id)
         if not property_listing:

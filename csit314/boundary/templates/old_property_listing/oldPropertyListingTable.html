@@ -14,7 +14,7 @@
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            max-width: 500px; /* 최대 너비 설정 */
+            max-width: 500px;
             width: 100%;
         }
         .search-button {
@@ -53,7 +53,7 @@
 
 
     <div style="text-align: right; margin-top: 20px;" class="ordinal_btn">
-        <a href="{{ url_for('viewPropertyListing.index') }}" >
+        <a onclick="window.location.href = '/propertyListing/'" >
             View Property Listings
         </a>
     </div>

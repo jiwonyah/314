@@ -159,13 +159,11 @@ class PropertyListing(db.Model):
         if 'is_sold' in details:
             listing.is_sold = details['is_sold']
 
-        # 이미지 파일 처리
         existing_images = request.form.getlist('existing_images')
         files = details.get('files', [])
         upload_folder = current_app.config['UPLOAD_FOLDER']
         image_paths = existing_images
 
-        # 새 이미지 저장
         for file in files:
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)

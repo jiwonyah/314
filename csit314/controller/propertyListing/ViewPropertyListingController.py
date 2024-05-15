@@ -1,7 +1,8 @@
 from csit314.entity.PropertyListing import PropertyListing
 from csit314.app import db
 from csit314.controller.role_service.decorators import login_required, agent_only, seller_only
-from flask import Blueprint, render_template, request, url_for, g, jsonify
+from flask import Blueprint, render_template, g
+from csit314.controller.role_service.decorators import suspended
 import json
 
 class ViewPropertyListingController(Blueprint):
@@ -12,11 +13,13 @@ class ViewPropertyListingController(Blueprint):
         self.add_url_rule("/agent/my_property_listing/", view_func=self.agentViewPropertyListingHistory, methods=['GET'])
         self.add_url_rule("/seller/my_property_listing/", view_func=self.sellerViewOwnPropertyListing, methods=['GET'])
 
+    @suspended
     def index(self):
         propertyListing_table = PropertyListing.query.order_by(PropertyListing.create_date.desc())
         return render_template('property_listing/propertyListingTable.html',
                                propertyListing_table=propertyListing_table)
 
+    @suspended
     def detail(self, propertyListing_id):
         propertyListing = PropertyListing.getPropertyListing(propertyListing_id)
         images = json.loads(propertyListing.images) if propertyListing.images else []
@@ -28,6 +31,7 @@ class ViewPropertyListingController(Blueprint):
 
     @login_required
     @agent_only
+    @suspended
     def agentViewPropertyListingHistory(self):
         agent_id = g.user.id
         agent_listings = PropertyListing.query.filter_by(agent_id=agent_id).all()
@@ -36,6 +40,7 @@ class ViewPropertyListingController(Blueprint):
 
     @login_required
     @seller_only
+    @suspended
     def sellerViewOwnPropertyListing(self):
         client_id = g.user.userid
         propertylistings = PropertyListing.query.filter_by(client_id=client_id).all()

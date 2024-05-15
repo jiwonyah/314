@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, g, jsonify
+from flask import Blueprint
 from sqlalchemy import func
 from csit314.app import db
 from csit314.entity.Favourite import Favourite

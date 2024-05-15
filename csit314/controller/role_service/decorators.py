@@ -1,15 +1,10 @@
-from flask import g, request, flash, url_for, render_template, jsonify
-import functools
+from flask import g, render_template, session
 from functools import wraps
-from werkzeug.utils import redirect
-from csit314.entity.UserAccount import UserAccount  #, Role
 
 def agent_only(view):
     @wraps(view)
     def wrapped_view(*args, **kwargs):
-        # accept access requirement only if when user is authenticated and role is agent
-        # if g.user.role.value == 'agent':
-        if g.user.role == 'agent':
+        if g.user and g.user.role == 'agent':
             return view(*args, **kwargs)
         else:
             return render_template('error/error.html',
@@ -19,9 +14,7 @@ def agent_only(view):
 def buyer_only(view):
     @wraps(view)
     def wrapped_view(*args, **kwargs):
-        # accept access requirement only if when user is authenticated and role is agent
-        #if g.user.role.value == 'buyer':
-        if g.user.role == 'buyer':
+        if g.user and g.user.role == 'buyer':
             return view(*args, **kwargs)
         else:
             return render_template('error/error.html',
@@ -31,8 +24,7 @@ def buyer_only(view):
 def seller_only(view):
     @wraps(view)
     def wrapped_view(*args, **kwargs):
-        # if g.user.role.value == 'seller':
-        if g.user.role == 'seller':
+        if g.user and g.user.role == 'seller':
             return view(*args, **kwargs)
         else:
             return render_template('error/error.html',
@@ -42,8 +34,7 @@ def seller_only(view):
 def buyer_seller_only(view):
     @wraps(view)
     def wrapped_view(*args, **kwargs):
-        # if g.user.role.value == 'buyer' or g.user.role.value == 'seller':
-        if g.user.role == 'buyer' or g.user.role == 'seller':
+        if g.user and g.user.role == 'buyer' or g.user.role == 'seller':
             return view(*args, **kwargs)
         else:
             return render_template('error/error.html',
@@ -54,8 +45,7 @@ def buyer_seller_only(view):
 def admin_only(view):
     @wraps(view)
     def wrapped_view(*args, **kwargs):
-        # if g.user.role.value == 'admin':
-        if g.user.role == 'admin':
+        if g.user and g.user.role == 'admin':
             return view(*args, **kwargs)
         else:
             return render_template('error/error.html',
@@ -71,3 +61,30 @@ def login_required(view):
             return render_template('error/error.html',
                                    message='Login required'), 401
     return wrapped_view
+
+def suspended(view):
+    @wraps(view)
+    def wrapped_view(*args, **kwargs):
+        if not g.user or g.user.status == "Active":
+            return view(*args, **kwargs)
+        else:
+            return render_template('error/error.html',
+                                   message='Your account is suspended.'
+                                           'Send Active Request to Administrator.'
+                                           'admin@minyong.com'), 403
+    return wrapped_view
+
+def is_logged_in():
+    # check logged in status
+    return 'user_id' in session
+
+def already_logged_in(view):
+    @wraps(view)
+    def wrapped_view(*args, **kwargs):
+        if not is_logged_in():
+            return view(*args, **kwargs)
+        else:
+            return render_template('error/error.html',
+                                   message='You are already logged in. Logout first.'), 403
+    return wrapped_view
+
