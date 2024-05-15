@@ -1,47 +1,49 @@
-from flask import Blueprint, render_template
 from csit314.entity.PropertyListing import PropertyListing
 from csit314.app import db
 from csit314.controller.role_service.decorators import login_required, agent_only, seller_only
 from flask import Blueprint, render_template, request, url_for, g, jsonify
-from csit314.entity.UserAccount import UserAccount
-from functools import wraps
+import json
 
-bp = Blueprint('viewPropertyListing', __name__, template_folder='boundary/templates')
+class ViewPropertyListingController(Blueprint):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.add_url_rule("/propertyListing/", view_func=self.index, methods=['GET'])
+        self.add_url_rule("/propertyListing/detail/<int:propertyListing_id>/", view_func=self.detail, methods=['GET'])
+        self.add_url_rule("/agent/my_property_listing/", view_func=self.agentViewPropertyListingHistory, methods=['GET'])
+        self.add_url_rule("/seller/my_property_listing/", view_func=self.sellerViewOwnPropertyListing, methods=['GET'])
 
-@bp.route('/propertyListing/')
-def index():
-    propertyListing_table = PropertyListing.query.order_by(PropertyListing.create_date.desc())
-    return render_template('property_listing/propertyListingTable.html',
-                           propertyListing_table=propertyListing_table)
+    def index(self):
+        propertyListing_table = PropertyListing.query.order_by(PropertyListing.create_date.desc())
+        return render_template('property_listing/propertyListingTable.html',
+                               propertyListing_table=propertyListing_table)
 
-@bp.route('/propertyListing/detail/<int:propertyListing_id>/')
-def detail(propertyListing_id):
-    propertyListing = PropertyListing.query.get(propertyListing_id)
+    def detail(self, propertyListing_id):
+        propertyListing = PropertyListing.getPropertyListing(propertyListing_id)
+        images = json.loads(propertyListing.images) if propertyListing.images else []
+        propertyListing.view_counts += 1
+        db.session.commit()
+        return render_template('property_listing/propertyListingDetailPage.html',
+                               propertyListing=propertyListing,
+                               images=images)
 
-    propertyListing.view_counts += 1
-    db.session.commit()
-    return render_template('property_listing/propertyListingDetailPage.html',
-                           propertyListing=propertyListing)
+    @login_required
+    @agent_only
+    def agentViewPropertyListingHistory(self):
+        agent_id = g.user.id
+        agent_listings = PropertyListing.query.filter_by(agent_id=agent_id).all()
+        return render_template('property_listing/private_page/AgentPropertyListingHistoryPage.html',
+                               agent_listings=agent_listings)
+
+    @login_required
+    @seller_only
+    def sellerViewOwnPropertyListing(self):
+        client_id = g.user.userid
+        propertylistings = PropertyListing.query.filter_by(client_id=client_id).all()
+        return render_template('property_listing/private_page/SellerPropertyListingPage.html',
+                               propertylistings=propertylistings)
 
 
-# ----------------------------------private pages-------------------------------------
-# 이 페이지는 인증된 유저 본인만 접속할 수 있는 페이지이다.
 
-@bp.route('/agent/history/')
-@login_required
-@agent_only
-def viewPropertyListingHistory():
-    agent_id = g.user.id
-    agent_listings = PropertyListing.query.filter_by(agent_id=agent_id).all()
-    return render_template('property_listing/private_page/AgentPropertyListingHistoryPage.html',
-                           agent_listings=agent_listings)
 
-@bp.route('/seller/my_property_listing/')
-@login_required
-@seller_only
-def sellerViewOwnPropertyListing():
-    client_id = g.user.userid
-    propertylistings = PropertyListing.query.filter_by(client_id=client_id).all()
-    return render_template('property_listing/private_page/SellerPropertyListingPage.html',
-                           propertylistings=propertylistings)
+
 

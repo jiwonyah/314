@@ -1,19 +1,11 @@
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField
-from wtforms.validators import DataRequired, Length
 from flask import jsonify, Blueprint, url_for, render_template, redirect, session
 from csit314.entity.UserAccount import UserAccount
 from flask import request, g, flash
 import bcrypt
+from .Form.UserLoginForm import UserLoginForm
 
 bp = Blueprint('login', __name__, template_folder='boundary/templates')
 
-class UserLoginForm(FlaskForm):
-    """
-    Form for user login.
-    """
-    userid = StringField('ID', validators=[DataRequired(), Length(min=3, max=25)])
-    password = PasswordField('Password', validators=[DataRequired()])
 
 def is_logged_in():
     # check logged in status
@@ -38,7 +30,7 @@ def login():
     if user and bcrypt.checkpw(password.encode('UTF-8'), user.password.encode('UTF-8')):
         session['user_id'] = user.id
 
-        return jsonify({'success': True, 'message': 'Login successful', 'role':user.role})
+        return jsonify({'success': True, 'message': 'Login successful', 'role': user.role})
     return jsonify({'success': False, 'error': 'User information does not exist.'}), 401
 
 @bp.before_app_request

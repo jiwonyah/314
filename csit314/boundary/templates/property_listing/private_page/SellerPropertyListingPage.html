@@ -16,7 +16,7 @@
         {% for propertyListing in propertylistings %}
         <tr class="text-center">
             <td>
-              <a href="{{ url_for('viewPropertyListing.detail', propertyListing_id=propertyListing.id) }}">
+              <a onclick="window.location.href = '/propertyListing/detail/{{propertyListing.id}}'">
                 {{ propertyListing.subject }}
               </a>
             </td>

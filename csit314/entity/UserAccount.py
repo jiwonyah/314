@@ -18,7 +18,7 @@ class UserAccount(db.Model):
     firstName = db.Column(db.String)
     lastName = db.Column(db.String)
     role = db.Column(db.String(10))
-    status = db.Column(db.String(50))
+    status = db.Column(db.String(50), default="Active", nullable=False)
     # role = db.Column(db.Enum(Role, values_callable=lambda x: [str(member.value) for member in Role]), nullable=False)
 
     # def serialize_enum(self):

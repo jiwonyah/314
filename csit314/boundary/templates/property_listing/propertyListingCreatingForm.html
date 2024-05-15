@@ -74,22 +74,22 @@
         <br><br>
 		<div>
             <label for="price">Price*</label>
-            <input type="number" name="price" id="price">
+            <input type="number" name="price" id="price" required>
         </div>
         <br><br>
 		<div>
             <label for="address">Address*</label>
-            <input type="text" name="address" id="address">
+            <input type="text" name="address" id="address" required>
         </div>
         <br><br>
 		<div>
             <label for="floorSize">Floor Size*</label>
-            <input type="number" name="floorSize" id="floorSize">
+            <input type="number" name="floorSize" id="floorSize" required>
         </div>
         <br><br>
 		<div>
             <label for="floorLevel">Floor Level*</label>
-                <select name="floorLevel" id="floorLevel">
+                <select name="floorLevel" id="floorLevel" required>
                     {% for value, label in form.floorLevel.choices %}
                         <option value="{{ value }}" {% if form.floorLevel.data == value %}selected{% endif %}>{{ label }}</option>
                     {% endfor %}
@@ -98,7 +98,7 @@
         <br><br>
 		<div>
             <label for="propertyType">Property type*</label>
-                <select name="propertyType" id="propertyType" required>
+                <select name="propertyType" id="propertyType" required required>
                     {% for value, label in form.propertyType.choices %}
                         <option value="{{ value }}" {% if form.propertyType.data == value %}selected{% endif %}>{{ label }}</option>
                     {% endfor %}
@@ -107,7 +107,7 @@
         <br><br>
         <div class="mb-3">
             <label for="furnishing">Furnishing*</label>
-                <select name="furnishing" id="furnishing">
+                <select name="furnishing" id="furnishing" required>
                     {% for value, label in form.furnishing.choices %}
                         <option value="{{ value }}" {% if form.furnishing.data == value %}selected{% endif %}>{{ label }}</option>
                     {% endfor %}
@@ -116,12 +116,12 @@
         <br><br>
         <div>
             <label for="builtYear">Built year*</label>
-            <input type="number" name="builtYear" id="builtYear">
+            <input type="number" name="builtYear" id="builtYear" required>
         </div>
         <br><br>
         <div>
             <label for="client_id">Client*</label>
-            <input type="text" name="client_id" id="client_id">
+            <input type="text" name="client_id" id="client_id" required>
             <div id="formError" style="color: red; display: none;"></div>
         </div>
         <br><br>

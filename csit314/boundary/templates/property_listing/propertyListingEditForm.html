@@ -48,10 +48,30 @@
     font-weight: bold;
     margin-bottom: 10px;
   }
+    .image-wrapper {
+        display: inline-block;
+        margin: 10px;
+        position: relative;
+    }
+    .image-preview {
+        max-width: 100px;
+        max-height: 100px;
+        border-radius: 5px;
+    }
+    .image-wrapper button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+    }
 </style>
 <div>
     <h1>Edit Property Listing</h1>
-    <form id="editPropertyForm" method="POST">
+    <form id="editPropertyForm" method="POST" data-id="{{ propertyListing.id }}">
         {{ form.csrf_token }}
 
         <div>
@@ -59,6 +79,26 @@
             <input type="text"  name="subject" id="subject"
                    value="{{ form.subject.data or '' }}">
         </div>
+        <br><br>
+        <div>
+            <label for="existing-images">Existing Images</label>
+            <div id="existing-images">
+                {% for file in images %}
+                <div class="image-wrapper" id="image-{{ loop.index }}">
+                    <img src="{{ url_for('static', filename='images/property_listings/' + file) }}" alt="Property Image" class="image-preview">
+                    <button type="button" onclick="removeImage({{ loop.index }})">Remove</button>
+                    <input type="hidden" name="existing_images" value="{{ file }}">
+                </div>
+                {% endfor %}
+            </div>
+         </div>
+        <br><br>
+        <div>
+            <label for="images">Upload New Images</label>
+            <input type="file" name="images" id="images" multiple>
+        </div>
+        <br><br>
+
         <div class="mb-3">
             <label for="content">Property Listing Description</label>
             <textarea name="content" id="content" rows="10">{{ form.content.data or '' }}</textarea>
@@ -118,11 +158,15 @@
         </div>
 
         <div>
-            <label for="is_sold">Transaction Status</label>
-            <select name="is_sold" id="is_sold">
-                <option value="0" {% if form.is_sold.data == False %}selected{% endif %}>거래중</option>
-                <option value="1" {% if form.is_sold.data == True %}selected{% endif %}>거래완료</option>
-            </select>
+            <label for="transaction-status">Transaction Status</label>
+            <div>
+                <input type="radio" id="transaction_in_progress" name="is_sold" value="false" {% if not form.is_sold %}checked{% endif %}>
+                <label for="transaction_in_progress">On Sale</label>
+            </div>
+            <div>
+                <input type="radio" id="transaction_completed" name="is_sold" value="true" {% if form.is_sold %}checked{% endif %}>
+                <label for="transaction_completed">Sold</label>
+            </div>
         </div>
 
 
@@ -131,27 +175,32 @@
 </div>
 
 <script>
-    function editPropertyListing(propertyListingId) {
+    function removeImage(index) {
+        document.getElementById('image-' + index).remove();
+    }
+
+</script>
+<script>
+
         document.getElementById('editPropertyForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
-            const response = await fetch(`/propertyListing/edit/${propertyListingId}/`, {
-               method: 'POST',
-               body: formData
+            const listing_id = e.target.getAttribute('data-id')
+            const url = '/propertyListing/edit/' + listing_id + '/';
+
+            const response = await fetch(url, {
+                method: 'POST',
+                body: formData
             });
             const data = await response.json();
             if (data.success) {
                 alert(data.message);
-                window.location.href = '/propertyListing/detail/${propertyListingId}/';
-
+                window.location.href = `/propertyListing/detail/` + listing_id + '/';
             } else {
                 alert(data.error);
-                const errorDiv = document.getElementById('formError');
-                errorDiv.textContent = data.error;
-                errorDiv.style.display = 'block';
-           }
+            }
         });
-    }
+
 </script>
 
 {% endblock %}

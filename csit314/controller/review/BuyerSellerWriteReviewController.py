@@ -3,6 +3,7 @@ from csit314.entity.Review import Review
 from csit314.entity.UserAccount import UserAccount
 from csit314.app import db
 from .Form.WriteReviewForm import WriteReviewForm
+from datetime import datetime
 from csit314.controller.role_service.decorators import login_required, buyer_seller_only
 
 bp = Blueprint('write_review_controller', __name__, template_folder='boundary/templates')
@@ -29,7 +30,7 @@ def write_review(agent_id):
         else:
             return jsonify({'error': 'Please log in to submit a review.'}), 401
         user = UserAccount.query.get(agent_id)
-        new_review = Review(author_userid=current_user_username, agent_id=agent_id, rating=rating, content=content)
+        new_review = Review(author_userid=current_user_username, agent_id=agent_id, rating=rating, content=content,  create_date=datetime.now())
         db.session.add(new_review)
         db.session.commit()
         return redirect(url_for('write_review_controller.agent_list_index'))

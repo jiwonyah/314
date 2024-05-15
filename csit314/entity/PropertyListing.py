@@ -1,8 +1,11 @@
 import enum
 from csit314.app import db
-from csit314.entity.UserAccount import UserAccount    #,Role
-from sqlalchemy.orm import validates
+from csit314.entity.UserAccount import UserAccount
+from flask import current_app, request
 from datetime import datetime
+from werkzeug.utils import secure_filename
+import os
+import json
 
 class FloorLevel(enum.Enum):
     LOW = 'low'
@@ -20,29 +23,11 @@ class Furnishing(enum.Enum):
     FullyFurnished = 'fully_furnished'
     NotFurnished = 'not_furnished'
 
-class PropertyImage(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    filename = db.Column(db.String(255), nullable=False)
-    property_id = db.Column(db.Integer, db.ForeignKey('propertyListing.id'), nullable=False)
-    @classmethod
-    def createImage(cls, filename, property_id):
-        new_image = cls(filename=filename, property_id=property_id)
-        db.session.add(new_image)
-        db.session.commit()
-        return new_image
-    @classmethod
-    def delete_image(cls, image_id):
-        image = cls.query.get(image_id)
-        if image:
-            db.session.delete(image)
-            db.session.commit()
-            return True
-        return False
-
 class PropertyListing(db.Model):
     __tablename__ = 'propertyListing'
     id = db.Column(db.Integer, primary_key=True)
     subject = db.Column(db.String(200), nullable=False)
+    images = db.Column(db.Text, nullable=True)      # 이미지 필드
     content = db.Column(db.Text(), nullable=True)
     price = db.Column(db.Integer, nullable=False)
     address = db.Column(db.String(200), nullable=False)
@@ -60,19 +45,19 @@ class PropertyListing(db.Model):
     view_counts = db.Column(db.Integer, default=0, nullable=False)
     favourites = db.relationship('Favourite', back_populates='propertyListing', lazy='dynamic')
     is_sold = db.Column(db.Boolean(), default=False)
-    images = db.relationship('PropertyImage', backref='propertyListing', lazy='dynamic')
+    # images = db.relationship('PropertyImage', backref='propertyListing', lazy='dynamic')
 
-    @validates('client_id')
-    def validate_client_id(self, key, client_id):
+    @classmethod
+    def validate_client_id(self, client_id) -> bool:
         # Check if the userid exists in the User table
         user_with_client_id = UserAccount.query.filter_by(userid=client_id).first()
-        if not user_with_client_id:
-            raise ValueError('The provided userid does not exist')
-        # Check if the provided client_id corresponds to a seller user
         seller_user = UserAccount.query.filter_by(userid=client_id, role='seller').first() #role=Role.SELLER
-        if not seller_user:
-            raise ValueError('The client must correspond to a seller user')
-        return client_id
+        if not user_with_client_id:
+            return False
+        elif not seller_user:
+            return False
+
+        return True
 
     @classmethod
     def displayAllPropertyListing(cls):
@@ -80,62 +65,118 @@ class PropertyListing(db.Model):
         return property_listings
 
     @classmethod
-    def createPropertyListing(cls, details: dict, image_files: list = None) -> bool:
-        agent_id = details.get('agent_id')
-        agent = UserAccount.query.filter_by(id=agent_id, role='agent').first()    #role=Role.AGENT.value
-        if not agent:
-            return False
-        required_fields = ['subject', 'price', 'address', 'floorSize', 'floorLevel', 'propertyType', 'furnishing',
-                           'builtYear', 'client_id']
-        if not all(field in details for field in required_fields):
-            return False
-        new_listing = cls(**details, create_date=datetime.now())
-        db.session.add(new_listing)
-        db.session.commit()
-        if image_files:
-            for image_file in image_files:
-                new_image = PropertyImage.createImage(filename=image_file, property_id=new_listing.id)
-                db.session.add(new_image)
-        db.session.commit()
-        return True
-
-    @classmethod
-    def editPropertyListing(cls, details: dict) -> bool:
+    def createPropertyListing(cls, details: dict) -> bool:
         try:
-            listing_id = details.get('id')
-            listing = PropertyListing.query.get(listing_id)
-            if not listing:
-                return False
-            if 'subject' in details:
-                listing.subject = details['subject']
-            if 'content' in details:
-                listing.content = details['content']
-            if 'price' in details:
-                listing.price = details['price']
-            if 'address' in details:
-                listing.address = details['address']
-            if 'floorSize' in details:
-                listing.floorSize = details['floorSize']
-            if 'floorLevel' in details:
-                listing.floorLevel = FloorLevel(details['floorLevel'])
-            if 'propertyType' in details:
-                listing.propertyType = PropertyType(details['propertyType'])
-            if 'furnishing' in details:
-                listing.furnishing = Furnishing(details['furnishing'])
-            if 'builtYear' in details:
-                listing.builtYear = details['builtYear']
-            if 'modify_date' in details:
-                listing.modify_date = datetime.now()
-            if 'client_id' in details:
-                listing.client_id = details['client_id']
-            if 'is_sold' in details:
-                listing.is_sold = details['is_sold']
+            subject = details.get('subject')
+            content = details.get('content')
+            price = details.get('price')
+            address = details.get('address')
+            floorSize = details.get('floorSize')
+            floorLevel = details.get('floorLevel')
+            propertyType = details.get('propertyType')
+            furnishing = details.get('furnishing')
+            builtYear = details.get('builtYear')
+            client_id = details.get('client_id')
+            agent_id = details.get('agent_id')
+            files = details.get('files', [])
+
+            print("Details received:")
+            print(details)
+
+            image_paths = []
+            upload_folder = current_app.config['UPLOAD_FOLDER']
+            print("Upload folder:", upload_folder)
+
+            if not os.path.exists(upload_folder):
+                os.makedirs(upload_folder)
+                print(f"Created upload folder: {upload_folder}")
+
+            for file in files:
+                print("Processing file:", file)
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    filepath = os.path.join(upload_folder, filename)
+                    print("Saving file to:", filepath)
+                    file.save(filepath)
+                    if os.path.exists(filepath):
+                        print(f"File saved successfully: {filepath}")
+                    else:
+                        print(f"Failed to save file: {filepath}")
+                    image_paths.append(filename)
+
+            print("Image paths:", image_paths)
+
+            property_listing = cls(
+                subject=subject,
+                content=content,
+                price=price,
+                address=address,
+                floorSize=floorSize,
+                floorLevel=floorLevel,
+                propertyType=propertyType,
+                furnishing=furnishing,
+                builtYear=builtYear,
+                client_id=client_id,
+                agent_id=agent_id,
+                images=json.dumps(image_paths),
+                create_date=datetime.now()
+            )
+            print("Property listing created:", property_listing)
+            db.session.add(property_listing)
             db.session.commit()
             return True
+
         except Exception as e:
-            print(f"부동산 리스트 수정에 실패했습니다: {e}")
+            print("Exception occurred:", e)
             db.session.rollback()
             return False
+
+    @classmethod
+    def editPropertyListing(cls, propertyListing_id, details: dict) -> bool:
+        listing = cls.getPropertyListing(propertyListing_id)
+        if not listing:
+            return False
+
+        client_id = details.get('client_id')
+        if not cls.validate_client_id(client_id):
+            return False
+
+        listing.subject = details.get('subject', listing.subject)
+        listing.content = details.get('content', listing.content)
+        listing.price = details.get('price', listing.price)
+        listing.address = details.get('address', listing.address)
+        listing.floorSize = details.get('floorSize', listing.floorSize)
+        listing.floorLevel = details.get('floorLevel', listing.floorLevel)
+        listing.propertyType = details.get('propertyType', listing.propertyType)
+        listing.furnishing = details.get('furnishing', listing.furnishing)
+        listing.builtYear = details.get('builtYear', listing.builtYear)
+        listing.modify_date = datetime.now()
+
+        if 'modify_date' in details:
+            listing.modify_date = datetime.now()
+        if 'client_id' in details:
+            listing.client_id = details['client_id']
+        if 'is_sold' in details:
+            listing.is_sold = details['is_sold']
+
+        # 이미지 파일 처리
+        existing_images = request.form.getlist('existing_images')
+        files = details.get('files', [])
+        upload_folder = current_app.config['UPLOAD_FOLDER']
+        image_paths = existing_images
+
+        # 새 이미지 저장
+        for file in files:
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                filepath = os.path.join(upload_folder, filename)
+                file.save(filepath)
+                image_paths.append(filename)
+
+        listing.images = json.dumps(image_paths)
+
+        db.session.commit()
+        return True
 
     @classmethod
     def getPropertyListing(cls, listing_id: int):
@@ -144,12 +185,6 @@ class PropertyListing(db.Model):
     @classmethod
     def removePropertyListing(cls, listing_id: int) -> bool:
         property_listing = cls.getPropertyListing(listing_id)
-        # if not property_listing:
-        #     return False
-        # if not g.user:
-        #     return False
-        # if property_listing.agent_id != g.user.id:
-        #     return False
         db.session.delete(property_listing)
         db.session.commit()
         return True
@@ -162,7 +197,9 @@ class PropertyListing(db.Model):
     def displayAllNotSoldPropertyListing(cls):
         return cls.query.filter_by(is_sold=False).order_by(cls.create_date.desc()).all()
 
-
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif'}
 
 
 

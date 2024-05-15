@@ -22,7 +22,7 @@ def create_app():
     app = Flask(__name__,
                 static_folder='boundary/static',
                 template_folder='boundary/templates')
-    app.config['UPLOAD_FOLDER'] = '/csit314/boundary/static/images/property_listings'
+    app.config['UPLOAD_FOLDER'] = 'csit314/boundary/static/images/property_listings/'
     app.config.from_object(config)
     app.config['SECRET_KEY'] = '1q2w3e4r!'
     app.config['JWT_SECRET_KEY'] = 'csit314'
@@ -31,14 +31,13 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config.SQLALCHEMY_TRACK_MODIFICATIONS
 
-    class CustomJSONEncoder(json.JSONEncoder):
-        def default(self, obj):
-            if isinstance(obj, Enum):
-                return obj.value
-            return super().default(obj)
-
-    app.json_encoder = CustomJSONEncoder
-    jwt = JWTManager(app)
+    # class CustomJSONEncoder(json.JSONEncoder):
+    #     def default(self, obj):
+    #         if isinstance(obj, Enum):
+    #             return obj.value
+    #         return super().default(obj)
+    #
+    # app.json_encoder = CustomJSONEncoder
 
     # ORM
     db.init_app(app)
@@ -49,24 +48,12 @@ def create_app():
 
     # Blueprint
     from csit314.controller.authentication import (SignUpController, LoginController, LogoutController)
-    from csit314.controller.propertyListing import (ViewPropertyListingController, AgentCreatePropertyListingController,
-                                                    AgentEditPropertyListingController,
-                                                    AgentRemovePropertyListingController,
-                                                    SearchFilterPropertyListing,
-                                                    BuyerViewOldPropertyListing)
     from csit314.controller.profile import ViewProfileController
     from csit314.controller.review import (AgentViewReviewController, BuyerSellerWriteReviewController)
     from csit314.controller.favourite import (SaveFavouriteController, ViewSavedFavouriteController)
     from csit314.controller.mortgage import BuyerCalculateMortgageController
-    from csit314.controller.admin.UserAccount import CreateUserAccountController
-    from csit314.controller.admin.UserAccount import ViewUserAccountController
-
 
     app.register_blueprint(SignUpController.bp)
-    app.register_blueprint(ViewPropertyListingController.bp)
-    app.register_blueprint(AgentCreatePropertyListingController.bp)
-    app.register_blueprint(AgentEditPropertyListingController.bp)
-    app.register_blueprint(AgentRemovePropertyListingController.bp)
     app.register_blueprint(LoginController.bp)
     app.register_blueprint(LogoutController.bp)
     app.register_blueprint(ViewProfileController.bp)
@@ -74,22 +61,31 @@ def create_app():
     app.register_blueprint(BuyerSellerWriteReviewController.bp)
     app.register_blueprint(SaveFavouriteController.bp)
     app.register_blueprint(ViewSavedFavouriteController.bp)
-    app.register_blueprint(SearchFilterPropertyListing.bp)
     app.register_blueprint(BuyerCalculateMortgageController.bp)
-    app.register_blueprint(BuyerViewOldPropertyListing.bp)
 
+#-----------------------------------------------------------------------------------
+    # NEW STRUCTURE
+    from csit314.controller.propertyListing import (agent_create_property_listing_controller,
+                                                    agent_edit_property_listing_controller,
+                                                    agent_remove_property_listing_controller,
+                                                    view_property_listing_controller,
+                                                    buyer_view_old_property_listing_controller,
+                                                    search_property_listing_controller)
 
-
-
-
-
-    # yuyang class structure
     from csit314.controller.admin.UserAccount import (create_account_controller, update_account_controller,
-                                                view_account_controller, search_account_controller,
-                                                suspend_account_controller, AccountDashboardController)
+                                                      view_account_controller, search_account_controller,
+                                                      suspend_account_controller, AccountDashboardController)
     from csit314.controller.admin.UserProfile import (create_profile_controller, update_profile_controller,
-                                                view_profile_controller, search_profile_controller,
-                                                suspend_profile_controller, ProfileDashboardController)
+                                                      view_profile_controller, search_profile_controller,
+                                                      suspend_profile_controller, ProfileDashboardController)
+
+    #Property Listing
+    app.register_blueprint(agent_create_property_listing_controller)
+    app.register_blueprint(agent_edit_property_listing_controller)
+    app.register_blueprint(agent_remove_property_listing_controller)
+    app.register_blueprint(view_property_listing_controller)
+    app.register_blueprint(buyer_view_old_property_listing_controller)
+    app.register_blueprint(search_property_listing_controller)
 
     #Admin Home
     from csit314.controller.admin.UserAccount import AdminHomePageController
@@ -110,9 +106,6 @@ def create_app():
     app.register_blueprint(update_profile_controller)
     app.register_blueprint(search_profile_controller)
     app.register_blueprint(suspend_profile_controller)
-
-
-
 
     @app.route('/')
     def index():

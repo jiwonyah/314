@@ -1,4 +1,4 @@
-from csit314.entity.PropertyListing import PropertyListing, FloorLevel, PropertyType, Furnishing, PropertyImage
+from csit314.entity.PropertyListing import PropertyListing, FloorLevel, PropertyType, Furnishing
 from wtforms import StringField, IntegerField, SelectField, TextAreaField, BooleanField
 from wtforms.validators import DataRequired
 from flask_wtf import FlaskForm
