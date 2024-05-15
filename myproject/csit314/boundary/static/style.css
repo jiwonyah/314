@@ -736,5 +736,268 @@ br {
     color: #888;
 }
 
+/*----------------------------Property Listing Page-------------------------------*/
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  background: #f5f5f5;
+  color: #000;
+}
+#propList-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 50px; /* Added padding on the left and right */
+  width: 100%;
+  box-sizing: border-box;
+}
+#propList-header {
+  position: relative;
+  width: 100%;
+  padding: 0 15px; /* Added padding on the left and right */
+  box-sizing: border-box;
+}
+/* Styling for the property subject link */
+#propList-subject a {
+  font-size: 24px; /* Equivalent to h3 font size */
+  font-weight: bold;
+  color: #263343;
+  text-decoration: none;
+}
+
+#propList-title {
+  margin-bottom: 20px;
+  padding: 0 100px;
+}
+
+#propList-viewOldBtnContainer {
+  position: absolute;
+  margin-right: 100px;
+  right: 0;
+  bottom: -40px; /* Adjust this value to move the button vertically */
+}
+
+#propList-viewOldBtn {
+  background-color: #87ceeb; /* Sky blue background color */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px; /* Ensures the button is not too small */
+  text-decoration: none;
+  font-size: 16px; /* Adjust font size if necessary */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+#propList-viewOldBtn:hover {
+  background-color: #00bfff; /* Darker sky blue on hover */
+  color: #fff;
+}
+
+#propList-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+#propList-table {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 100px; /* Added padding on the left and right */
+  box-sizing: border-box;
+}
+
+#propList-tbody {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  gap: 30px; /* Adds space between cards */
+  margin: 30px 0;
+}
+
+.tr {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 30%; /* Each card takes up one third of the container width */
+  margin: 0; /* Resets margins for individual cards */
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#propList-image img {
+  width: 100%;
+  height: 150px; /* Set the height of the image container */
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.td {
+  margin-bottom: 10px;
+  width: 100%;
+  text-align: left;
+  margin-left: 20px;
+}
+
+#propList-subject a {
+  font-weight: bold;
+  color: #263343;
+  text-decoration: none;
+}
+
+#propList-subject a:hover {
+  text-decoration: underline;
+}
+
+#propList-address,
+#propList-price,
+#propList-agent-{{ propertyListing.id }},
+#propList-modifyDate-{{ propertyListing.id }},
+#propList-createDate-{{ propertyListing.id }} {
+  color: #555;
+}
+
+.favourite-btn {
+  background-color: #e49aa7;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0px 8px;
+  margin-left: 400px;
+  cursor: pointer;
+  font-size: 24px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.favourite-btn:hover {
+  background-color: #aa737d;
+}
+
+.divider {
+  border-top: 1px solid #ccc;
+  margin: 10px 0;
+}
+
+.info-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .tr {
+    width: 100%; /* Cards will take full width on smaller screens */
+  }
+}
+
+#contactAgentModal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  text-align: center;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.contact-agent {
+  background-color: #263343;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.contact-agent:hover {
+  background-color: #1f2a35;
+}
+
+/* Container for search bar */
+#propList-searchContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /*margin: 100px 0;*/
+  margin-top: 100px;
+  margin-bottom: 40px;
+  padding: 0 15px; /* Added padding on the left and right */
+  box-sizing: border-box;
+}
+
+/* Search input field */
+#propList-searchInput {
+  width: 70%;
+  padding: 10px 15px;
+  border: 2px solid #ddd;
+  border-radius: 5px 0 0 5px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+#propList-searchInput:focus {
+  border-color: #87ceeb; /* Sky blue border on focus */
+  outline: none;
+}
+
+/* Search button */
+#propList-searchBtn {
+  background-color: #263343; /* Sky blue background color */
+  color: #fff;
+  border: 2px solid #263343;
+  border-radius: 0 5px 5px 0;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+#propList-searchBtn:hover {
+  background-color: #00bfff; /* Darker sky blue on hover */
+  border-color: #00bfff;
+}
+
+
+
 
 
