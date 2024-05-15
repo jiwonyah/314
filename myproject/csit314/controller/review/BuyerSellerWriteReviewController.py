@@ -8,12 +8,14 @@ from csit314.entity.User import User
 bp = Blueprint('write_review_controller', __name__, template_folder='boundary/templates')
 
 class WriteReviewForm(FlaskForm):
-    agent_id = HiddenField('Agent ID')  # Hidden field for storing agent ID
+    agent_id = HiddenField('Agent ID')
     rating = RadioField('Rating',
                         validators=[DataRequired('Rating is mandatory field')],
-                        choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')])  # Radio button to select between 1-5
-    content = TextAreaField('Content', validators=[DataRequired('Content is mandatory field')])  # Textarea to enter review content
-    submit = SubmitField('Submit Review')  # Review submit button
+                        choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')])
+    content = TextAreaField('Content',
+                            validators=[DataRequired('Content is a mandatory field')],
+                            render_kw={"placeholder": "Please write review"})  # Set the placeholder here
+    submit = SubmitField('Submit Review')
 
 @bp.route('/write-review/<int:agent_id>', methods=['GET'])
 def show_reviewForm_index(agent_id):
