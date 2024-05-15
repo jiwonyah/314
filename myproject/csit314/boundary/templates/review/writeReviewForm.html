@@ -1,17 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!--<div class="container mt-5">-->
-<!--action="/write-review/${agentId}"-->
 <form id="write-review-form" method="POST">
     {{ form.hidden_tag() }}
     {{ form.agent_id }}
     <div>
-        <h2>
-            {{ user.firstName }} {{ user.lastName }}
-        </h2>
-        <!--<p class="small-text">Real Estate Agent</p>-->
-        <p class="small-text">Please leave rating by click the star</p>
+        <p id="feedback-heading">Leave feedback for <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span></p>
+        <p class="small-text">Please leave rating by clicking the star</p>
         <div class="stars">
             <span class="star" data-rating="1">&#9733;</span>
             <span class="star" data-rating="2">&#9733;</span>
@@ -22,72 +17,79 @@
         </div>
     </div>
     <div>
-        {{ form.content.label }}
-        {{ form.content }}
+        <div class="mb-3">
+            <label for="content">Content</label>
+            <textarea class="form-control" name="content" id="content" placeholder="Please write review">{{ form.content.data or '' }}</textarea>
+        </div>
     </div>
-    {{ form.submit }}
+    <button type="submit" class="btn btn-primary">Submit Review</button>
 </form>
 
-
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const stars = document.querySelectorAll(".star");
-        const feedbackTextarea = document.getElementById("feedback");
-        const submitBtn = document.getElementById("submit-btn");
-        let rating = 0;
+document.addEventListener("DOMContentLoaded", function() {
+    const stars = document.querySelectorAll(".star");
+    const ratingInput = document.getElementById("rating");
 
-        // Highlight stars up to the selected one by user
-        function highlightStars(index) {
-            stars.forEach((star, i) => {
-                star.classList.toggle("active", i < index);
-            });
-        }
-
-        // Add click event listener to stars
-        stars.forEach(star => {
-            star.addEventListener("click", function() {
-                rating = parseInt(this.getAttribute("data-rating"));
-                document.getElementById("rating").value = rating;
-                highlightStars(rating);
-            });
+    // Highlight stars up to the selected one by user
+    function highlightStars(index) {
+        stars.forEach((star, i) => {
+            star.classList.toggle("active", i < index);
         });
+    }
 
-        // Submit button click event
-        submitBtn.addEventListener("click", function(event) {
-            event.preventDefault();
+    // Add click event listener to stars
+    stars.forEach(star => {
+        star.addEventListener("click", function() {
+            const rating = parseInt(this.getAttribute("data-rating"));
+            ratingInput.value = rating;
+            highlightStars(rating);
+        });
+    });
 
-            const formData = {
-                'rating': rating,
-                'content': feedbackTextarea.value,
-                'agent_id': '{{ agent_id }}'
-            };
+    // Initial highlight based on form rating value
+    const initialRating = parseInt(ratingInput.value);
+    if (initialRating) {
+        highlightStars(initialRating);
+    }
 
-            const url = `/write-review/{{ agent_id }}`;
+    const form = document.getElementById('write-review-form');
+    form.addEventListener('submit', async function (event) {
+        event.preventDefault();
 
-            fetch(url, {
+        const formData = new FormData(form);
+        const agent_id = window.location.pathname.split('/').pop();
+
+        const url = `/write-review/${agent_id}`;  // Construct the URL with the retrieved agent_id
+
+        try {
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': csrfToken
                 },
-                body: JSON.stringify(formData)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                window.location.href = '{{ url_for("write_review_controller.agent_list") }}';
-            })
-            .catch(error => {
-                console.error('There was a problem with your fetch operation:', error);
-                alert('An error occurred. Please try again later.');
+                body: JSON.stringify(Object.fromEntries(formData))
             });
-        });
-    });
 
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const responseData = await response.json();
+            if (responseData.success) {
+                alert(responseData.message);
+                window.location.href = '/agents';  // Redirect on success
+            } else {
+                alert(`Failed to submit the review: ${responseData.error}`);
+            }
+
+        } catch (error) {
+            console.error('There was a problem with your fetch operation:', error);
+            alert('Failed to submit the review. Please try again later.');
+        }
+    });
+});
 </script>
 
-
-<!--</div>-->
 {% endblock %}
 
