@@ -1,13 +1,9 @@
-from flask import Blueprint, request, g, redirect, url_for, jsonify, render_template
+from flask import Blueprint, request, g, jsonify, render_template, session
 from flask_wtf import FlaskForm
 from wtforms.validators import DataRequired
 from wtforms import TextAreaField, HiddenField, RadioField, SubmitField
-from datetime import datetime
-
-from csit314.controller.role_service.decorators import buyer_seller_only
 from csit314.entity.Review import Review
 from csit314.entity.User import User
-from csit314.app import db
 
 bp = Blueprint('write_review_controller', __name__, template_folder='boundary/templates')
 
@@ -19,41 +15,50 @@ class WriteReviewForm(FlaskForm):
     content = TextAreaField('Content', validators=[DataRequired('Content is mandatory field')])  # Textarea to enter review content
     submit = SubmitField('Submit Review')  # Review submit button
 
-@buyer_seller_only
 @bp.route('/write-review/<int:agent_id>', methods=['GET'])
 def show_reviewForm_index(agent_id):
     form = WriteReviewForm()
     user = User.query.get(agent_id)
+    if user is None:
+        return jsonify({'error': 'Agent not found'}), 404
     return render_template('review/writeReviewForm.html', agent_id=agent_id, form=form, user=user)
-@buyer_seller_only
 @bp.route('/write-review/<int:agent_id>', methods=['POST'])
 def write_review(agent_id):
-    form = WriteReviewForm(request.form)
-    if form.validate_on_submit():
+    json_data = request.get_json()
+    print(f"Received JSON data: {json_data}")
+
+    form = WriteReviewForm(data=json_data)
+
+    if not form.validate_on_submit():
+        errors = [{'field': field, 'message': ', '.join(error)} for field, error in form.errors.items()]
+        print(f"Form validation errors: {errors}")
+        return jsonify({'success': False, 'errors': errors}), 422
+    else:
         rating = form.rating.data
         content = form.content.data
 
-        if g.user:
-            current_user_username = g.user.userid
+        details = {
+            'rating': rating,
+            'content': content,
+            'author_userid': g.user.userid if g.user else None,
+            'agent_id': agent_id
+        }
+        print(f"Details to be used for creating review: {details}")
+
+        success = Review.createReview(details, agent_id)
+        if success:
+            return jsonify({'success': True, 'message': 'Review is submitted successfully'}), 201
         else:
-            return jsonify({'error': 'Please log in to submit a review.'}), 401
-
-        user = User.query.get(agent_id)
-        new_review = Review(author_userid=current_user_username, agent_id=agent_id, rating=rating, content=content, create_date=datetime.now())
-        db.session.add(new_review)
-        db.session.commit()
-
-        return redirect(url_for('write_review_controller.agent_list_index'))
-        #return jsonify({'message': 'Your review has been submitted!', 'successAlert': successAlert}), 200
-    else:
-        return jsonify({'error': 'Invalid form data.'}), 400
+            return jsonify({'success': False, 'error': 'Failed to submit review'}), 500
 
 @bp.route('/agents')
 def agent_list_index():
-    return render_template('review/agentListPage.html')
+    return render_template('review/agentListPage.html'), 200
 @bp.route('/api/agents')
 def agent_list():
     agents = User.query.filter_by(role='agent').all()
+    if not agents:
+        return jsonify({'error': 'No agents found'}), 404
     agent_data = [
         {
             'id': agent.id,
@@ -64,4 +69,4 @@ def agent_list():
             'role': agent.role.value  # convert Enum value into string
         } for agent in agents
     ]
-    return jsonify(agents=agent_data)
+    return jsonify(agents=agent_data), 200
