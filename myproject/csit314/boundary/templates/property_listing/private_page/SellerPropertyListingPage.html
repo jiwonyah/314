@@ -1,42 +1,45 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1> My Property Listings</h1>
-<div>
+  <h1>My Property Listings</h1>
+  <div>
+    <form method="get" action="{{ url_for('viewPropertyListing.sellerViewOwnPropertyListing') }}">
+      <label for="sort_by">Sort by:</label>
+      <select name="sort_by" id="sort_by" onchange="this.form.submit()">
+        <option value="recent" {% if sort_by =='recent' %} selected {% endif %}>Recent</option>
+        <option value="most_viewed" {% if sort_by =='most_viewed' %} selected {% endif %}>Most Viewed</option>
+        <option value="most_favourited" {% if sort_by =='most_favourited' %} selected {% endif %}>Most Favourited</option>
+      </select>
+    </form>
     <table class="table">
-        <thead>
+      <thead>
         <tr class="text-center">
-            <th style="width:50%">Subject</th>
-            <th> Agent </th>
-            <th>Date</th>
-            <th> View Counts </th>
-            <th> Favourite Count </th>
+          <th style="width:50%">Subject</th>
+          <th>Agent</th>
+          <th>Date</th>
+          <th>View Counts</th>
+          <th>Favourite Count</th>
         </tr>
-        </thead>
-        <tbody>
+      </thead>
+      <tbody>
         {% for propertyListing in propertylistings %}
         <tr class="text-center">
-            <td>
-              <a href="{{ url_for('viewPropertyListing.detail', propertyListing_id=propertyListing.id) }}">
-                {{ propertyListing.subject }}
-              </a>
-            </td>
-            <td>
-                {{ propertyListing.agent.userid }}
-            </td>
-            {% if propertyListing.modify_date %}
-            <td>{{ propertyListing.modify_date.strftime('%Y-%m-%d')  }}</td>
-            {% else %}
-            <td>{{ propertyListing.create_date.strftime('%Y-%m-%d')  }}</td>
-            {% endif %}
-            <td>
-                {{ propertyListing.view_counts }}
-            </td>
-            <td>
-                {{ propertyListing.shortlist_count }}
-            </td>
+          <td>
+            <a href="{{ url_for('viewPropertyListing.detail', propertyListing_id=propertyListing.id) }}">
+              {{ propertyListing.subject }}
+            </a>
+          </td>
+          <td>{{ propertyListing.agent.userid }}</td>
+          {% if propertyListing.modify_date %}
+          <td>{{ propertyListing.modify_date.strftime('%Y-%m-%d') }}</td>
+          {% else %}
+          <td>{{ propertyListing.create_date.strftime('%Y-%m-%d') }}</td>
+          {% endif %}
+          <td>{{ propertyListing.view_counts }}</td>
+          <td>{{ propertyListing.shortlist_count }}</td>
         </tr>
         {% endfor %}
-        </tbody>
+      </tbody>
     </table>
-</div>
+  </div>
 {% endblock %}
+
