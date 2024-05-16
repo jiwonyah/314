@@ -235,7 +235,6 @@
         width: 50px;
         background: none;
         }
-
     </style>
 </head>
 <body>
@@ -247,10 +246,10 @@
         <ul class="nav-list">
 
             <li>
-                <a href="#">
+                <a onclick="window.location.href = '/admin/'">
                 <i class="bx bx-group"></i>
                     <span class="link_name" >
-                        <a href="{{ url_for('adminHome.adminHomePage') }}">User Management</a>
+                        <span>User Management</span>
                     </span>
                 </a>
                 <span class="tooltip">User Management</span>

@@ -15,7 +15,7 @@ class ViewPropertyListingController(Blueprint):
 
     @suspended
     def index(self):
-        propertyListing_table = PropertyListing.query.order_by(PropertyListing.create_date.desc())
+        propertyListing_table = PropertyListing.displayAllNotSoldPropertyListing()
         return render_template('property_listing/propertyListingTable.html',
                                propertyListing_table=propertyListing_table)
 
@@ -23,11 +23,23 @@ class ViewPropertyListingController(Blueprint):
     def detail(self, propertyListing_id):
         propertyListing = PropertyListing.getPropertyListing(propertyListing_id)
         images = json.loads(propertyListing.images) if propertyListing.images else []
+        if g.user:
+            if g.user.status == "Suspended":
+                return render_template('error/error.html',
+                                       message='Your account is suspended.'
+                                               'Send Active Request to Administrator.'
+                                               'admin@minyong.com'), 403
+        else:
+            if propertyListing.is_sold:
+                return render_template('error/error.html',
+                                       message='Login required'), 401
         propertyListing.view_counts += 1
         db.session.commit()
         return render_template('property_listing/propertyListingDetailPage.html',
                                propertyListing=propertyListing,
                                images=images)
+
+
 
     @login_required
     @agent_only

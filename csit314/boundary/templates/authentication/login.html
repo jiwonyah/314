@@ -1,24 +1,53 @@
-{% extends "base.html" %}
-{% block content %}
-<style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUNDONSAN Login Page</title>
 
-</style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login.css') }}">
+</head>
 
-
-    <h2>Login</h2>
-    <form id="loginForm">
-        <div>
-            <label for="userid">UserID:</label>
-            <input type="text" id="userid" name="userid" required>
+<body>
+    <div class="container-fluid">
+        <div class="container">
+            <div class="row main">
+                <div class="login-container">
+                    <div class="icon">
+                        <div class="img-box">
+                            <img src="{{ url_for('static', filename='images/icon.png') }}" alt="">
+                        </div>
+                        <div class="log">
+                            <form class="login-box" id="loginForm">
+                                <h5 class="roboto-serif-heading">WELCOME TO BUDONSAN</h5>
+                                    <div class="text-box-cont">
+                                        <div id="message"></div>
+                                        <div class="input-group">
+                                            <label for="userid">ID</label>
+                                                <input type="text" id="userid" name="userid" class="form-control" placeholder="ID" required>
+                                        </div>
+                                        <div class="input-group">
+                                            <label for="password">Password</label>
+                                            <input type="password" id="password" class="form-control" placeholder="Password" required>
+                                        </div>
+                                        <div class="input-group">
+                                            <button type="submit" class="btn shadow">Login</button>
+                                        </div>
+                                        <div class="row">
+                                            <p class="no-acc">Don't have an account?<a href="{{ url_for('signup.index') }}">Sign Up</a></p>
+                                        </div>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit">Login</button>
-    </form>
-
-    <div id="message"></div>
+    </div>
+</body>
 
     <script>
         document.getElementById("loginForm").addEventListener("submit", function(event) {
@@ -55,4 +84,4 @@
             });
         });
     </script>
-{% endblock %}
+

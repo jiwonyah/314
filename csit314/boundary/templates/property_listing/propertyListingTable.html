@@ -60,7 +60,7 @@
         {% endif %}
     </div>
     <div class="search-container">
-        <input type="text" id="searchInput" class="search-input" placeholder="Search by subject...">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search by subject">
         <button onclick="searchProperty()" class="search-button">Search</button>
     </div>
     <table class="table">
@@ -79,8 +79,8 @@
         {% for propertyListing in propertyListing_table %}
         <tr class="text-center">
             <td>
-                <a onclick="window.location.href = '/propertyListing/detail/{{propertyListing.id}}'">
-                    {{ propertyListing.subject }}</a>
+                <span onclick="window.location.href = '/propertyListing/detail/{{propertyListing.id}}'">
+                    {{ propertyListing.subject }}</span>
             </td>
             <td>{{ propertyListing.agent.userid }}</td>
             {% if propertyListing.modify_date %}
@@ -123,7 +123,6 @@
 <script>
     function searchProperty() {
         var searchQuery = document.getElementById('searchInput').value.trim();
-        // AJAX를 사용하여 서버에 검색 요청
         fetch(`/search_property_listings/?query=${searchQuery}`)
             .then(response => response.json())
             .then(data => {
@@ -136,7 +135,7 @@
 
     function displaySearchResults(results) {
         var tbody = document.querySelector('tbody');
-        tbody.innerHTML = ''; // 이전 결과 초기화
+        tbody.innerHTML = ''; // initialize previous search
 
         if (results.length === 0) {
             tbody.innerHTML = '<tr><td colspan="4">No matching properties found.</td></tr>';
@@ -153,9 +152,6 @@
         }
     }
 
-
-
-
     function toggleFavourite(btn, propertyListingId) {
     fetch(`/toggle_favourite/${propertyListingId}`, {
         method: 'POST',
@@ -163,20 +159,16 @@
     .then(response => response.json())
     .then(data => {
         if(data.success) {
-            // 즐겨찾기 추가/삭제 성공 시 버튼 스타일 변경
-            //이미 북마크 된 상태 --> 북마크 삭제 기능
             if (btn.classList.contains("favourite-active")) {
-                // 이미 favorite이면 취소
                 btn.classList.remove("favourite-active");
-                btn.style.backgroundColor = "#ff0000"; // 빨간색 배경
-                btn.textContent = "Favourite"; // 버튼 내용 변경
+                btn.style.backgroundColor = "#ff0000"; // 빨간색 배경 (red)
+                btn.textContent = "Remove Favourite"; //
 
-            //아직 북마크 안된 상태 --> 북마크 추가 기능
             } else {
-                // favorite으로 추가
+
                 btn.classList.add("favourite-active");
-                btn.style.backgroundColor = "#ccc"; // 회색 배경
-                btn.textContent = "Favourite"; // 버튼 내용 변경
+                btn.style.backgroundColor = "#ccc"; // 회색 배경 (grey)
+                btn.textContent = "Add Favourite"; //
             }
         }
     })

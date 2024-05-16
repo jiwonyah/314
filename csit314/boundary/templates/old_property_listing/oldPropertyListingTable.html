@@ -14,8 +14,7 @@
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            max-width: 500px;
-            width: 100%;
+            width: 70%;
         }
         .search-button {
             padding: 8px 16px;
@@ -44,7 +43,6 @@
         th {
             background-color: #f2f2f2;
         }
-
     </style>
 </head>
 <div class="container">
@@ -68,7 +66,7 @@
             <th style="width:50%">Subject</th>
             <th>Author</th>
             <th>Date</th>
-            <th>Bookmark</th>
+
         </tr>
         </thead>
         <tbody id="propertyListingTable">
@@ -104,12 +102,14 @@
                             ? `<td>${listing.modify_date}</td>`
                             : `<td>${listing.create_date}</td>`
                           }
-                          <!-- favourite button start -->
+
                         </tr>`;
                       } else {
                         row = `<tr class="text-center">
                           <td colspan="3">No contents</td>
                         </tr>`;
+
+
                       }
                       tableBody.innerHTML += row;
                 });
@@ -121,6 +121,87 @@
             console.error('Error:', error);
         });
     };
+
+     function searchProperty() {
+        var searchQuery = document.getElementById('searchInput').value.trim();
+        fetch(`/search_property_listings/?query=${searchQuery}`)
+            .then(response => response.json())
+            .then(data => {
+                displaySearchResults(data);
+            })
+            .catch(error => {
+                console.error('Error searching properties:', error);
+            });
+    }
+
+    function displaySearchResults(results) {
+        var tbody = document.querySelector('tbody');
+        tbody.innerHTML = ''; // initialize previous search
+
+        if (results.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4">No matching properties found.</td></tr>';
+        } else {
+            results.forEach(property => {
+                var row = `<tr>
+                        <td><a href="/propertyListing/${property.id}">${property.subject}</a></td>
+                        <td>${property.agent.userid}</td>
+                        <td>${property.create_date}</td>
+                        <td><button onclick="toggleFavourite(${property.id})">Favourite</button></td>
+                    </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+    }
+
+        function toggleFavourite(btn, propertyListingId) {
+    fetch(`/toggle_favourite/${propertyListingId}`, {
+        method: 'POST',
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success) {
+            if (btn.classList.contains("favourite-active")) {
+                btn.classList.remove("favourite-active");
+                btn.style.backgroundColor = "#ff0000"; // 빨간색 배경 (red)
+                btn.textContent = "Remove Favourite"; //
+
+            } else {
+
+                btn.classList.add("favourite-active");
+                btn.style.backgroundColor = "#ccc"; // 회색 배경 (grey)
+                btn.textContent = "Add Favourite"; //
+            }
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+</script>
+
+<script>
+    // Function to search property
+    function searchProperty() {
+        const input = document.getElementById("searchInput");
+        const filter = input.value.toUpperCase();
+        const table = document.querySelector("table");
+        const tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (let i = 0; i < tr.length; i++) {
+            const td = tr[i].getElementsByTagName("td")[0]; // Column to search in
+
+            if (td) {
+                const txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
 </script>
 
 {% endblock %}

@@ -32,5 +32,5 @@ class BuyerViewOldPropertyListingController(Blueprint):
         ]
         return jsonify(old_property_listings=old_property_listing_data)
 
-    
+
 

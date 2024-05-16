@@ -1,4 +1,6 @@
 from csit314.app import db
+from flask import g
+from datetime import datetime
 
 class Review(db.Model):
     __tablename__ = 'review'
@@ -9,3 +11,30 @@ class Review(db.Model):
     create_date = db.Column(db.DateTime(), nullable=False)
     rating = db.Column(db.Integer, nullable=False)
     content = db.Column(db.Text, nullable=False)
+
+    @classmethod
+    def displayReviewsList(cls):
+        return cls.query.filter_by(agent_id=g.user.id).all()
+
+    @classmethod
+    def createReview(cls, details: dict, agent_id: int) -> bool:
+        author_userid = details.get('author_userid')
+
+        # Log the details received
+        print(f"Creating review with details: {details}")
+
+        new_review = Review(rating=details['rating'],
+                            content=details['content'],
+                            create_date=datetime.now(),
+                            author_userid=details['author_userid'],
+                            agent_id=details['agent_id'])
+
+        db.session.add(new_review)
+        try:
+            db.session.commit()
+            print("Review committed successfully.")
+            return True
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error committing review: {e}")
+            return False
