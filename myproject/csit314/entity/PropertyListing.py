@@ -1,8 +1,12 @@
 import enum
-from sqlalchemy.orm import validates
+
+from sqlalchemy import true
+
 from csit314.app import db
-from csit314.entity.User import User, Role
-from . import Favourite
+from csit314.entity.User import User,Role
+from sqlalchemy.orm import validates
+from datetime import datetime
+from flask import current_app, g, session
 
 #enum type data
 class FloorLevel(enum.Enum):
@@ -20,6 +24,7 @@ class Furnishing(enum.Enum):
     PartiallyFurnished = 'partially_furnished'
     FullyFurnished = 'fully_furnished'
     NotFurnished = 'not_furnished'
+
 
 class PropertyListing(db.Model):
     __tablename__ = 'propertyListing'
@@ -43,15 +48,19 @@ class PropertyListing(db.Model):
     view_counts = db.Column(db.Integer, default=0, nullable=False)
     favourites = db.relationship('Favourite', back_populates='propertyListing', lazy='dynamic')
     shortlist_count = db.Column(db.Integer, default=0)
-    @validates('client_id')
-    def validate_client_id(self, key, client_id):
-        # Check if the userid exists in the User table
-        user_with_client_id = User.query.filter_by(userid=client_id).first()
-        if not user_with_client_id:
-            raise ValueError('The provided userid does not exist')
-        # Check if the provided client_id corresponds to a seller user
-        seller_user = User.query.filter_by(userid=client_id, role=Role.SELLER).first()
-        if not seller_user:
-            raise ValueError('The client_id must correspond to a seller user')
+    is_sold = db.Column(db.Boolean(), default=False)
 
-        return client_id
+    @classmethod
+    def sortByMostView(cls, client_id: int):
+        return cls.query.filter_by(client_id=client_id).order_by(
+            PropertyListing.view_counts.desc()).all()
+
+    @classmethod
+    def sortByMostFavourite(cls, client_id: int):
+        return cls.query.filter_by(client_id=client_id).order_by(
+            PropertyListing.shortlist_count.desc()).all()
+
+    @classmethod
+    def sortByRecent(cls, client_id: int):
+        return cls.query.filter_by(client_id=client_id).order_by(
+            PropertyListing.create_date.desc()).all()
