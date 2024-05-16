@@ -67,3 +67,4 @@ def review_detail(review_id):
         'content': review.content
     })
 
+
