@@ -45,7 +45,8 @@ def review_detail_index(review_id):
 @bp.route('/api/agent/reviewDetail/<int:review_id>')
 def review_detail(review_id):
     # Return review detail page based on review ID. Return error page if review ID does not exist.
-    review = Review.query.filter_by(id=review_id).first()
+    #review = Review.query.filter_by(id=review_id).first()
+    review = Review.displayReviewDetails(review_id)
     if not review:
         return jsonify({'error': 'The review ID doesn\'t exist'}), 404
 
@@ -66,5 +67,6 @@ def review_detail(review_id):
         'rating': review.rating,
         'content': review.content
     })
+
 
 
