@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
-
 {% block content %}
+<!--
+Users can view a list of registered agents on this page,
+and can click the 'Write Review' button next to each agent to navigate to the review writing page.
+-->
 <div id="agent-list-page">
     <h1>Agent List</h1>
     <table id="agentListTable">
         <thead id="agentListHead">
             <tr id="agentListRow">
-                <!--<th>firstname</th>-->
-                <!--<th>lastname</th>-->
             </tr>
         </thead>
         <tbody id="agentList">
@@ -16,9 +17,10 @@
     </table>
 
     <script>
-        // function to fetch agent data from /agents directory
+        // Asynchronously request agent data from the /api/agents path
         function fetchAgents() {
             fetch('api/agents')
+                // If a successful response is received from the server, dynamically update the page content using response data (JSON object)
                 .then(response => response.json())
                 .then(data => {
                     const agents = data.agents;
@@ -31,12 +33,15 @@
                         const fullName = `${agent.firstName} ${agent.lastName}`;
 
                         const row = `<tr>
-                                        <td>${fullName}</td>
+                                        <td>
+                                            <div class="agentName">${fullName}</div>
+                                        </td>
                                         <td><a href="/write-review/${agent.id}" class="review-button">Write Review</a></td>
                                      </tr>`;
                         listElement.innerHTML += row;
                     });
                 })
+                // Display an error message in the console if the network request fails or an error occurs
                 .catch(error => console.error('Error:', error));
         }
 
@@ -45,14 +50,7 @@
             fetchAgents();
         };
     </script>
-
-</div>>
+</div>
 {% endblock %}
-
-
-
-
-
-
 
 
