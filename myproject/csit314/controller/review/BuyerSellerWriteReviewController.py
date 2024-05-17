@@ -3,7 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms.validators import DataRequired
 from wtforms import TextAreaField, HiddenField, RadioField, SubmitField
 from csit314.entity.Review import Review
-from csit314.entity.User import User
+from csit314.entity.UserAccount import UserAccount
 
 bp = Blueprint('write_review_controller', __name__, template_folder='boundary/templates')
 
@@ -20,7 +20,7 @@ class WriteReviewForm(FlaskForm):
 @bp.route('/write-review/<int:agent_id>', methods=['GET'])
 def show_reviewForm_index(agent_id):
     form = WriteReviewForm()
-    user = User.query.get(agent_id)
+    user = UserAccount.query.get(agent_id)
     if user is None:
         return jsonify({'error': 'Agent not found'}), 404
     return render_template('review/writeReviewForm.html', agent_id=agent_id, form=form, user=user)
@@ -58,7 +58,7 @@ def agent_list_index():
     return render_template('review/agentListPage.html'), 200
 @bp.route('/api/agents')
 def agent_list():
-    agents = User.query.filter_by(role='agent').all()
+    agents = UserAccount.query.filter_by(role='agent').all()
     if not agents:
         return jsonify({'error': 'No agents found'}), 404
     agent_data = [
