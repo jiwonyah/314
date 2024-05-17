@@ -68,7 +68,7 @@ def agent_list():
             'firstName': agent.firstName,
             'lastName': agent.lastName,
             'email': agent.email,
-            'role': agent.role.value  # convert Enum value into string
+            'role': agent.role
         } for agent in agents
     ]
     return jsonify(agents=agent_data), 200
