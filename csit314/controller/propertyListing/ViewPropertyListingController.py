@@ -1,7 +1,7 @@
 from csit314.entity.PropertyListing import PropertyListing
 from csit314.app import db
 from csit314.controller.role_service.decorators import login_required, agent_only, seller_only
-from flask import Blueprint, render_template, g
+from flask import Blueprint, render_template, g, request
 from csit314.controller.role_service.decorators import suspended
 import json
 
@@ -50,14 +50,19 @@ class ViewPropertyListingController(Blueprint):
         return render_template('property_listing/private_page/AgentPropertyListingHistoryPage.html',
                                agent_listings=agent_listings)
 
-    @login_required
     @seller_only
     @suspended
     def sellerViewOwnPropertyListing(self):
         client_id = g.user.userid
-        propertylistings = PropertyListing.query.filter_by(client_id=client_id).all()
+        sort_by = request.args.get('sort_by', 'recent')
+        if sort_by == 'most_viewed':
+            propertylistings = PropertyListing.sortByMostView(client_id)
+        elif sort_by == 'most_favourited':
+            propertylistings = PropertyListing.sortByMostFavourite(client_id)
+        else:
+            propertylistings = PropertyListing.sortByRecent(client_id)
         return render_template('property_listing/private_page/SellerPropertyListingPage.html',
-                               propertylistings=propertylistings)
+                               propertylistings=propertylistings, sort_by=sort_by)  # 여기 sort_by=sort_by 추가
 
 
 

@@ -1,205 +1,130 @@
 {% extends "base.html" %}
 {% block content %}
-<head>
-    <style>
-        .search-container {
-            margin-top: 10px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .search-input {
-            padding: 8px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            width: 70%;
-        }
-        .search-button {
-            padding: 8px 16px;
-            font-size: 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            background-color: #007bff;
-            color: white;
-        }
-        .search-button:hover {
-            background-color: #0056b3;
-        }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
-</head>
-<div class="container">
+<div id="propList-container">
+  <div id="propList-header">
+    <h1 class="my-3 border-bottom pb-2" id="propList-title">Old Property Listings</h1>
+    <!-- If the user is a buyer, show the button to view old property listings -->
+    {% if g.user and g.user.role == "buyer" %}
+    <div class="ordinal_btn" id="propList-viewOldBtnContainer">
+      <a onclick="window.location.href = '/propertyListing/'" id="propList-viewOldBtn">
+        View Property Listings
+      </a>
+    </div>
+    {% endif %}
+  </div>
+  <div class="search-container" id="propList-searchContainer">
+    <input type="text" id="searchInput" class="search-input" placeholder="Search by subject...">
+    <button onclick="searchProperty()" class="search-button" id="propList-searchBtn">Search</button>
+  </div>
     <div>
-    <h1 class="my-3 border-bottom pb-2">Old Property Listings</h1>
+      <div id="propList-table">
+        <div id="propList-tbody">
 
-
-    <div style="text-align: right; margin-top: 20px;" class="ordinal_btn">
-        <a onclick="window.location.href = '/propertyListing/'" >
-            View Property Listings
-        </a>
+        </div>
+        <div class="tr" id="propList-noContentRow" style="display: none;">
+          <div class="td" colspan="4" id="propList-noContent">No matching properties found.</div>
+        </div>
+      </div>
     </div>
-    </div>
-    <div class="search-container">
-        <input type="text" id="searchInput" class="search-input" placeholder="Search by subject...">
-        <button onclick="searchProperty()" class="search-button">Search</button>
-    </div>
-    <table class="table">
-        <thead>
-        <tr class="text-center">
-            <th style="width:50%">Subject</th>
-            <th>Author</th>
-            <th>Date</th>
-
-        </tr>
-        </thead>
-        <tbody id="propertyListingTable">
-        </tbody>
-    </table>
 </div>
+{% endblock %}
 
+{% block script %}
 <script>
-    window.onload = function () {
-        fetch('api/oldPropertyListing', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.old_property_listings) {
-                const oldPropertyListings = data.old_property_listings;
-                const tableBody = document.getElementById('propertyListingTable');
-
-                oldPropertyListings.forEach(listing => {
-                      let row = '';
-                      if (listing) {
-                        row = `<tr class="text-center">
-                          <td>
-                            <a href="/propertyListing/detail/${listing.id}/">
-                              ${listing.subject}
-                            </a>
-                          </td>
-                          <td>${listing.agent_id}</td>
-                          ${listing.modify_date
-                            ? `<td>${listing.modify_date}</td>`
-                            : `<td>${listing.create_date}</td>`
-                          }
-
-                        </tr>`;
-                      } else {
-                        row = `<tr class="text-center">
-                          <td colspan="3">No contents</td>
-                        </tr>`;
-
-
-                      }
-                      tableBody.innerHTML += row;
-                });
-            } else {
-                alert('Failed to load old property listings');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    };
-
-     function searchProperty() {
-        var searchQuery = document.getElementById('searchInput').value.trim();
-        fetch(`/search_property_listings/?query=${searchQuery}`)
-            .then(response => response.json())
-            .then(data => {
-                displaySearchResults(data);
-            })
-            .catch(error => {
-                console.error('Error searching properties:', error);
-            });
-    }
-
-    function displaySearchResults(results) {
-        var tbody = document.querySelector('tbody');
-        tbody.innerHTML = ''; // initialize previous search
-
-        if (results.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4">No matching properties found.</td></tr>';
-        } else {
-            results.forEach(property => {
-                var row = `<tr>
-                        <td><a href="/propertyListing/${property.id}">${property.subject}</a></td>
-                        <td>${property.agent.userid}</td>
-                        <td>${property.create_date}</td>
-                        <td><button onclick="toggleFavourite(${property.id})">Favourite</button></td>
-                    </tr>`;
-                tbody.innerHTML += row;
-            });
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('/api/oldPropertyListing', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
         }
-    }
-
-        function toggleFavourite(btn, propertyListingId) {
-    fetch(`/toggle_favourite/${propertyListingId}`, {
-        method: 'POST',
     })
     .then(response => response.json())
     .then(data => {
-        if(data.success) {
-            if (btn.classList.contains("favourite-active")) {
-                btn.classList.remove("favourite-active");
-                btn.style.backgroundColor = "#ff0000"; // 빨간색 배경 (red)
-                btn.textContent = "Remove Favourite"; //
-
-            } else {
-
-                btn.classList.add("favourite-active");
-                btn.style.backgroundColor = "#ccc"; // 회색 배경 (grey)
-                btn.textContent = "Add Favourite"; //
-            }
+        const tableBody = document.getElementById('propList-tbody');
+        if (data.old_property_listings && data.old_property_listings.length > 0) {
+            const oldPropertyListings = data.old_property_listings;
+            oldPropertyListings.forEach(listing => {
+                const row = document.createElement('div');
+                row.classList.add('tr', 'text-center', 'property-row');
+                row.id = `propList-row-${listing.id}`;
+                row.innerHTML = `
+                    <div class="td" id="propList-image">
+                      <img src="${listing.images}" alt="Property Image">
+                    </div>
+                    <div class="td" id="propList-subject">
+                      <a onclick="window.location.href = '/propertyListing/detail/${listing.id}'">
+                        ${listing.subject}
+                      </a>
+                    </div>
+                    <div class="td" id="propList-address">${listing.address}</div>
+                    <div class="td" id="propList-price">$ ${listing.price}</div>
+                    <div class="divider"></div>
+                    <div class="info-container">
+                      <div class="td" id="propList-agent-${listing.id}">Listed by ${listing.agent_id}</div>
+                      <div class="td" id="propList-${listing.modify_date ? 'modifyDate' : 'createDate'}-${listing.id}">
+                        ${listing.modify_date ? listing.modify_date : listing.create_date}
+                      </div>
+                    </div>
+                `;
+                tableBody.appendChild(row);
+            });
+        } else {
+            const noContentsRow = document.createElement('div');
+            noContentsRow.classList.add('tr');
+            noContentsRow.innerHTML = '<div class="td" colspan="4">No contents</div>';
+            tableBody.appendChild(noContentsRow);
         }
     })
-    .catch((error) => {
+    .catch(error => {
         console.error('Error:', error);
     });
-}
+});
 
-</script>
-
-<script>
-    // Function to search property
     function searchProperty() {
         const input = document.getElementById("searchInput");
         const filter = input.value.toUpperCase();
-        const table = document.querySelector("table");
-        const tr = table.getElementsByTagName("tr");
+        const rows = document.querySelectorAll(".tr");
 
-        // Loop through all table rows, and hide those who don't match the search query
-        for (let i = 0; i < tr.length; i++) {
-            const td = tr[i].getElementsByTagName("td")[0]; // Column to search in
-
-            if (td) {
-                const txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
+        rows.forEach(row => {
+            const subject = row.querySelector("#propList-subject a").innerText;
+            if (subject.toUpperCase().indexOf(filter) > -1) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
             }
+        });
+    }
+
+    function displaySearchResults(results) {
+        const tbody = document.getElementById('propList-tbody');
+        tbody.innerHTML = '';
+
+        if (results.length === 0) {
+            tbody.innerHTML = '<div class="tr" id="propList-noContentRow"><div class="td" colspan="4" id="propList-noContent">No matching properties found.</div></div>';
+        } else {
+            results.forEach(property => {
+                const row = `
+                <div class="tr text-center" id="propList-row-${property.id}">
+                    <div class="td" id="propList-image">
+                        <img src="${property.images}" alt="Property Image">
+                    </div>
+                    <div class="td" id="propList-subject">
+                        <a onclick="window.location.href = '/propertyListing/detail/${property.id}'">${property.subject}</a>
+                    </div>
+                    <div class="td" id="propList-address">${property.address}</div>
+                    <div class="td" id="propList-price">$ ${property.price}</div>
+                    <div class="td" id="propList-favBtnContainer">
+                        <button onclick="toggleFavourite(this, ${property.id})" class="favourite-btn" id="propList-favBtn">♡</button>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="info-container">
+                        <div class="td" id="propList-agent-${property.id}">Listed by ${property.agent.userid}</div>
+                        <div class="td" id="propList-${property.modify_date ? 'modifyDate' : 'createDate'}-${property.id}">${property.modify_date ? property.modify_date : property.create_date}</div>
+                    </div>
+                </div>`;
+                tbody.innerHTML += row;
+            });
         }
     }
 </script>

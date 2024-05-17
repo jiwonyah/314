@@ -3,6 +3,16 @@
   <h1> My Property Listings</h1>
 
 <div>
+    <form method="get">
+      <label for="sort_by">Sort by:</label>
+      <select name="sort_by" id="sort_by" onchange="this.form.submit()">
+        <option value="recent" {% if sort_by =='recent' %} selected {% endif %}>Recent</option>
+        <option value="most_viewed" {% if sort_by =='most_viewed' %} selected {% endif %}>Most Viewed</option>
+        <option value="most_favourited" {% if sort_by =='most_favourited' %} selected {% endif %}>Most Favourited</option>
+      </select>
+    </form>
+
+
     <table class="table">
         <thead>
         <tr class="text-center">
@@ -16,21 +26,18 @@
         {% for propertyListing in propertylistings %}
         <tr class="text-center">
             <td>
-              <a onclick="window.location.href = '/propertyListing/detail/{{propertyListing.id}}'">
+              <span onclick="window.location.href = '/propertyListing/detail/{{propertyListing.id}}'">
                 {{ propertyListing.subject }}
-              </a>
+              </span>
             </td>
-            <td>
-                {{ propertyListing.agent.userid }}
-            </td>
+            <td>{{ propertyListing.agent.userid }}</td>
             {% if propertyListing.modify_date %}
             <td>{{ propertyListing.modify_date.strftime('%Y-%m-%d')  }}</td>
             {% else %}
             <td>{{ propertyListing.create_date.strftime('%Y-%m-%d')  }}</td>
             {% endif %}
-            <td>
-                {{ propertyListing.view_counts }}
-            </td>
+            <td>{{ propertyListing.view_counts }}</td>
+            <td>{{ propertyListing.shortlist_count }}</td>
         </tr>
         {% endfor %}
         </tbody>

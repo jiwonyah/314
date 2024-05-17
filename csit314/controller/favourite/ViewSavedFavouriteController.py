@@ -41,3 +41,4 @@ def view_my_favourites():
         } for f in favourites
     ]
     return jsonify(favourite_listings)
+

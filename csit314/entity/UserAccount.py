@@ -14,6 +14,13 @@ class UserAccount(db.Model):
     status = db.Column(db.String(50), default="Active", nullable=False)
 
     @classmethod
+    def getKey(cls, userid):
+        user = cls.query.filter_by(userid=userid).first()
+        if user:
+            return user.id
+        return None
+
+    @classmethod
     def findAUserByUserID(cls, userid: str) -> "UserAccount | None":
         """
         Find a user by user ID.
@@ -100,7 +107,6 @@ class UserAccount(db.Model):
         user.userid = new_userid or user.userid
         user.password = updateDetails.get('password', user.password)
         user.role = updateDetails.get('role', user.role)
-        # user.Role = updateDetails.get('role', user.Role)
         user.status = updateDetails.get('status', user.status)
 
         db.session.commit()
@@ -121,7 +127,6 @@ class UserAccount(db.Model):
             'userid': self.userid,
             'password': self.password,
             'role': self.role,
-            # 'role': self.Role,
             'status': self.status
         }
 

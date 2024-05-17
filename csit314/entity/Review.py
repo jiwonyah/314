@@ -38,3 +38,7 @@ class Review(db.Model):
             db.session.rollback()
             print(f"Error committing review: {e}")
             return False
+
+    @classmethod
+    def displayReviewDetails(cls, review_id: int):
+        return cls.query.filter_by(id=review_id).first()

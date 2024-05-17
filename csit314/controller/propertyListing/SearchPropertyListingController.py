@@ -1,6 +1,8 @@
 from flask import request, jsonify, Blueprint
 from csit314.entity.PropertyListing import PropertyListing
 from csit314.controller.role_service.decorators import suspended
+from csit314.controller.role_service.decorators import login_required, agent_only, buyer_only
+
 
 class SearchPropertyListingController(Blueprint):
     def __init__(self, *args, **kwargs):
@@ -12,7 +14,7 @@ class SearchPropertyListingController(Blueprint):
         search_query = request.args.get('query')
         if not search_query:
             return jsonify([])
-        property_listings = PropertyListing.query.filter(PropertyListing.subject.ilike(f'%{search_query}%')).all()
+        property_listings = PropertyListing.search(search_query)
         result = []
         for listing in property_listings:
             result.append({
@@ -21,3 +23,5 @@ class SearchPropertyListingController(Blueprint):
                 'create_date': listing.create_date.strftime('%Y-%m-%d')
             })
         return jsonify(result)
+
+

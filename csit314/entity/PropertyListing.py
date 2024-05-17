@@ -27,7 +27,7 @@ class PropertyListing(db.Model):
     __tablename__ = 'propertyListing'
     id = db.Column(db.Integer, primary_key=True)
     subject = db.Column(db.String(200), nullable=False)
-    images = db.Column(db.Text, nullable=True)      # 이미지 필드
+    images = db.Column(db.Text, nullable=True)
     content = db.Column(db.Text(), nullable=True)
     price = db.Column(db.Integer, nullable=False)
     address = db.Column(db.String(200), nullable=False)
@@ -45,7 +45,7 @@ class PropertyListing(db.Model):
     view_counts = db.Column(db.Integer, default=0, nullable=False)
     favourites = db.relationship('Favourite', back_populates='propertyListing', lazy='dynamic')
     is_sold = db.Column(db.Boolean(), default=False)
-    # images = db.relationship('PropertyImage', backref='propertyListing', lazy='dynamic')
+    shortlist_count = db.Column(db.Integer, default=0)
 
     @classmethod
     def validate_client_id(self, client_id) -> bool:
@@ -194,6 +194,28 @@ class PropertyListing(db.Model):
     @classmethod
     def displayAllNotSoldPropertyListing(cls):
         return cls.query.filter_by(is_sold=False).order_by(cls.create_date.desc()).all()
+
+    @classmethod
+    def search(cls, search_query):
+        return cls.query.filter(cls.subject.ilike(f'%{search_query}%')).all()
+
+    @classmethod
+    def sortByMostView(cls, client_id: int):
+        return cls.query.filter_by(client_id=client_id).order_by(
+            PropertyListing.view_counts.desc()).all()
+
+    @classmethod
+    def sortByMostFavourite(cls, client_id: int):
+        return cls.query.filter_by(client_id=client_id).order_by(
+            PropertyListing.shortlist_count.desc()).all()
+
+    @classmethod
+    def sortByRecent(cls, client_id: int):
+        return cls.query.filter_by(client_id=client_id).order_by(
+            PropertyListing.create_date.desc()).all()
+
+
+
 
 def allowed_file(filename):
     return '.' in filename and \

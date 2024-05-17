@@ -8,7 +8,6 @@ from csit314.controller.role_service.decorators import already_logged_in, is_log
 
 bp = Blueprint('login', __name__, template_folder='boundary/templates')
 
-
 @bp.route('/login/')    # GET
 @already_logged_in
 def index():
@@ -21,10 +20,9 @@ def login():
     credential = request.json
     userid = credential['userid']
     password = credential['password']
-    user = UserAccount.findAUserByUserID(userid=userid)
+    user = UserAccount.findAUserByUserID(userid=userid) # entity method
     if user and bcrypt.checkpw(password.encode('UTF-8'), user.password.encode('UTF-8')):
         session['user_id'] = user.id
-
         return jsonify({'success': True, 'message': 'Login successful', 'role': user.role})
     return jsonify({'success': False, 'error': 'User information does not exist.'}), 401
 

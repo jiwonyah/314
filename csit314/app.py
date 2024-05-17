@@ -100,11 +100,6 @@ def create_app():
     @suspended
     @app.route('/')
     def index():
-        # if g.user and g.user.status == "Suspended":
-        #     return render_template('error/error.html',
-        #                            message='Your account is suspended.'
-        #                                    'Send Active Request to Administrator.'
-        #                                    'admin@minyong.com'), 403
         return render_template('index.html')
 
     return app

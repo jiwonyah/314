@@ -2,7 +2,7 @@
 
 /*** Navbar ***/
 .nav-bar {
-    position: relative;
+    position: fixed;
     margin-top: 45px;
     padding: 0 3rem;
     transition: .5s;

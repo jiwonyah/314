@@ -32,8 +32,8 @@
 
                         const row = `<tr>
                                         <td >
-                                            <a href="/profile/${agent.userid}/">
-                                            ${fullName}</a>
+                                            <span onclick="window.location.href = '/profile/${agent.userid}/'">
+                                            ${fullName}</span>
                                         </td>
                                         {% if g.user.role == "buyer" or g.user.role == "seller" %}
                                         <td><a href="/write-review/${agent.id}" class="review-button">Write Review</a></td>

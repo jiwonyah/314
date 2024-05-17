@@ -23,4 +23,43 @@
         </tbody>
     </table>
 </div>
+
+<script>
+window.onload = function() {
+    fetch('/api/agent/reviews/', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const tableBody = document.getElementById('reviewListTableBody');
+        if (data.reviews && data.reviews.length > 0) {
+            const reviews = data.reviews;
+
+            reviews.forEach(review => {
+                let row = `<tr>
+                    <td>
+                        <a href="/agent/reviewDetail/${review.id}">
+                            ${review.id}
+                        </a>
+                    </td>
+                    <td>${review.author_name}</td>
+                    <td>${review.create_date}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+        } else {
+            tableBody.innerHTML = `<tr>
+                <td colspan="3">No rating and reviews on you yet.</td>
+            </tr>`;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to load reviews');
+    });
+};
+</script>
 {% endblock %}

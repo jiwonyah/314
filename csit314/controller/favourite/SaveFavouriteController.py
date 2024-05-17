@@ -33,3 +33,10 @@ def toggle_favourite(propertyListing_id):
     except SQLAlchemyError as e:
         db.session.rollback()
         return jsonify({'success': False, 'error': 'Database error: ' + str(e)}), 500
+
+@bp.route('/get_favourites', methods=['GET'])
+def get_favourites():
+    user_id = g.user.userid
+    favourites = Favourite.query.filter_by(user_userid=user_id).all()
+    favourite_ids = [f.propertyListing_id for f in favourites]
+    return jsonify({'favourites': favourite_ids})
