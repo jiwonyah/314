@@ -29,8 +29,9 @@
         </div>
         <!-- Subject -->
         <div class="td" id="propList-subject">
-          <a href="{{ url_for('viewPropertyListing.detail', propertyListing_id=propertyListing.id) }}">
-            {{ propertyListing.subject }}</a>
+          <span onclick="window.location.href = '/propertyListing/detail/{{propertyListing.id}}'">
+                    {{ propertyListing.subject }}
+          </span>
         </div>
         <!-- Address -->
         <div class="td" id="propList-address">{{ propertyListing.address }}</div>
@@ -75,37 +76,91 @@
 </div>
 
 <!-- Button for posting new property listing -->
-{% if g.user and g.user.role.value == "agent" %}
-<div style="text-align: right; margin-top: 20px;" class="ordinal_btn" id="propList-createNewBtnContainer">
-    <a href="{{ url_for('createPropertyListing.createPropertyListing') }}" id="propList-createNewBtn">Create New Property Listing</a>
+{% if g.user and g.user.role == "agent" %}
+<div style="text-align: right; margin-top: 20px;" class="ordinal_btn">
+    <button onclick="window.location.href = '/propertyListing/create/'" >Create New Property Listing</button>
 </div>
 {% endif %}
+{% endblock %}
 
+{% block script %}
 <script>
-function toggleFavourite(btn, propertyListingId) {
-    fetch(`/toggle_favourite/${propertyListingId}`, {
-        method: 'POST',
-    })
-    .then(response => response.json())
-    .then(data => {
-        if(data.success) {
-            // Toggle the heart symbol based on the "isFavourite" status
-            if(data.isFavourite) {
-                btn.classList.add("favourite-active");
-                btn.textContent = "♥"; // Filled heart symbol
-            } else {
-                btn.classList.remove("favourite-active");
-                btn.textContent = "♡"; // Empty heart symbol
-            }
+  function searchProperty() {
+    var searchQuery = document.getElementById('searchInput').value.trim();
+    fetch(`/search_property_listings/?query=${searchQuery}`)
+          .then(response => response.json())
+          .then(data => {
+            displaySearchResults(data);
+          })
+          .catch(error => {
+            console.error('Error searching properties:', error);
+          });
+  }
+    function displaySearchResults(results) {
+        var tbody = document.querySelector('tbody');
+        tbody.innerHTML = ''; // initialize previous search
+
+        if (results.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4">No matching properties found.</td></tr>';
+        } else {
+            results.forEach(property => {
+                var row = `<tr>
+                        <td><a href="/propertyListing/${property.id}">${property.subject}</a></td>
+                        <td>${property.agent.userid}</td>
+                        <td>${property.create_date}</td>
+                        <td><button onclick="toggleFavourite(${property.id})">Favourite</button></td>
+                    </tr>`;
+                tbody.innerHTML += row;
+            });
         }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-}
+    }
+
+  function toggleFavourite(btn, propertyListingId) {
+      fetch(`/toggle_favourite/${propertyListingId}`, {
+          method: 'POST',
+      })
+      .then(response => response.json())
+      .then(data => {
+          if(data.success) {
+              // Toggle the heart symbol based on the "isFavourite" status
+              if(data.isFavourite) {
+                  btn.classList.add("favourite-active");
+                  btn.textContent = "♥"; // Filled heart symbol
+              } else {
+                  btn.classList.remove("favourite-active");
+                  btn.textContent = "♡"; // Empty heart symbol
+              }
+          }
+      })
+      .catch((error) => {
+          console.error('Error:', error);
+      });
+  }
 
 </script>
+<script>
+    // Function to search property
+    function searchProperty() {
+        const input = document.getElementById("searchInput");
+        const filter = input.value.toUpperCase();
+        const table = document.querySelector("table");
+        const tr = table.getElementsByTagName("tr");
 
+        // Loop through all table rows, and hide those who don't match the search query
+        for (let i = 0; i < tr.length; i++) {
+            const td = tr[i].getElementsByTagName("td")[0]; // Column to search in
+
+            if (td) {
+                const txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
 {% endblock %}
 
 
