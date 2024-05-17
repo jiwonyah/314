@@ -17,9 +17,6 @@ class Review(db.Model):
         return cls.query.filter_by(agent_id=g.user.id).all()
 
     @classmethod
-    def displayReviewDetails(cls, review_id: int):
-        return cls.query.filter_by(id=review_id).first()
-    @classmethod
     def createReview(cls, details: dict, agent_id: int) -> bool:
         author_userid = details.get('author_userid')
 
@@ -42,3 +39,6 @@ class Review(db.Model):
             print(f"Error committing review: {e}")
             return False
 
+    @classmethod
+    def displayReviewDetails(cls, review_id: int):
+        return cls.query.filter_by(id=review_id).first()
