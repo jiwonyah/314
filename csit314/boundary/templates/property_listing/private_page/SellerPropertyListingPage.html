@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1> My Property Listings</h1>
+  <h1 class="title"> My Property Listings</h1>
 
 <div class="container">
   <form method="get" class="form-inline justify-content-end mb-4">
     <label for="sort_by" class="mr-2">Sort by:</label>
     <select name="sort_by" id="sort_by" class="form-control" onchange="this.form.submit()">
-      <option value="recent" {% if sort_by == 'recent' %} selected {% endif %}>Recent</option>
-      <option value="most_viewed" {% if sort_by == 'most_viewed' %} selected {% endif %}>Most Viewed</option>
-      <option value="most_favourited" {% if sort_by == 'most_favourited' %} selected {% endif %}>Most Favourited</option>
+      <option value="recent" {% if sort_by =='recent' %} selected {% endif %}>Recent</option>
+      <option value="most_viewed" {% if sort_by =='most_viewed' %} selected {% endif %}>Most Viewed</option>
+      <option value="most_favourited" {% if sort_by =='most_favourited' %} selected {% endif %}>Most Favourited</option>
     </select>
   </form>
 
@@ -50,8 +50,9 @@
 
 <style>
   .title {
-    text-align: center;
+    margin-top: 30px;
     margin-bottom: 20px;
+    margin-left: 40px;
     font-family: 'Arial', sans-serif;
     color: #333;
   }
@@ -62,7 +63,8 @@
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 100px;
+    margin-top: 50px;
+    margin-left: 250px;
   }
 
   .form-inline {

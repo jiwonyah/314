@@ -22,6 +22,7 @@ def signUp():
     firstName = request.form['firstName']
     lastName = request.form['lastName']
     role = request.form['role']
+
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
     user_details = {
         'userid': userid,

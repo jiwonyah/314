@@ -91,8 +91,8 @@ button:focus {
         </p>
       {% endif %}
     <br><br>
-<div >
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+<div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; ,margin-bottom:100px;">
         <h1 style="margin-left: 300px;">{{ propertyListing.subject }}</h1>
         {% if propertyListing.is_sold == True %}
         <h2 style="color: #e74c3c; margin-right:350px;">Sold</h2>
@@ -110,6 +110,7 @@ button:focus {
             <div style="white-space: pre-line;"> No contents</div>
             {% endif %}
             <br>
+
             <h3>Price</h3>
             <div>{{ propertyListing.price }}</div>
             <br>

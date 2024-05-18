@@ -1,6 +1,8 @@
 from flask import Flask, render_template, g
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import CSRFProtect
+
 import config
 from sqlalchemy import MetaData
 from csit314.controller.role_service.decorators import suspended

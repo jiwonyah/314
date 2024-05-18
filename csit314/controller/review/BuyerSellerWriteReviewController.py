@@ -1,11 +1,10 @@
-from flask import Blueprint, request, g, jsonify, render_template
+from flask import Blueprint, request, g, jsonify, render_template, session
 from csit314.entity.Review import Review
 from csit314.entity.UserAccount import UserAccount
 from .Form.WriteReviewForm import WriteReviewForm
 from csit314.controller.role_service.decorators import login_required, buyer_seller_only, suspended
 
 bp = Blueprint('write_review_controller', __name__, template_folder='boundary/templates')
-
 
 @bp.route('/write-review/<int:agent_id>', methods=['GET'])
 @login_required
@@ -23,31 +22,30 @@ def show_reviewForm_index(agent_id):
 @buyer_seller_only
 @suspended
 def write_review(agent_id):
-    form = WriteReviewForm(request.form)
-    json_data = request.get_json()
-    print(f"Received JSON data: {json_data}")
-    form = WriteReviewForm(data=json_data)
+    if request.is_json:
+        json_data = request.get_json()
+        form = WriteReviewForm(data=json_data)
 
-    if form.validate_on_submit():
-        rating = form.rating.data
-        content = form.content.data
-        details = {
-            'rating': rating,
-            'content': content,
-            'author_userid': g.user.userid if g.user else None,
-            'agent_id': agent_id
-        }
-        print(f"Details to be used for creating review: {details}")
+        if form.validate_on_submit():
+            details = {
+                'rating': json_data.get('rating'),
+                'content': json_data.get('content'),
+                'author_userid': g.user.userid,
+                'agent_id': agent_id
+            }
+            print(f"Details to be used for creating review: {details}")
 
-        success = Review.createReview(details, agent_id)
-        if success:
-            return jsonify({'success': True, 'message': 'Review is submitted successfully'}), 201
+            success = Review.createReview(details, agent_id)
+            if success:
+                return jsonify({'success': True, 'message': 'Review is submitted successfully'}), 201
+            else:
+                return jsonify({'success': False, 'error': 'Failed to submit review'}), 500
         else:
-            return jsonify({'success': False, 'error': 'Failed to submit review'}), 500
+            errors = [{'field': field, 'message': ', '.join(error)} for field, error in form.errors.items()]
+            print(f"Form validation errors: {errors}")
+            return jsonify({'success': False, 'errors': errors}), 422
     else:
-        errors = [{'field': field, 'message': ', '.join(error)} for field, error in form.errors.items()]
-        print(f"Form validation errors: {errors}")
-        return jsonify({'success': False, 'errors': errors}), 422
+        return jsonify({'error': 'Request must be JSON'}), 415
 
 
 @bp.route('/agents')

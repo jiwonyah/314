@@ -6,7 +6,8 @@
     height: 6.25em;
     resize: none;
   }
-      /* 전체 폼 스타일 */
+
+  /* 전체 폼 스타일 */
   form {
     max-width: 600px;
     margin: 0 auto;
@@ -27,20 +28,7 @@
     box-sizing: border-box;
   }
 
-  /* 버튼 스타일 */
-  button[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
 
-  button[type="submit"]:hover {
-    background-color: #45a049;
-  }
 
   /* 에러 메시지 스타일 */
   #formError {
@@ -51,82 +39,83 @@
 </style>
 
 <div>
-    <h1>Register Property Listing</h1>
-    <form id="createPropertyForm" method="POST" action="/propertyListing/create/"
-    enctype="multipart/form-data">
-        {{ form.csrf_token }}
+  <h1>Register Property Listing</h1>
+  <form id="createPropertyForm" method="POST" action="/propertyListing/create/" enctype="multipart/form-data">
+    {{ form.csrf_token }}
 
-        <div>
-            <label for="subject">Subject*</label>
-            <input type="text" id="subject" name="subject" required>
-        </div>
-        <br><br>
-        <div>
-             <label for="images">Upload Images</label>
-            <input type="file" name="images" id="images" multiple onchange="previewImages(event)">
-        </div>
-        <div id="preview-container"></div>
-        <br><br>
-        <div>
-            <label for="content">Property Listing Description</label>
-            <textarea name="content" id="content" rows="10"></textarea>
-        </div>
-        <br><br>
-		<div>
-            <label for="price">Price*</label>
-            <input type="number" name="price" id="price" required>
-        </div>
-        <br><br>
-		<div>
-            <label for="address">Address*</label>
-            <input type="text" name="address" id="address" required>
-        </div>
-        <br><br>
-		<div>
-            <label for="floorSize">Floor Size*</label>
-            <input type="number" name="floorSize" id="floorSize" required>
-        </div>
-        <br><br>
-		<div>
-            <label for="floorLevel">Floor Level*</label>
-                <select name="floorLevel" id="floorLevel" required>
-                    {% for value, label in form.floorLevel.choices %}
-                        <option value="{{ value }}" {% if form.floorLevel.data == value %}selected{% endif %}>{{ label }}</option>
-                    {% endfor %}
-                </select>
-        </div>
-        <br><br>
-		<div>
-            <label for="propertyType">Property type*</label>
-                <select name="propertyType" id="propertyType" required required>
-                    {% for value, label in form.propertyType.choices %}
-                        <option value="{{ value }}" {% if form.propertyType.data == value %}selected{% endif %}>{{ label }}</option>
-                    {% endfor %}
-                </select>
-        </div>
-        <br><br>
-        <div class="mb-3">
-            <label for="furnishing">Furnishing*</label>
-                <select name="furnishing" id="furnishing" required>
-                    {% for value, label in form.furnishing.choices %}
-                        <option value="{{ value }}" {% if form.furnishing.data == value %}selected{% endif %}>{{ label }}</option>
-                    {% endfor %}
-                </select>
-        </div>
-        <br><br>
-        <div>
-            <label for="builtYear">Built year*</label>
-            <input type="number" name="builtYear" id="builtYear" required>
-        </div>
-        <br><br>
-        <div>
-            <label for="client_id">Client*</label>
-            <input type="text" name="client_id" id="client_id" required>
-            <div id="formError" style="color: red; display: none;"></div>
-        </div>
-        <br><br>
-        <button type="submit">Submit</button>
-    </form>
+    <div>
+      <label for="subject">Subject*</label>
+      <input type="text" id="subject" name="subject" required>
+    </div>
+    <br><br>
+    <div>
+      <label for="images">Upload Images</label>
+      <input type="file" name="images" id="images" multiple onchange="previewImages(event)">
+    </div>
+    <div id="preview-container"></div>
+    <br><br>
+    <div>
+      <label for="content">Property Listing Description</label>
+      <textarea name="content" id="content" rows="10"></textarea>
+    </div>
+    <br><br>
+    <div>
+      <label for="price">Price*</label>
+      <input type="number" name="price" id="price" required>
+    </div>
+    <br><br>
+    <div>
+      <label for="address">Address*</label>
+      <input type="text" name="address" id="address" required>
+    </div>
+    <br><br>
+    <div>
+      <label for="floorSize">Floor Size*</label>
+      <input type="number" name="floorSize" id="floorSize" required>
+    </div>
+    <br><br>
+    <div>
+      <label for="floorLevel">Floor Level*</label>
+      <select name="floorLevel" id="floorLevel" required>
+        {% for value, label in form.floorLevel.choices %}
+        <option value="{{ value }}" {% if form.floorLevel.data == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <br><br>
+    <div>
+      <label for="propertyType">Property type*</label>
+      <select name="propertyType" id="propertyType" required>
+        {% for value, label in form.propertyType.choices %}
+        <option value="{{ value }}" {% if form.propertyType.data == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <br><br>
+    <div class="mb-3">
+      <label for="furnishing">Furnishing*</label>
+      <select name="furnishing" id="furnishing" required>
+        {% for value, label in form.furnishing.choices %}
+        <option value="{{ value }}" {% if form.furnishing.data == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <br><br>
+    <div>
+      <label for="builtYear">Built year*</label>
+      <input type="number" name="builtYear" id="builtYear" required>
+    </div>
+    <br><br>
+    <div>
+      <label for="client_id">Client*</label>
+      <input type="text" name="client_id" id="client_id" required>
+      <div id="formError" style="color: red; display: none;"></div>
+    </div>
+    <br><br>
+
+      <button>Submit</button>
+
+  </form>
 </div>
     <script>
         document.getElementById('images').addEventListener('change', handleImageSelection);

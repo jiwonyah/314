@@ -18,10 +18,7 @@ def agentViewReviews_index():
 @agent_only
 @suspended
 def agentViewReviews():
-    # Bring review list from Review entity class
     reviews = Review.displayReviewsList()
-    #reviews = Review.query.filter_by(agent_id=g.user.id).all()
-
     review_data = []
     for review in reviews:
         user = UserAccount.query.filter_by(userid=review.author_userid).first()
@@ -32,7 +29,6 @@ def agentViewReviews():
             'rating': review.rating,
             'content': review.content
         })
-
     return jsonify(reviews=review_data)
 
 @bp.route('/agent/reviewDetail/<int:review_id>')

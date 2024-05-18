@@ -53,7 +53,7 @@
     .active, .dot:hover {
         background-color: white;
     }
-/* 입력 필드 스타일 */
+
 .input-field {
     width: 100%;
     padding: 0.5rem;
@@ -64,31 +64,25 @@
     font-size: 16px;
 }
 
-/* 활성화된 입력 필드 스타일 */
 .input-field:focus {
     outline: none;
-    border-color: #007bff; /* 원하는 활성화된 상태의 색상으로 변경 가능 */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* 선택적으로 효과를 추가할 수 있습니다. */
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-/* 잘못된 입력 상태 스타일 */
 .input-field.error {
-    border-color: #dc3545; /* 원하는 잘못된 상태의 색상으로 변경 가능 */
+    border-color: #dc3545;
 }
 
-/* 잘못된 입력 상태의 텍스트 스타일 */
 .input-field.error + .error-message {
-    color: #dc3545; /* 원하는 잘못된 상태의 텍스트 색상으로 변경 가능 */
+    color: #dc3545;
 }
 
-
-/* 전체 폼 컨테이너 */
 .form-container {
     max-width: 600px;
     margin: 0 auto;
 }
 
-/* 제목 칸 스타일 */
 .form-container #single {
     width: 100%;
     padding: 10px;
@@ -115,7 +109,6 @@
     background-color: #f9f9f9;
 }
 
-/* 기타 입력 칸 스타일 */
 .form-container .form-control {
     width: 100%;
     padding: 10px;
@@ -124,7 +117,6 @@
     border: 1px solid #ccc;
 }
 
-/* 버튼 스타일 */
 .form-container .btn {
     display: inline-block;
     text-align: center;
@@ -140,7 +132,6 @@
     right: 10px;
 }
 
-/* 버튼 스타일 */
 .form-container .btn1 {
     display: inline-block;
     text-align: center;
@@ -156,8 +147,6 @@
     right: 200px;
 }
 
-
-/* 버튼 스타일 */
 .form-container .btn2 {
     display: inline-block;
     text-align: center;
@@ -174,20 +163,18 @@
 }
 
 .post-list {
-    /* 게시물 리스트에 대한 스타일 */
 }
 
 .button-container {
-    position: relative; /* 버튼을 포함하는 부모 요소를 상대 위치로 설정 */
+    position: relative;
 }
 
 .btn {
-    position: absolute; /* 버튼을 절대 위치로 설정 */
-    bottom: 0; /* 부모 요소의 아래쪽에 배치 */
-    /* 원하는 스타일 지정 */
+    position: absolute;
+    bottom: 0;
+
 }
 
-/* 버튼 호버 효과 */
 .form-container .btn:hover {
     background-color: #0056b3;
 }
@@ -223,8 +210,8 @@ a {
 .navbar__logo a {
     color: var(--text-color);
     padding-left: 0;
-    font-size: 24px; /* 글자 크기 설정 */
-    font-weight: bold; /* 글자 굵기 설정 */
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .navbar__menu {
@@ -240,7 +227,6 @@ a {
     padding: 8px 60px;
 }
 
-/* 드롭다운 컨텐츠 숨기기 */
 .dropdown-content {
     display: none;
     position: absolute;
@@ -250,7 +236,6 @@ a {
     z-index: 1;
 }
 
-/* 드롭다운 메뉴 항목 스타일링 */
 .dropdown-content a {
     color: black;
     padding: 12px 16px;
@@ -258,12 +243,10 @@ a {
     display: block;
 }
 
-/* 드롭다운 메뉴 항목에 호버 스타일링 */
 .dropdown-content a:hover {
     background-color: #ddd;
 }
 
-/* 드롭다운 메뉴가 보이도록 설정 */
 .dropdown:hover .dropdown-content {
     display: block;
 }
@@ -296,8 +279,8 @@ a {
     margin: 10px;
     padding: 10px;
     font-size: 16px;
-    width: 500px; /* 너비 일괄 조정 */
-    border-radius: 5px; /* 테두리 둥글게 설정 */
+    width: 500px;
+    border-radius: 5px;
 }
 
 #search-btn {
@@ -332,109 +315,7 @@ a {
 }*/
 
 /*--------------------------------------------------------------*/
-/* img slides */
 
-.background-custom {
-    background-color: #ccdceb; /* 연한 하늘색 배경색 */
-}
-
-.carousel {
-    width: 50%;
-    height: 450px;
-    position: relative;
-    float: left;
-}
-
-/* ul에 기본으로 정해진 margin, padding 제거 */
-.carousel > ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.slide {
-    position: absolute;
-    width: 90%;
-    padding-top: 50px;
-    padding-left: 20px;
-    margin-top: -550px;
-    top: 0;
-    opacity: 0;
-    transition: 200ms opacity ease-in-out;
-    transition-delay: 200ms;
-}
-
-.slide > img{
-    display: block; /*resize the img*/
-    width: 100%;
-    height: 450px;
-    margin: auto;
-    object-fit: fill;
-    object-position: center;
-}
-
-/* 현재 보여지는 슬라이드*/
-.slide[data-active] {
-    opacity: 1;
-    z-index: 1;
-    transition-delay: 0ms;
-}
-
-/* button */
-.carousel-button {
-    position: absolute;
-    z-index: 2;
-    background: none;
-    border: none;
-    font-size: 3rem;
-    top: -65%;
-    transform: translateY(-20%);
-    color: rgba(255,255,255, .5);
-    cursor: pointer;
-    border-radius: .25rem;
-    padding: 0 .5rem;
-    background-color: rgba(0,0,0, .1);
-}
-
-.carousel-button.hover,
-.carousel-button:focus {
-    color: white;
-    background-color: rgba(0,0,0, .2);
-}
-
-.carousel-button:focus {
-    outline: 1px white;
-}
-
-.carousel-button.prev {
-    left: 4%;
-}
-
-.carousel-button.next {
-    right: 10%;
-}
-
-.carousel-heading {
-    font-size: 2rem;
-    color: #0E2E50; /* 헤딩의 기본 색상 */
-    position: absolute; /* 절대 위치 설정 */
-    top: 30%; /* 상단 여백을 50%로 설정하여 수직 가운데 정렬 */
-    transform: translateY(-50%); /* 수직 가운데 정렬 */
-    right: 100px; /* 오른쪽 여백을 20px로 설정 */
-}
-
-.quote {
-    font-size: 1.2rem;
-    color: #0E2E50; /* 헤딩의 기본 색상 */
-    position: absolute; /* 절대 위치 설정 */
-    top: 40%; /* 상단 여백을 50%로 설정하여 수직 가운데 정렬 */
-    transform: translateY(-50%); /* 수직 가운데 정렬 */
-    right: 100px; /* 오른쪽 여백을 설정 */
-}
-
-.color-text {
-    color: #263343; /*can give accent*/
-}
 
 
 /*------------------------ Mortgage Calculation Form Stuff ------------------------*/
@@ -552,9 +433,7 @@ a {
 
 
 
-/*---------------- Writing Review Form ------------------*/
-//*---------------- Writing Review Form ------------------*/
-
+/*---------------- Reviews on me (viewReviewList.html) ------------------*/
 #write-review-form {
     max-width: 800px;
     margin: 50px auto 20px;
@@ -562,6 +441,7 @@ a {
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
+    position: relative;
 }
 
 #write-review-form div {
@@ -580,7 +460,7 @@ textarea {
     border-radius: 4px;
     box-sizing: border-box;
 }
-/* 제출 버튼 스타일 */
+
 button[type="submit"] {
     background-color: #3C5087;
     color: white;
@@ -589,8 +469,11 @@ button[type="submit"] {
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
-    margin-bottom: 350px;
     width: 200px;
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 button[type="submit"]:hover {
@@ -628,7 +511,7 @@ br {
 }
 
 #write-review-form h2 {
-    margin-bottom: 100x;
+    margin-bottom: 100px;
 }
 
 #write-review-form p.small-text {
@@ -660,36 +543,44 @@ br {
     font-weight: bold;
 }
 
+@media (max-width: 768px) {
+    #write-review-form {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
 /*---------------- Reviews on me (viewReviewList.html) ------------------*/
-/* Reviews On Me 페이지 전체 스타일 */
 #reviews-on-me-page {
-    max-width: 800px; /* 폼 너비 확장 */
-    margin: 50px auto 20px; /* 상단 여백을 늘리고 아래 여백을 줄임 */
+    max-width: 800px;
+    margin: 50px auto 20px;
     padding: 30px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-
-/* 작고 회색 글씨 스타일 */
 #reviews-on-me-page p.small-text {
     font-size: 13px;
     color: #888;
 }
 
-/* Review 테이블 스타일 */
 #reviewTable {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }
 
-/* Review 테이블 헤더 스타일 */
 #reviewListTableHead {
     background-color: #f0f0f0;
 }
 
-/* Review 테이블 행 스타일 */
 #reviewListTableRow {
     background-color: #f9f9f9;
     border-bottom: 1px solid #ddd;
@@ -697,29 +588,24 @@ br {
     vertical-align: middle;
 }
 
-/* Review 테이블 셀(테이블 내부) 패딩 설정 */
 #reviewTable td {
-    padding: 10px; /* 테이블 셀 패딩 설정 */
+    padding: 10px;
     text-align: center;
 }
 
-/* Review 테이블 셀(작성자 이름) 스타일 */
 #reviewAuthorName {
     font-weight: bold;
 }
 
-/* Review 테이블 셀(날짜) 스타일 */
 #reviewWrittenDate {
     font-style: italic;
 }
 
-/* Review ID 링크 스타일 */
 #reviewTable a {
     text-decoration: none;
     color: #3C5087;
 }
 
-/* Review ID 링크 호버 효과 스타일 */
 #reviewTable a:hover {
     text-decoration: underline;
     color: #1E3269;
@@ -727,7 +613,6 @@ br {
 
 /*---------------- Review Detail Page (reviewDetailPage.html) ------------------*/
 
-/* Review Detail 페이지 전체 스타일 */
 #reviewDetail {
     max-width: 800px;
     margin: 50px auto;
@@ -736,36 +621,30 @@ br {
     border-radius: 5px;
 }
 
-/* 에러 메시지 스타일 */
 #error {
     color: red;
     font-weight: bold;
     margin-bottom: 20px;
 }
 
-/* 리뷰 내용 스타일 */
 #reviewContent {
     font-size: 16px;
     line-height: 1.6;
 }
 
-/* 리뷰 내용 항목 스타일 */
 #reviewContent p {
     margin-bottom: 10px;
 }
 
-/* 리뷰 내용 항목 타이틀 스타일 */
 #reviewContent p:first-child {
     font-weight: bold;
 }
 
-/* 리뷰 내용 항목 날짜 스타일 */
 #reviewContent p:last-child {
     font-style: italic;
     color: #888;
 }
 
-/* 리뷰 내용을 감싸는 박스 스타일 */
 #reviewContentBox {
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -774,19 +653,16 @@ br {
     margin-top: 20px;
 }
 
-/* Divider 스타일 */
 .divider {
     border-top: 1px solid #ccc;
     margin-top: 50px;
     padding-top: 10px;
 }
 
-/* 각 리뷰 항목의 텍스트 스타일 */
 .review-item {
     margin-bottom: 25px;
 }
 
-/* 날짜 스타일 */
 .date {
     font-style: italic;
     color: #888;

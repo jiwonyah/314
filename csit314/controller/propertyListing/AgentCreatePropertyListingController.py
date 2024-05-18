@@ -1,9 +1,8 @@
 from flask import Blueprint, render_template, request, jsonify, session
 from csit314.entity.PropertyListing import PropertyListing
 from csit314.controller.role_service.decorators import login_required, agent_only,suspended
-from werkzeug.utils import secure_filename
 from .Form.PropertyListingForm import PropertyListingForm
-import os
+
 
 class AgentCreatePropertyListingController(Blueprint):
     def __init__(self, *args, **kwargs):
@@ -43,13 +42,13 @@ class AgentCreatePropertyListingController(Blueprint):
             print("Files received in form data:", request.files.getlist('images'))
 
             if not PropertyListing.validate_client_id(client_id):
-                return jsonify({'success': False, 'error': 'Client ID is not valid.'})
+                return jsonify({'success': False, 'error': 'Client ID is not valid.'}), 400
 
             success = PropertyListing.createPropertyListing(details)
             if success:
-                return jsonify({'success': True, 'message': 'Property listing created successfully'})
+                return jsonify({'success': True, 'message': 'Property listing created successfully'}), 200
             else:
-                return jsonify({'success': False, 'error': 'Failed to create property listing'})
+                return jsonify({'success': False, 'error': 'Failed to create property listing'}), 400
 
         except Exception as e:
             return jsonify({'success': False, 'error': str(e)})

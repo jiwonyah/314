@@ -3,8 +3,8 @@
 /*** Navbar ***/
 .nav-bar {
     position: fixed;
-    margin-top: 45px;
-    padding: 0 3rem;
+    margin-top: 60px; /* 50px에서 60px로 증가 */
+    padding: 0 4rem; /* 3.5rem에서 4rem로 증가 */
     transition: .5s;
     z-index: 9999;
 }
@@ -16,7 +16,7 @@
 }
 
 .navbar {
-    box-shadow: 0 0 30px rgba(0, 0, 0, .08);
+    box-shadow: 0 0 40px rgba(0, 0, 0, .08); /* 35px에서 40px로 증가 */
 }
 
 .navbar .dropdown-toggle::after {
@@ -25,7 +25,7 @@
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     vertical-align: middle;
-    margin-left: 5px;
+    margin-left: 8px; /* 6px에서 8px로 증가 */
     transition: .5s;
 }
 
@@ -34,10 +34,10 @@
 }
 
 .navbar-light .navbar-nav .nav-link {
-    margin-right: 30px;
-    padding: 25px 0;
+    margin-right: 40px; /* 35px에서 40px로 증가 */
+    padding: 35px 0; /* 30px에서 35px로 증가 */
     color: #FFFFFF;
-    font-size: 15px;
+    font-size: 20px; /* 16px에서 20px로 증가 */
     text-transform: uppercase;
     outline: none;
 }
@@ -47,49 +47,12 @@
     color: var(--primary);
 }
 
-@media (max-width: 991.98px) {
-    .nav-bar {
-        margin: 0;
-        padding: 0;
-    }
-
-    .navbar-light .navbar-nav .nav-link  {
-        margin-right: 0;
-        padding: 10px 0;
-    }
-
-    .navbar-light .navbar-nav {
-        border-top: 1px solid #EEEEEE;
-    }
-}
-
 .navbar-light .navbar-brand {
-    height: 75px;
+    height: 90px; /* 80px에서 90px로 증가 */
 }
 
 .navbar-light .navbar-nav .nav-link {
     color: var(--dark);
     font-weight: 500;
-}
-
-@media (min-width: 992px) {
-    .navbar .nav-item .dropdown-menu {
-        display: block;
-        top: 100%;
-        margin-top: 0;
-        transform: rotateX(-75deg);
-        transform-origin: 0% 0%;
-        opacity: 0;
-        visibility: hidden;
-        transition: .5s;
-        
-    }
-
-    .navbar .nav-item:hover .dropdown-menu {
-        transform: rotateX(0deg);
-        visibility: visible;
-        transition: .5s;
-        opacity: 1;
-    }
 }
 
