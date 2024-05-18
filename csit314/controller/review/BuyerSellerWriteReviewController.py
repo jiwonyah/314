@@ -1,9 +1,7 @@
-from flask import Blueprint, request, g, redirect, url_for, jsonify, render_template
+from flask import Blueprint, request, g, jsonify, render_template
 from csit314.entity.Review import Review
 from csit314.entity.UserAccount import UserAccount
-from csit314.app import db
 from .Form.WriteReviewForm import WriteReviewForm
-from datetime import datetime
 from csit314.controller.role_service.decorators import login_required, buyer_seller_only, suspended
 
 bp = Blueprint('write_review_controller', __name__, template_folder='boundary/templates')

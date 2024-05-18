@@ -132,9 +132,9 @@ class UserAccount(db.Model):
 
     @classmethod
     def suspend_account(cls, userid):
-        account = cls.getUserDetails(userid)
-        if account.status == 'Active':
-            account.status = 'Suspended'
+        user = cls.getUserDetails(userid)
+        if user.status == 'Active':
+            user.status = 'Suspended'
             db.session.commit()
             return True
         else:

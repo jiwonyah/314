@@ -23,10 +23,13 @@ class BuyerViewOldPropertyListingController(Blueprint):
         old_property_listing_data = [
             {
                 'subject': listing.subject,
-                'create_date': listing.create_date.strftime('%Y-%m-%d %H:%M:%S'),
+                'create_date': listing.create_date.strftime('%Y-%m-%d'),
                 'agent_id': listing.agent_id,
                 'is_sold': listing.is_sold,
                 'id': listing.id,
+                'address': listing.address,
+                'price': listing.price,
+                'propertyType': listing.propertyType.value,
                 'modify_date': listing.modify_date.strftime('%Y-%m-%d') if listing.modify_date else None
             } for listing in old_property_listings
         ]

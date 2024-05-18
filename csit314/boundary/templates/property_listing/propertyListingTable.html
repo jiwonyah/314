@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-
+<head>
+    <link href="myStyling.css" rel="stylesheet" type="text/css">
+  <script src="https://kit.fontawesome.com/a769080b3a.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQq7MlhAtt6gK9q3VZDgchRu4/1OgD+qLA5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
 <div id="propList-container">
   <div id="propList-header">
     <h1 class="my-3 border-bottom pb-2" id="propList-title">Property Listings</h1>
@@ -8,33 +12,40 @@
     {% if g.user and g.user.role == "buyer" %}
     <div class="ordinal_btn" id="propList-viewOldBtnContainer">
       <a onclick="window.location.href = '/oldPropertyListing'" id="propList-viewOldBtn">
-        View Old Property Listings >
+        View Old Property Listings
       </a>
     </div>
     {% endif %}
   </div>
+  {% if g.user and (g.user.role == "buyer" or g.user.role == "agent") %}
   <div class="search-container" id="propList-searchContainer">
     <input type="text" id="searchInput" class="search-input" placeholder="Search by subject...">
     <button onclick="searchProperty()" class="search-button" id="propList-searchBtn">Search</button>
   </div>
+  {% endif %}
   <div id="propList-table">
     <div id="propList-tbody">
       {% if propertyListing_table %}
       {% for propertyListing in propertyListing_table %}
       <div class="tr text-center" id="propList-row">
         <!-- Image -->
-        <div class="td" id="propList-image">
-          <img src="{{ propertyListing.images }}" alt="Property Image">
-        </div>
+
         <!-- Subject -->
         <div class="td" id="propList-subject">
           <a onclick="window.location.href = '/propertyListing/detail/{{propertyListing.id}}'">
             {{ propertyListing.subject }}</a>
         </div>
         <!-- Address -->
-        <div class="td" id="propList-address">{{ propertyListing.address }}</div>
+        <div class="td" id="propList-address"><b>Address</b>: {{ propertyListing.address }}</div>
         <!-- Price -->
-        <div class="td" id="propList-price">$ {{ propertyListing.price }}</div>
+        <div class="td" id="propList-price"><b>Price</b>: ${{ propertyListing.price }}</div>
+        <div class="td" id="propList-type"> <b>Type</b>: {{ propertyListing.propertyType.value }}</div>
+            <div class="icons">
+              {% if g.user and g.user.userid == propertyListing.client_id %}
+              <i class="fas fa-eye"></i> <span>{{ propertyListing.view_counts }}</span>
+              <i class="fas fa-star"></i> <span>{{ propertyListing.shortlist_count }}</span>
+              {% endif %}
+            </div>
         <!-- Favourite Button -->
         {% if g.user and g.user.role == "buyer" %}
         <div class="td" id="propList-favBtnContainer">
@@ -59,6 +70,9 @@
         <div class="td" colspan="4" id="propList-noContent">No contents</div>
       </div>
       {% endif %}
+      <div class="tr" id="propList-noMatchRow" style="display: none;">
+        <div class="td" colspan="4" id="propList-noMatch"><b>No matching properties found.</b></div>
+      </div>
     </div>
   </div>
 </div>
@@ -93,8 +107,13 @@
     });
 
     const noContentRow = document.getElementById("propList-noContentRow");
+    const noMatchRow = document.getElementById("propList-noMatchRow");
+
     if (noContentRow) {
-        noContentRow.style.display = hasResults ? "none" : "";
+        noContentRow.style.display = hasResults ? "none" : "none";
+    }
+    if (noMatchRow) {
+        noMatchRow.style.display = hasResults ? "none" : "";
     }
   }
 

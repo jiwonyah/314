@@ -6,7 +6,7 @@
     height: 6.25em;
     resize: none;
   }
-      /* 전체 폼 스타일 */
+
   form {
     max-width: 600px;
     margin: 0 auto;
@@ -16,7 +16,6 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
 
-  /* 입력 필드 스타일 */
   input[type="text"], input[type="number"], textarea, select {
     width: 100%;
     padding: 12px 20px;
@@ -27,7 +26,6 @@
     box-sizing: border-box;
   }
 
-  /* 버튼 스타일 */
   button[type="submit"] {
     background-color: #4CAF50;
     color: white;
@@ -42,7 +40,6 @@
     background-color: #45a049;
   }
 
-  /* 에러 메시지 스타일 */
   #formError {
     color: red;
     font-weight: bold;
@@ -156,15 +153,15 @@
                       id="client_id" value="{{ form.client_id.data or '' }}">
             <div id="formError" style="color: red; display: none;"></div>
         </div>
-
+<br>
         <div>
             <label for="transaction-status">Transaction Status</label>
             <div>
-                <input type="radio" id="transaction_in_progress" name="is_sold" value="false" {% if not form.is_sold %}checked{% endif %}>
+                <input type="radio" id="transaction_in_progress" name="is_sold" value="false" {% if not form.is_sold.data %}checked{% endif %}>
                 <label for="transaction_in_progress">On Sale</label>
             </div>
             <div>
-                <input type="radio" id="transaction_completed" name="is_sold" value="true" {% if form.is_sold %}checked{% endif %}>
+                <input type="radio" id="transaction_completed" name="is_sold" value="true" {% if form.is_sold.data %}checked{% endif %}>
                 <label for="transaction_completed">Sold</label>
             </div>
         </div>

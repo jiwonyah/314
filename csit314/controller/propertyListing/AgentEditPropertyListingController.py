@@ -46,7 +46,7 @@ class AgentEditPropertyListingController(Blueprint):
             'floorLevel': request.form['floorLevel'],
             'propertyType': request.form['propertyType'],
             'furnishing': request.form['furnishing'],
-            'builtYear': form.is_sold.data,
+            'builtYear': request.form['builtYear'],
             'client_id': client_id,
             'is_sold': is_sold,
             'files': request.files.getlist('images')

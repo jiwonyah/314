@@ -17,12 +17,12 @@ class SuspendUserAccountController(Blueprint):
     @admin_only
     def suspend_account(self):
         userid = request.form['userid']
+        if UserAccount.getUserDetails(userid) is None:
+            return jsonify({'success': False, 'message': 'Username does not exist'})
         results = UserAccount.suspend_account(userid)
         if results:
             return jsonify({'success': True, 'message': 'User Account suspended successfully'})
-        elif UserAccount.getUserDetails(userid) is None:
-            return jsonify({'success': False, 'error': 'Username does not exist'})
         elif UserAccount.getUserDetails(userid) == g.user.userid:
-            return jsonify({'success': False, 'error': 'You can\'t suspend yourself.'})
+            return jsonify({'success': False, 'message': 'You can\'t suspend yourself.'})
         else:
-            return jsonify({'success': False, 'error': 'User Account already suspended'})
+            return jsonify({'success': False, 'message': 'User Account already suspended'})
