@@ -12,10 +12,12 @@ class SuspendUserAccountController(Blueprint):
 
     def suspend_account(self):
         username = request.form['username']
-        results = UserAccount.suspend_account(username)
+        account = UserAccount.getUserDetails(username)
+        if account:
+            results = UserAccount.suspend_account(username)
+        else:
+            return jsonify({'success': False, 'message': 'Username does not exist'})
         if results:
             return jsonify({'success': True, 'message': 'User Account suspended successfully'})
-        elif UserAccount.getUserDetails(username) is None:
-            return jsonify({'success': False, 'message': 'Username does not exist'})
         else:
             return jsonify({'success': False, 'message': 'User Account already suspended'})

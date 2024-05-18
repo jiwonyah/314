@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request, render_template
 
+from csit314.Entity.UserProfile import UserProfile
 from csit314.Entity.UserAccount import UserAccount
 
 class UpdateUserAccountController(Blueprint):
@@ -18,7 +19,8 @@ class UpdateUserAccountController(Blueprint):
     #for displaying the account update form
     def display_update_form(self, username):
         user = UserAccount.getUserDetails(username)
-        return render_template("UserAccount/UpdateUserAccountForm.html", user=user)
+        profiles = UserProfile.getAllProfiles()
+        return render_template("UserAccount/UpdateUserAccountForm.html", user=user, profiles=profiles)
 
 
     def update_user_account(self, username):
