@@ -140,7 +140,6 @@
                     <th>Full Name</th>
                     <th>Email</th>
                     <th>Username</th>
-                    <th>Password</th>
                     <th>Role</th>
                     <th>Status</th>
                 </tr>
@@ -181,10 +180,6 @@
             const usernameCell = document.createElement('td');
             usernameCell.textContent = account.userid;
             row.appendChild(usernameCell);
-
-            const passwordCell = document.createElement('td');
-            passwordCell.textContent = account.password;
-            row.appendChild(passwordCell);
 
             const roleCell = document.createElement('td');
             roleCell.textContent = account.role;

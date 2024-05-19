@@ -18,7 +18,7 @@
 				<li><a href="{{ url_for('write_review_controller.agent_list_index') }}">Agent Review</a></li>
 
 				{% if g.user and g.user.role == "buyer" %}
-				<li><a href="{{ url_for('calculate_mortgage.calculateMortgage') }}">Mortgage</a></li>  <!--page has not been created-->
+				<li><a onclick="window.location.href = '/mortgage'">Mortgage</a></li>  <!--page has not been created-->
 				{% endif %}
 
 				{% if g.user%}
@@ -54,7 +54,9 @@
 	</body>
 	<script>
 		function logout() {
-			fetch('/logout/')
+			fetch('/logout/', {
+				method: 'POST',
+			})
 				.then(response => response.json())
 				.then(data => {
 					if (data.success) {

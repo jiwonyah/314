@@ -279,10 +279,7 @@
                 menuBtnChange()
             })
 
-            searchBtn.addEventListener("click",function(){
-                sidebar.classList.toggle("open")
-                menuBtnChange()
-            })
+
 
             function menuBtnChange(){
                 if(sidebar.classList.contains("open")){
@@ -294,7 +291,9 @@
         }
 
         function logout() {
-			fetch('/logout/')
+			fetch('/logout/', {
+			    method: 'POST',
+            })
 				.then(response => response.json())
 				.then(data => {
 					if (data.success) {

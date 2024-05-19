@@ -42,33 +42,30 @@ def create_app():
     from csit314.controller.profile import ViewProfileController
     from csit314.controller.review import (AgentViewReviewController, BuyerSellerWriteReviewController)
     from csit314.controller.favourite import (SaveFavouriteController, ViewSavedFavouriteController)
-    from csit314.controller.mortgage import BuyerCalculateMortgageController
-
     app.register_blueprint(ViewProfileController.bp)
     app.register_blueprint(AgentViewReviewController.bp)
     app.register_blueprint(BuyerSellerWriteReviewController.bp)
     app.register_blueprint(SaveFavouriteController.bp)
     app.register_blueprint(ViewSavedFavouriteController.bp)
-    app.register_blueprint(BuyerCalculateMortgageController.bp)
+
 
 #-----------------------------------------------------------------------------------
     # NEW STRUCTURE
     from csit314.controller.authentication import (login_controller, logout_controller,
                                                    signup_controller)
-
     from csit314.controller.propertyListing import (agent_create_property_listing_controller,
                                                     agent_edit_property_listing_controller,
                                                     agent_remove_property_listing_controller,
                                                     view_property_listing_controller,
                                                     buyer_view_old_property_listing_controller,
                                                     search_property_listing_controller)
-
     from csit314.controller.admin.UserAccount import (create_account_controller, update_account_controller,
                                                       view_account_controller, search_account_controller,
                                                       suspend_account_controller, AccountDashboardController)
     from csit314.controller.admin.UserProfile import (create_profile_controller, update_profile_controller,
                                                       view_profile_controller, search_profile_controller,
                                                       suspend_profile_controller, ProfileDashboardController)
+    from csit314.controller.mortgage import buyer_calculate_mortgage_controller
 
     #authentication
     app.register_blueprint(login_controller)
@@ -103,6 +100,9 @@ def create_app():
     app.register_blueprint(update_profile_controller)
     app.register_blueprint(search_profile_controller)
     app.register_blueprint(suspend_profile_controller)
+
+    # Mortgage
+    app.register_blueprint(buyer_calculate_mortgage_controller)
 
     @suspended
     @app.route('/')

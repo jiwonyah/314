@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request, render_template
 from csit314.entity.UserAccount import UserAccount
 from csit314.controller.role_service.decorators import login_required, admin_only
+import bcrypt
 
 class UpdateUserAccountController(Blueprint):
     def __init__(self, *args, **kwargs):
@@ -40,12 +41,13 @@ class UpdateUserAccountController(Blueprint):
         else:
             status = 'Suspended'
 
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         updateDetails = {
             'firstName': firstName,
             'lastName': lastName,
             'email': email,
             'userid': new_username,
-            'password': password,
+            'password': hashed_password.decode('utf-8'),
             'role': role,
             'status': status
         }

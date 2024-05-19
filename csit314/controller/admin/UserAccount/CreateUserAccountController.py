@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request, render_template
 from csit314.controller.role_service.decorators import login_required, admin_only
 from csit314.entity.UserAccount import UserAccount
 from csit314.entity.UserProfile import UserProfile
+import bcrypt
 
 class CreateUserAccountController(Blueprint):
     def __init__(self, *args, **kwargs):
@@ -26,12 +27,13 @@ class CreateUserAccountController(Blueprint):
             role = request.form['role']
             status = 'Active'
 
+            hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
             account_details = {
                 'firstName': firstName,
                 'lastName': lastName,
                 'email': email,
                 'userid': userid,
-                'password': password,
+                'password': hashed_password.decode('utf-8'),
                 'role': role,
                 'status': status
             }
