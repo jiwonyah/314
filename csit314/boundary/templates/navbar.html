@@ -44,8 +44,8 @@
 				<li class="dropdown">
 					<a href="#" >Login</a>
 					<div class="dropdown-content">
-						<a href="{{ url_for('login.index') }}">Login</a>
-						<a href="{{ url_for('signup.index') }}">Signup</a>
+						<a onclick="window.location.href = '/login/'">Login</a>
+						<a onclick="window.location.href = '/signup/'">Signup</a>
 					</div>
 				</li>
 				{% endif %}

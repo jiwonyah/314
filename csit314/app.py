@@ -39,15 +39,11 @@ def create_app():
         migrate.init_app(app, db)
 
     # Blueprint
-    from csit314.controller.authentication import (SignUpController, LoginController, LogoutController)
     from csit314.controller.profile import ViewProfileController
     from csit314.controller.review import (AgentViewReviewController, BuyerSellerWriteReviewController)
     from csit314.controller.favourite import (SaveFavouriteController, ViewSavedFavouriteController)
     from csit314.controller.mortgage import BuyerCalculateMortgageController
 
-    app.register_blueprint(SignUpController.bp)
-    app.register_blueprint(LoginController.bp)
-    app.register_blueprint(LogoutController.bp)
     app.register_blueprint(ViewProfileController.bp)
     app.register_blueprint(AgentViewReviewController.bp)
     app.register_blueprint(BuyerSellerWriteReviewController.bp)
@@ -57,6 +53,9 @@ def create_app():
 
 #-----------------------------------------------------------------------------------
     # NEW STRUCTURE
+    from csit314.controller.authentication import (login_controller, logout_controller,
+                                                   signup_controller)
+
     from csit314.controller.propertyListing import (agent_create_property_listing_controller,
                                                     agent_edit_property_listing_controller,
                                                     agent_remove_property_listing_controller,
@@ -70,6 +69,12 @@ def create_app():
     from csit314.controller.admin.UserProfile import (create_profile_controller, update_profile_controller,
                                                       view_profile_controller, search_profile_controller,
                                                       suspend_profile_controller, ProfileDashboardController)
+
+    #authentication
+    app.register_blueprint(login_controller)
+    app.register_blueprint(logout_controller)
+    app.register_blueprint(signup_controller)
+
 
     #Property Listing
     app.register_blueprint(agent_create_property_listing_controller)

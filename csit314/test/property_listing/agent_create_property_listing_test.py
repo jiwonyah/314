@@ -39,31 +39,6 @@ class TestSignUpController(TestCase):
             self.assertTrue(data['success'])
             self.assertIn('Property listing created successfully', data['message'])
 
-
-    # def test_creating_property_success(self):
-    #     with self.client as client:
-    #         data = {
-    #             'client_id': 'user3',
-    #             'subject': 'test',
-    #             'content': '',
-    #             'price': 100000,
-    #             'address': 'yuan ching road',
-    #             'floorSize': 50,
-    #             'floorLevel': FloorLevel.LOW.value,
-    #             'propertyType': PropertyType.HDB.value,
-    #             'furnishing': Furnishing.NotFurnished.value,
-    #             'builtYear': 2010,
-    #             'images': []
-    #         }
-    #         response = client.post('/propertyListing/create/', data=json.dumps(data),
-    #                                content_type='application/json', follow_redirects=True)
-    #
-    #         response_data = response.get_json()
-    #         print("Response JSON:", response_data)
-    #         self.assertEqual(response.status_code, 200)
-    #         self.assertTrue(response_data['success'])
-    #         self.assertEqual(response_data['message'], 'Property listing created successfully')
-
     def test_creating_property_fail1(self):
         with self.client as client:
             data = {
@@ -124,10 +99,29 @@ class TestSignUpController(TestCase):
             self.assertFalse(response_data['success'])
 
 
-
-
-
-
+    # def test_creating_property_success(self):
+    #     with self.client as client:
+    #         data = {
+    #             'client_id': 'user3',
+    #             'subject': 'test',
+    #             'content': '',
+    #             'price': 100000,
+    #             'address': 'yuan ching road',
+    #             'floorSize': 50,
+    #             'floorLevel': FloorLevel.LOW.value,
+    #             'propertyType': PropertyType.HDB.value,
+    #             'furnishing': Furnishing.NotFurnished.value,
+    #             'builtYear': 2010,
+    #             'images': []
+    #         }
+    #         response = client.post('/propertyListing/create/', data=json.dumps(data),
+    #                                content_type='application/json', follow_redirects=True)
+    #
+    #         response_data = response.get_json()
+    #         print("Response JSON:", response_data)
+    #         self.assertEqual(response.status_code, 200)
+    #         self.assertTrue(response_data['success'])
+    #         self.assertEqual(response_data['message'], 'Property listing created successfully')
 
 if __name__ == '__main__':
     unittest.main()
