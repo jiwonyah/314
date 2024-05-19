@@ -6,22 +6,8 @@ from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
 import json
+from .additional.propertylisting_enum_fields import FloorLevel, PropertyType, Furnishing
 
-class FloorLevel(enum.Enum):
-    LOW = 'low'
-    MEDIUM = 'medium'
-    HIGH = 'high'
-
-class PropertyType(enum.Enum):
-    HDB = 'hdb'
-    CONDO = 'condo'
-    APARTMENT = 'apartment'
-    STUDIO = 'studio'
-
-class Furnishing(enum.Enum):
-    PartiallyFurnished = 'partially_furnished'
-    FullyFurnished = 'fully_furnished'
-    NotFurnished = 'not_furnished'
 
 class PropertyListing(db.Model):
     __tablename__ = 'propertyListing'

@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function() {
             'rating': ratingInput.value,
             'content': feedbackTextarea.value,
             'agent_id': agentId,
-            'csrf_token': csrfToken // CSRF 토큰 추가
+            'csrf_token': csrfToken
         };
 
         const response = await fetch(`/write-review/${agentId}`, {

@@ -1,7 +1,6 @@
-from flask import Flask, render_template, g
+from flask import Flask, render_template
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from flask_wtf import CSRFProtect
 
 import config
 from sqlalchemy import MetaData
@@ -39,18 +38,6 @@ def create_app():
         migrate.init_app(app, db)
 
     # Blueprint
-    from csit314.controller.profile import ViewProfileController
-    from csit314.controller.review import (AgentViewReviewController, BuyerSellerWriteReviewController)
-    from csit314.controller.favourite import (SaveFavouriteController, ViewSavedFavouriteController)
-    app.register_blueprint(ViewProfileController.bp)
-    app.register_blueprint(AgentViewReviewController.bp)
-    app.register_blueprint(BuyerSellerWriteReviewController.bp)
-    app.register_blueprint(SaveFavouriteController.bp)
-    app.register_blueprint(ViewSavedFavouriteController.bp)
-
-
-#-----------------------------------------------------------------------------------
-    # NEW STRUCTURE
     from csit314.controller.authentication import (login_controller, logout_controller,
                                                    signup_controller)
     from csit314.controller.propertyListing import (agent_create_property_listing_controller,
@@ -65,13 +52,17 @@ def create_app():
     from csit314.controller.admin.UserProfile import (create_profile_controller, update_profile_controller,
                                                       view_profile_controller, search_profile_controller,
                                                       suspend_profile_controller, ProfileDashboardController)
+    from csit314.controller.review import (agent_view_review_controller,
+                                           buyer_seller_write_review_controller)
     from csit314.controller.mortgage import buyer_calculate_mortgage_controller
+    from csit314.controller.favourite import (buyer_save_property_listing_controller,
+                                              seller_view_save_count_controller,
+                                              view_saved_property_listing_controller)
 
     #authentication
     app.register_blueprint(login_controller)
     app.register_blueprint(logout_controller)
     app.register_blueprint(signup_controller)
-
 
     #Property Listing
     app.register_blueprint(agent_create_property_listing_controller)
@@ -80,6 +71,15 @@ def create_app():
     app.register_blueprint(view_property_listing_controller)
     app.register_blueprint(buyer_view_old_property_listing_controller)
     app.register_blueprint(search_property_listing_controller)
+
+    #Review
+    app.register_blueprint(agent_view_review_controller)
+    app.register_blueprint(buyer_seller_write_review_controller)
+
+    #Favourite
+    app.register_blueprint(buyer_save_property_listing_controller,
+                           seller_view_save_count_controller,
+                           view_saved_property_listing_controller)
 
     #Admin Home
     from csit314.controller.admin.UserAccount import AdminHomePageController
@@ -104,6 +104,11 @@ def create_app():
     # Mortgage
     app.register_blueprint(buyer_calculate_mortgage_controller)
 
+    from csit314.controller.additional.profile import ViewProfileController
+    app.register_blueprint(ViewProfileController.bp)
+
+
+    #Main Home Page
     @suspended
     @app.route('/')
     def index():

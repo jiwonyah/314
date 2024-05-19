@@ -15,7 +15,7 @@
 				<li><a href="{{ url_for('index') }}">Home</a></li>
 				<li><a onclick="window.location.href = '/propertyListing/'">Property Listing</a></li>
 
-				<li><a href="{{ url_for('write_review_controller.agent_list_index') }}">Agent Review</a></li>
+				<li><a onclick="window.location.href = '/agents'">Agent Review</a></li>
 
 				{% if g.user and g.user.role == "buyer" %}
 				<li><a onclick="window.location.href = '/mortgage'">Mortgage</a></li>  <!--page has not been created-->
@@ -30,7 +30,7 @@
 						<!-- 2 -->
 						{% if g.user.role == "agent"  %}
 						<a onclick="window.location.href = '/agent/my_property_listing/'">Post History</a>
-						<a href="{{ url_for('view_review_controller.agentViewReviews_index')}}">Reviews</a>
+						<a onclick="window.location.href = '/agent/reviews/'">Reviews</a>
 						{% elif g.user.role == "seller" %}
 						<a onclick="window.location.href = '/seller/my_property_listing/'">My Property</a>
 						{% elif g.user.role == "buyer" %}

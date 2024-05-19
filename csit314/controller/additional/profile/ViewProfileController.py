@@ -6,7 +6,7 @@ from csit314.controller.role_service.decorators import suspended
 
 bp = Blueprint('profile', __name__)
 
-
+# this is just for checking the information of the user that I'm currently logged in to
 @bp.route('/profile/<userid>/')
 @suspended
 def profile(userid):
